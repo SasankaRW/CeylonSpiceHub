@@ -1,0 +1,119 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 60 33% 98%; /* Light cream background */
+    --foreground: 35 25% 25%; /* Dark brown text */
+
+    --card: 60 33% 99%;
+    --card-foreground: 35 25% 25%;
+
+    --popover: 60 33% 99%;
+    --popover-foreground: 35 25% 25%;
+
+    /* Spice-inspired greens and browns */
+    --primary: 120 30% 35%; /* Rich forest green */
+    --primary-foreground: 60 33% 98%;
+
+    --secondary: 25 70% 45%; /* Warm cinnamon brown */
+    --secondary-foreground: 60 33% 98%;
+
+    --muted: 120 10% 90%;
+    --muted-foreground: 35 25% 35%;
+
+    --accent: 80 60% 45%; /* Fresh leaf green */
+    --accent-foreground: 60 33% 98%;
+
+    --destructive: 0 85% 60%;
+    --destructive-foreground: 60 33% 98%;
+
+    --border: 35 25% 85%;
+    --input: 35 25% 88%;
+    --ring: 120 30% 35%;
+
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 35 25% 15%;
+    --foreground: 60 33% 98%;
+
+    --card: 35 25% 18%;
+    --card-foreground: 60 33% 98%;
+
+    --popover: 35 25% 18%;
+    --popover-foreground: 60 33% 98%;
+
+    --primary: 120 30% 45%;
+    --primary-foreground: 60 33% 98%;
+
+    --secondary: 25 70% 55%;
+    --secondary-foreground: 35 25% 15%;
+
+    --muted: 35 25% 25%;
+    --muted-foreground: 60 33% 85%;
+
+    --accent: 80 60% 55%;
+    --accent-foreground: 35 25% 15%;
+
+    --destructive: 0 75% 50%;
+    --destructive-foreground: 60 33% 98%;
+
+    --border: 35 25% 30%;
+    --input: 35 25% 35%;
+    --ring: 120 30% 45%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Inter', sans-serif;
+  }
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  background: linear-gradient(135deg, 
+    hsl(var(--primary) / 0.05),
+    hsl(var(--secondary) / 0.05) 50%,
+    hsl(var(--accent) / 0.05)
+  );
+  opacity: 0.6;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  @apply font-semibold tracking-tight;
+}
+
+h1 { @apply text-4xl lg:text-5xl; }
+h2 { @apply text-3xl lg:text-4xl; }
+h3 { @apply text-2xl lg:text-3xl; }
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: hsl(var(--background) / 0.5);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--primary) / 0.7);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--primary));
+}
