@@ -9,8 +9,8 @@
     "preview": "vite preview",
     "server": "node server/index.js",
     "dev:all": "concurrently \"npm run dev\" \"npm run server\"",
-    "start": "node server.js",
-    "build:all": "vite build && node server.js",
+    "start": "node server/index.js",
+    "build:all": "vite build && node server/index.js",
     "deploy": "npm run build && npm run start",
     "postinstall": "npm install jsonwebtoken bcryptjs mongoose express cors dotenv",
     "create-user": "node server/scripts/createUser.js"
@@ -39,7 +39,11 @@
     "date-fns": "^2.30.0",
     "dotenv": "^16.5.0",
     "express": "^4.21.2",
+    "express-mongo-sanitize": "^2.2.0",
+    "express-rate-limit": "^7.5.0",
     "framer-motion": "^10.16.4",
+    "helmet": "^8.1.0",
+    "hpp": "^0.2.3",
     "jsonwebtoken": "^9.0.2",
     "lucide-react": "^0.292.0",
     "mongoose": "^8.15.1",
@@ -50,7 +54,8 @@
     "react-router-dom": "^6.16.0",
     "tailwind-merge": "^1.14.0",
     "tailwindcss-animate": "^1.0.7",
-    "uuid": "^9.0.1"
+    "uuid": "^9.0.1",
+    "xss-clean": "^0.1.4"
   },
   "devDependencies": {
     "@types/node": "^20.8.3",
