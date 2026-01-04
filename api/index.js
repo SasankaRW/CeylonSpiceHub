@@ -76,6 +76,34 @@ app.use(cors({
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
+// Strip /api prefix from URL for Vercel routing
+// When Vercel routes /api/products to this handler, the URL still contains /api
+// We need to remove it so Express routes match correctly
+app.use((req, res, next) => {
+  // Store original URL for reference
+  if (!req.originalUrl) {
+    req.originalUrl = req.url;
+  }
+  
+  const originalUrl = req.url;
+  
+  // Strip /api prefix from URL and path
+  if (req.url.startsWith('/api/')) {
+    req.url = req.url.replace('/api', '');
+    req.path = req.path.replace('/api', '');
+  } else if (req.url === '/api') {
+    req.url = '/';
+    req.path = '/';
+  }
+  
+  // Debug logging (remove in production if not needed)
+  if (process.env.NODE_ENV === 'development' || process.env.DEBUG === 'true') {
+    console.log(`[API] ${req.method} ${originalUrl} → ${req.url}`);
+  }
+  
+  next();
+});
+
 // MongoDB connection - optimized for serverless
 let cachedDb = null;
 let isConnecting = false;
