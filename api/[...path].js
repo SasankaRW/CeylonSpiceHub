@@ -195,11 +195,27 @@ app.use((err, req, res, next) => {
   });
 });
 
+// Debug endpoint to check routing
+app.all('/api/debug-routing', (req, res) => {
+  res.json({
+    message: 'Debug Routing Info',
+    method: req.method,
+    url: req.url,
+    originalUrl: req.originalUrl,
+    baseUrl: req.baseUrl,
+    path: req.path,
+    headers: req.headers
+  });
+});
+
 // 404 handler for API routes
 app.use((req, res) => {
+  console.error(`404 Not Found: ${req.method} ${req.url}`);
   res.status(404).json({
     message: 'API endpoint not found',
-    path: req.path
+    path: req.path,
+    url: req.url,
+    method: req.method
   });
 });
 
