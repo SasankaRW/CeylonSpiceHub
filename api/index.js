@@ -42,7 +42,7 @@ const limiter = rateLimit({
 app.use(limiter);
 
 // CORS configuration
-const allowedOrigins = process.env.ALLOWED_ORIGINS 
+const allowedOrigins = process.env.ALLOWED_ORIGINS
   ? process.env.ALLOWED_ORIGINS.split(',').map(origin => origin.trim())
   : ['http://localhost:5173', 'http://localhost:3000'];
 
@@ -76,29 +76,11 @@ app.use(cors({
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
-// Strip /api prefix from URL for Vercel routing
-// When Vercel routes /api/products to this handler, the URL still contains /api
-// We need to remove it so Express routes match correctly
+// Debug logging middleware
 app.use((req, res, next) => {
-  // Store original URL for reference
-  if (!req.originalUrl) {
-    req.originalUrl = req.url;
-  }
-  
-  const originalUrl = req.url;
-  
-  // Strip /api prefix from URL and path
-  if (req.url.startsWith('/api/')) {
-    req.url = req.url.replace('/api', '');
-  } else if (req.url === '/api') {
-    req.url = '/';
-  }
-  
-  // Debug logging (remove in production if not needed)
   if (process.env.NODE_ENV === 'development' || process.env.DEBUG === 'true') {
-    console.log(`[API] ${req.method} ${originalUrl} → ${req.url}`);
+    console.log(`[API] ${req.method} ${req.url}`);
   }
-  
   next();
 });
 
@@ -126,7 +108,7 @@ async function connectToDatabase() {
   isConnecting = true;
 
   const MONGODB_URI = process.env.MONGODB_URI;
-  
+
   if (!MONGODB_URI) {
     isConnecting = false;
     throw new Error('MONGODB_URI environment variable is not set');
@@ -171,16 +153,16 @@ app.use('/users', userRoutes);
 app.get('/health', async (req, res) => {
   try {
     const dbStatus = mongoose.connection.readyState === 1 ? 'connected' : 'disconnected';
-    res.json({ 
-      status: 'ok', 
+    res.json({
+      status: 'ok',
       timestamp: new Date().toISOString(),
       db: dbStatus,
       environment: process.env.NODE_ENV || 'development'
     });
   } catch (error) {
-    res.status(500).json({ 
+    res.status(500).json({
       status: 'error',
-      message: error.message 
+      message: error.message
     });
   }
 });
@@ -188,7 +170,7 @@ app.get('/health', async (req, res) => {
 // Error handling middleware
 app.use((err, req, res, next) => {
   console.error('Error:', err);
-  res.status(err.status || 500).json({ 
+  res.status(err.status || 500).json({
     message: err.message || 'Something went wrong!',
     error: process.env.NODE_ENV === 'development' ? err.stack : undefined
   });
@@ -196,9 +178,9 @@ app.use((err, req, res, next) => {
 
 // 404 handler for API routes
 app.use((req, res) => {
-  res.status(404).json({ 
+  res.status(404).json({
     message: 'API endpoint not found',
-    path: req.path 
+    path: req.path
   });
 });
 
@@ -211,7 +193,7 @@ export default async function handler(req, res) {
     console.error('Database connection failed:', error);
     // Still try to handle the request, but return error for non-health endpoints
     if (req.url !== '/health' && !req.url.startsWith('/health')) {
-      return res.status(503).json({ 
+      return res.status(503).json({
         message: 'Database connection failed',
         error: process.env.NODE_ENV === 'development' ? error.message : undefined
       });
