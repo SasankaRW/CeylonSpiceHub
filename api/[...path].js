@@ -130,8 +130,9 @@ async function connectToDatabase() {
     family: 4, // Use IPv4
     retryWrites: true,
     w: 'majority',
-    maxPoolSize: 10, // Maintain up to 10 socket connections
-    minPoolSize: 2, // Maintain at least 2 socket connections
+    maxPoolSize: 10,
+    minPoolSize: 2,
+    dbName: 'ceylon-spice-hub' // Explicitly set database name to fix invalid namespace error
   };
 
   try {
