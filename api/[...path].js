@@ -135,9 +135,19 @@ async function connectToDatabase() {
   };
 
   try {
-    // Close existing connection if any
-    if (mongoose.connection.readyState !== 0) {
-      await mongoose.connection.close();
+    // If we're already connecting, wait; if connected, return
+    if (mongoose.connection.readyState === 1) {
+      cachedDb = mongoose.connection;
+      isConnecting = false;
+      return cachedDb;
+    }
+
+    if (mongoose.connection.readyState === 2) {
+      // Wait for it to connect
+      while (mongoose.connection.readyState === 2) {
+        await new Promise(resolve => setTimeout(resolve, 100));
+      }
+      return mongoose.connection;
     }
 
     await mongoose.connect(MONGODB_URI, mongooseOptions);

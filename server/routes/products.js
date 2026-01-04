@@ -12,9 +12,18 @@ router.get('/', async (req, res) => {
     res.json(products);
   } catch (error) {
     console.error('Error fetching products:', error);
-    res.status(500).json({ 
+    const errorObj = {
+      name: error.name,
+      message: error.message,
+      stack: error.stack,
+      code: error.code
+    };
+    console.error('Detailed Error:', JSON.stringify(errorObj));
+
+    res.status(500).json({
       message: 'Failed to fetch products',
-      error: process.env.NODE_ENV === 'development' ? error.message : undefined
+      errorDetails: errorObj,
+      errorString: error.toString()
     });
   }
 });
@@ -28,7 +37,7 @@ router.get('/featured', async (req, res) => {
     res.json(products);
   } catch (error) {
     console.error('Error fetching featured products:', error);
-    res.status(500).json({ 
+    res.status(500).json({
       message: 'Failed to fetch featured products',
       error: process.env.NODE_ENV === 'development' ? error.message : undefined
     });
@@ -45,7 +54,7 @@ router.get('/category/:category', async (req, res) => {
     res.json(products);
   } catch (error) {
     console.error(`Error fetching products for category ${req.params.category}:`, error);
-    res.status(500).json({ 
+    res.status(500).json({
       message: 'Failed to fetch products by category',
       error: process.env.NODE_ENV === 'development' ? error.message : undefined
     });
@@ -66,7 +75,7 @@ router.get('/:id', async (req, res) => {
     res.json(product);
   } catch (error) {
     console.error(`Error fetching product ${req.params.id}:`, error);
-    res.status(500).json({ 
+    res.status(500).json({
       message: 'Failed to fetch product',
       error: process.env.NODE_ENV === 'development' ? error.message : undefined
     });
@@ -77,7 +86,7 @@ router.get('/:id', async (req, res) => {
 router.post('/', async (req, res) => {
   try {
     console.log('Creating new product:', JSON.stringify(req.body, null, 2));
-    
+
     // Clean up the data - remove undefined/null legacy fields when variants exist
     const productData = { ...req.body };
     if (productData.variants && productData.variants.length > 0) {
@@ -86,7 +95,7 @@ router.post('/', async (req, res) => {
       delete productData.weight;
       delete productData.stock;
     }
-    
+
     const product = new Product(productData);
     const newProduct = await product.save();
     console.log(`Created product: ${newProduct.name}`);
@@ -95,7 +104,7 @@ router.post('/', async (req, res) => {
     console.error('Error creating product:', error);
     console.error('Error name:', error.name);
     console.error('Error message:', error.message);
-    
+
     // Extract validation errors
     let errorDetails = {};
     if (error.errors) {
@@ -103,9 +112,9 @@ router.post('/', async (req, res) => {
         errorDetails[key] = error.errors[key].message;
       });
     }
-    
+
     console.error('Validation errors:', errorDetails);
-    
+
     // Create user-friendly error message
     let errorMessage = 'Failed to create product';
     if (error.name === 'ValidationError') {
@@ -114,8 +123,8 @@ router.post('/', async (req, res) => {
     } else {
       errorMessage = error.message;
     }
-    
-    res.status(400).json({ 
+
+    res.status(400).json({
       message: 'Failed to create product',
       error: errorMessage,
       details: Object.keys(errorDetails).length > 0 ? errorDetails : undefined
@@ -141,7 +150,7 @@ router.patch('/:id', async (req, res) => {
     res.json(product);
   } catch (error) {
     console.error(`Error updating product ${req.params.id}:`, error);
-    res.status(400).json({ 
+    res.status(400).json({
       message: 'Failed to update product',
       error: process.env.NODE_ENV === 'development' ? error.message : undefined
     });
@@ -162,7 +171,7 @@ router.delete('/:id', async (req, res) => {
     res.json({ message: 'Product deleted successfully' });
   } catch (error) {
     console.error(`Error deleting product ${req.params.id}:`, error);
-    res.status(500).json({ 
+    res.status(500).json({
       message: 'Failed to delete product',
       error: process.env.NODE_ENV === 'development' ? error.message : undefined
     });
