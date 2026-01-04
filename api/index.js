@@ -90,10 +90,8 @@ app.use((req, res, next) => {
   // Strip /api prefix from URL and path
   if (req.url.startsWith('/api/')) {
     req.url = req.url.replace('/api', '');
-    req.path = req.path.replace('/api', '');
   } else if (req.url === '/api') {
     req.url = '/';
-    req.path = '/';
   }
   
   // Debug logging (remove in production if not needed)
