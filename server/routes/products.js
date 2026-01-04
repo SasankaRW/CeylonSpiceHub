@@ -76,16 +76,49 @@ router.get('/:id', async (req, res) => {
 // Create product
 router.post('/', async (req, res) => {
   try {
-    console.log('Creating new product:', req.body);
-    const product = new Product(req.body);
+    console.log('Creating new product:', JSON.stringify(req.body, null, 2));
+    
+    // Clean up the data - remove undefined/null legacy fields when variants exist
+    const productData = { ...req.body };
+    if (productData.variants && productData.variants.length > 0) {
+      // Remove legacy fields if variants are present
+      delete productData.price;
+      delete productData.weight;
+      delete productData.stock;
+    }
+    
+    const product = new Product(productData);
     const newProduct = await product.save();
     console.log(`Created product: ${newProduct.name}`);
     res.status(201).json(newProduct);
   } catch (error) {
     console.error('Error creating product:', error);
+    console.error('Error name:', error.name);
+    console.error('Error message:', error.message);
+    
+    // Extract validation errors
+    let errorDetails = {};
+    if (error.errors) {
+      Object.keys(error.errors).forEach(key => {
+        errorDetails[key] = error.errors[key].message;
+      });
+    }
+    
+    console.error('Validation errors:', errorDetails);
+    
+    // Create user-friendly error message
+    let errorMessage = 'Failed to create product';
+    if (error.name === 'ValidationError') {
+      const validationMessages = Object.values(errorDetails).join(', ');
+      errorMessage = validationMessages || error.message;
+    } else {
+      errorMessage = error.message;
+    }
+    
     res.status(400).json({ 
       message: 'Failed to create product',
-      error: process.env.NODE_ENV === 'development' ? error.message : undefined
+      error: errorMessage,
+      details: Object.keys(errorDetails).length > 0 ? errorDetails : undefined
     });
   }
 });

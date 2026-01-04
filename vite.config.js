@@ -78,7 +78,7 @@ console.error = function(...args) {
 	for (let i = 0; i < args.length; i++) {
 		const arg = args[i];
 		if (arg instanceof Error) {
-			errorString = arg.stack || \`\${arg.name}: \${arg.message}\`;
+			errorString = arg.stack || arg.name + ': ' + arg.message;
 			break;
 		}
 	}
@@ -118,7 +118,7 @@ window.fetch = function(...args) {
 					const responseClone = response.clone();
 					const errorFromRes = await responseClone.text();
 					const requestUrl = response.url;
-					console.error(\`Fetch error from \${requestUrl}: \${errorFromRes}\`);
+					console.error('Fetch error from ' + requestUrl + ': ' + errorFromRes);
 			}
 
 			return response;
