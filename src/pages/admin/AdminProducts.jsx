@@ -24,8 +24,12 @@ const AdminProducts = () => {
   const fetchProducts = async () => {
     try {
       const response = await api.get('/products');
-      setProducts(response.data);
+      // Ensure data is always an array
+      const data = response.data;
+      setProducts(Array.isArray(data) ? data : []);
     } catch (error) {
+      console.error('Error fetching products:', error);
+      setProducts([]); // Set empty array on error
       toast({
         title: "Error",
         description: error.response?.data?.message || "Failed to fetch products",
@@ -88,8 +92,8 @@ const AdminProducts = () => {
     setIsDialogOpen(true);
   };
 
-  const filteredProducts = products.filter(product =>
-    product.name.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredProducts = (Array.isArray(products) ? products : []).filter(product =>
+    product.name && product.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (

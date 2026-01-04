@@ -28,7 +28,7 @@ const AdminDashboard = () => {
   const [products, setProducts] = useState([]);
   const navigate = useNavigate();
   
-  const lowStockProducts = products.filter(p => p.stock < 10);
+  const lowStockProducts = (Array.isArray(products) ? products : []).filter(p => p && p.stock < 10);
 
   useEffect(() => {
     fetchDashboardData();
@@ -38,9 +38,11 @@ const AdminDashboard = () => {
   const fetchProducts = async () => {
     try {
       const productsData = await getProducts();
-      setProducts(productsData);
+      // Ensure products is always an array
+      setProducts(Array.isArray(productsData) ? productsData : []);
     } catch (error) {
       console.error('Error fetching products:', error);
+      setProducts([]); // Set empty array on error
     }
   };
 

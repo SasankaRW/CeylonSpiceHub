@@ -37,9 +37,20 @@ api.interceptors.response.use(
 export const getProducts = async () => {
   try {
     const response = await api.get('/products');
-    return response.data;
+    // Ensure we always return an array
+    const data = response.data;
+    if (!Array.isArray(data)) {
+      console.warn('API returned non-array data:', data);
+      return [];
+    }
+    return data;
   } catch (error) {
     console.error('Error fetching products:', error);
+    // Return empty array instead of throwing to prevent crashes
+    if (error.response?.status === 404) {
+      console.warn('Products endpoint not found, returning empty array');
+      return [];
+    }
     throw error;
   }
 };
@@ -57,9 +68,18 @@ export const getProductById = async (id) => {
 export const getFeaturedProducts = async () => {
   try {
     const response = await api.get('/products/featured');
-    return response.data;
+    const data = response.data;
+    // Ensure we always return an array
+    if (!Array.isArray(data)) {
+      console.warn('API returned non-array data for featured products:', data);
+      return [];
+    }
+    return data;
   } catch (error) {
     console.error('Error fetching featured products:', error);
+    if (error.response?.status === 404) {
+      return [];
+    }
     throw error;
   }
 };
@@ -67,9 +87,18 @@ export const getFeaturedProducts = async () => {
 export const getProductsByCategory = async (category) => {
   try {
     const response = await api.get(`/products/category/${category}`);
-    return response.data;
+    const data = response.data;
+    // Ensure we always return an array
+    if (!Array.isArray(data)) {
+      console.warn('API returned non-array data for category products:', data);
+      return [];
+    }
+    return data;
   } catch (error) {
     console.error(`Error fetching products for category ${category}:`, error);
+    if (error.response?.status === 404) {
+      return [];
+    }
     throw error;
   }
 };

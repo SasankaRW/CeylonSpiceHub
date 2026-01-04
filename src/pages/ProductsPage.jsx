@@ -21,8 +21,11 @@ const ProductsPage = () => {
       try {
         setLoading(true);
         const data = await getProducts();
-        setProducts(data);
+        // Ensure data is always an array
+        setProducts(Array.isArray(data) ? data : []);
       } catch (error) {
+        console.error('Error fetching products:', error);
+        setProducts([]); // Set empty array on error
         toast({
           title: "Error",
           description: "Failed to load products. Please try again later.",
@@ -36,7 +39,8 @@ const ProductsPage = () => {
     fetchProducts();
   }, [toast]);
 
-  const filteredProducts = products.filter(product => {
+  // Ensure products is always an array before filtering
+  const filteredProducts = (Array.isArray(products) ? products : []).filter(product => {
     const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          product.description.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCategory = selectedCategory === 'all' || product.category === selectedCategory;
