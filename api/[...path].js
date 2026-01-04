@@ -84,18 +84,34 @@ app.use((req, res, next) => {
   next();
 });
 
-// Create a main router for all API routes
-const apiRouter = express.Router();
+// Debug endpoint to check routing - MOVED TO TOP
+app.all('/api/debug-routing', (req, res) => {
+  res.json({
+    message: 'Debug Routing Info',
+    method: req.method,
+    url: req.url,
+    originalUrl: req.originalUrl,
+    baseUrl: req.baseUrl,
+    path: req.path,
+    headers: req.headers
+  });
+});
 
-apiRouter.use('/products', productRoutes);
-apiRouter.use('/orders', orderRoutes);
-apiRouter.use('/sliders', sliderRoutes);
-apiRouter.use('/categories', categoryRoutes);
-apiRouter.use('/users', userRoutes);
+// Explicitly mount routes on both /api path and root path to cover all bases
+app.use('/api/products', productRoutes);
+app.use('/products', productRoutes);
 
-// Mount the API router at both /api (for direct calls) and / (fallback)
-app.use('/api', apiRouter);
-app.use('/', apiRouter);
+app.use('/api/orders', orderRoutes);
+app.use('/orders', orderRoutes);
+
+app.use('/api/sliders', sliderRoutes);
+app.use('/sliders', sliderRoutes);
+
+app.use('/api/categories', categoryRoutes);
+app.use('/categories', categoryRoutes);
+
+app.use('/api/users', userRoutes);
+app.use('/users', userRoutes);
 
 // MongoDB connection - optimized for serverless
 let cachedDb = null;
@@ -195,18 +211,7 @@ app.use((err, req, res, next) => {
   });
 });
 
-// Debug endpoint to check routing
-app.all('/api/debug-routing', (req, res) => {
-  res.json({
-    message: 'Debug Routing Info',
-    method: req.method,
-    url: req.url,
-    originalUrl: req.originalUrl,
-    baseUrl: req.baseUrl,
-    path: req.path,
-    headers: req.headers
-  });
-});
+
 
 // 404 handler for API routes
 app.use((req, res) => {
