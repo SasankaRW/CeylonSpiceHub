@@ -76,16 +76,6 @@ app.use(cors({
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
-// Strip /api prefix from URL for catch-all route
-app.use((req, res, next) => {
-  if (req.url.startsWith('/api/')) {
-    req.url = req.url.replace('/api', '');
-  } else if (req.url === '/api') {
-    req.url = '/';
-  }
-  next();
-});
-
 // Debug logging middleware
 app.use((req, res, next) => {
   if (process.env.NODE_ENV === 'development' || process.env.DEBUG === 'true') {
@@ -93,6 +83,19 @@ app.use((req, res, next) => {
   }
   next();
 });
+
+// Create a main router for all API routes
+const apiRouter = express.Router();
+
+apiRouter.use('/products', productRoutes);
+apiRouter.use('/orders', orderRoutes);
+apiRouter.use('/sliders', sliderRoutes);
+apiRouter.use('/categories', categoryRoutes);
+apiRouter.use('/users', userRoutes);
+
+// Mount the API router at both /api (for direct calls) and / (fallback)
+app.use('/api', apiRouter);
+app.use('/', apiRouter);
 
 // MongoDB connection - optimized for serverless
 let cachedDb = null;
@@ -163,12 +166,7 @@ async function connectToDatabase() {
   }
 }
 
-// API Routes - Note: Vercel will prefix these with /api automatically
-app.use('/products', productRoutes);
-app.use('/orders', orderRoutes);
-app.use('/sliders', sliderRoutes);
-app.use('/categories', categoryRoutes);
-app.use('/users', userRoutes);
+
 
 // Health check endpoint
 app.get('/health', async (req, res) => {
