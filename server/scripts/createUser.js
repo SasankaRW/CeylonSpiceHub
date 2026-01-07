@@ -12,21 +12,33 @@ const MONGODB_URI = process.env.MONGODB_URI;
 async function createUser(userData) {
   try {
     // Connect to MongoDB
-    await mongoose.connect(MONGODB_URI);
+    // Connect to MongoDB
+    await mongoose.connect(MONGODB_URI, { dbName: 'ceylon-spice-hub' });
     console.log('Connected to MongoDB');
 
-    // Create new user
-    const user = new User({
-      username: userData.username,
-      password: userData.password,
-      email: userData.email,
-      role: userData.role || 'staff',
-      isActive: true
-    });
+    // Check if user exists
+    let user = await User.findOne({ username: userData.username });
 
-    // Save the user
+    if (user) {
+      console.log(`User ${userData.username} already exists. Updating...`);
+      user.password = userData.password;
+      user.email = userData.email;
+      user.role = userData.role || 'staff';
+      user.isActive = true;
+    } else {
+      console.log(`Creating new user ${userData.username}...`);
+      user = new User({
+        username: userData.username,
+        password: userData.password,
+        email: userData.email,
+        role: userData.role || 'staff',
+        isActive: true
+      });
+    }
+
+    // Save the user (triggers pre-save hook for hashing)
     await user.save();
-    console.log('User created successfully:', {
+    console.log('User saved successfully:', {
       username: user.username,
       email: user.email,
       role: user.role

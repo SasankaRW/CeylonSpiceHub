@@ -33,10 +33,10 @@ function App() {
           <Route path="/cart" element={<CartPage />} />
           <Route path="/checkout" element={<CheckoutPage />} />
           <Route path="/order-confirmation" element={<OrderConfirmation />} />
-          <Route path="/admin/login" element={<LoginPage />} />
-          <Route path="/admin" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
-          <Route path="/admin/products" element={<ProtectedRoute><AdminProducts /></ProtectedRoute>} />
-          <Route path="/admin/orders" element={<ProtectedRoute><AdminOrders /></ProtectedRoute>} />
+
+          <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="/admin/products" element={<AdminProducts />} />
+          <Route path="/admin/orders" element={<AdminOrders />} />
           <Route path="/accomplishments" element={<AccomplishmentsPage />} />
           <Route path="/gallery-blog" element={<GalleryBlogPage />} />
           <Route path="/contact-us" element={<ContactUsPage />} />

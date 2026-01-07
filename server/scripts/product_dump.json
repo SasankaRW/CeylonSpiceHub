@@ -1,0 +1,28 @@
+{
+  "_id": "695e0a9247c52e3a9bbc3655",
+  "category": "katugasma",
+  "subCategory": "General",
+  "name": "PINAPPLE NAI MIRIS SAUCE",
+  "price": 1500,
+  "weight": "300 ML",
+  "stock": 200,
+  "variants": [
+    {
+      "type": "glass-bottle",
+      "weight": "300 ML",
+      "price": 1500,
+      "stock": 100
+    },
+    {
+      "type": "glass-bottle",
+      "weight": "200 ML",
+      "price": 1000,
+      "stock": 100
+    }
+  ],
+  "description": "Sweet Heat, Island Style Pineapple & Nai Miris Sauce is a tropical firecracker—tangy pineapple meets the intense heat of Nai Miris (Ghost Pepper), creating an explosive fusion of sweet and spicy flavors. Whether used as a marinade or a finishing sauce, it will elevate any dish to new heights of deliciousness. Best enjoyed with: – Grilled seafood (shrimp, lobster, fish) – Tacos, burritos, and quesadillas – Chicken wings and grilled meats – A spicy dip for chips or a spread for cheese and crackers Ingredients: Pineapple, Garlic, Ginger, Nai Miris (Ghost Pepper), Natural Coconut Vinegar, TCSH Special Blend Spices, Sugar 100% Natural | Preservative-Free | Artisan Quality | Homemade | 300 ml | 200 ml",
+  "featured": false,
+  "__v": 0,
+  "createdAt": "2026-01-07T07:26:10.540Z",
+  "updatedAt": "2026-01-07T07:26:10.540Z"
+}

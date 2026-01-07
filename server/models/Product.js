@@ -16,10 +16,9 @@ const variantSchema = new mongoose.Schema({
     required: true,
     min: 0
   },
-  stock: {
-    type: Number,
-    required: true,
-    min: 0
+  stock_available: {
+    type: Boolean,
+    default: true
   }
 }, { _id: false });
 
@@ -27,7 +26,7 @@ const productSchema = new mongoose.Schema({
   category: {
     type: String,
     required: true,
-    enum: ['ceylon-spices', 'katugasma', 'fruitopia']
+    enum: ['Sauces', 'Chutney', 'Jam', 'Wines', 'Spices']
   },
   subCategory: {
     type: String,
@@ -37,25 +36,22 @@ const productSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  // Legacy fields for backward compatibility
+  // Legacy fields for backward compatibility / API ease
   price: {
     type: Number,
-    required: function() {
+    required: function () {
       return !this.variants || this.variants.length === 0;
     }
   },
   weight: {
     type: String,
-    required: function() {
+    required: function () {
       return !this.variants || this.variants.length === 0;
     }
   },
-  stock: {
-    type: Number,
-    min: 0,
-    required: function() {
-      return !this.variants || this.variants.length === 0;
-    }
+  stock_available: {
+    type: Boolean,
+    default: true
   },
   // New variants array
   variants: {

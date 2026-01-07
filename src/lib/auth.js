@@ -2,29 +2,14 @@ import { useNavigate } from 'react-router-dom';
 import api from '@/api';
 
 export const login = async (username, password) => {
-  try {
-    const response = await api.post('/users/login', { username, password });
-    
-    // Store the token and user info
-    localStorage.setItem('authToken', response.data.token);
-    localStorage.setItem('isAdminAuthenticated', 'true');
-    localStorage.setItem('user', JSON.stringify(response.data.user));
-    
-    return true;
-  } catch (error) {
-    console.error('Login error:', error);
-    return false;
-  }
+  // Login is now bypassed, always return true
+  return true;
 };
 
-export const logout = () => {
-  localStorage.removeItem('authToken');
-  localStorage.removeItem('isAdminAuthenticated');
-  localStorage.removeItem('user');
-};
+// ...
 
 export const isAuthenticated = () => {
-  return localStorage.getItem('isAdminAuthenticated') === 'true';
+  return true; // Always authenticated
 };
 
 export const getAuthToken = () => {

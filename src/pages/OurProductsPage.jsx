@@ -8,45 +8,61 @@ import { Link } from 'react-router-dom';
 
 const productCategories = [
   {
-    id: 'ceylon-spices',
+    id: 'Spices',
     name: 'Ceylon Spices',
     icon: <SpicesIcon className="h-8 w-8 text-primary" />,
     description: 'Authentic, aromatic spices sourced directly from the heart of Sri Lanka.',
     imageDescription: "Vibrant array of whole and ground Ceylon spices",
     alt: "Ceylon Spices",
     subCategories: [
-      { name: 'Whole Spices', items: ['Cinnamon (True Ceylon)', 'Black Pepper', 'White Pepper', 'Cloves', 'Cardamom', 'Nutmeg & Mace', 'Turmeric', 'Ginger', 'Curry Leaves'] },
-      { name: 'Spice Blends', items: ['Roasted Curry Powder', 'Unroasted Curry Powder', 'Garam Masala', 'Meat Curry Blend', 'Fish Curry Blend', 'Vegetable Curry Blend'] },
-      { name: 'Spice Mixtures', items: ['Chilli Flakes', 'Chilli Powder', 'Cinnamon Powder', 'Pepper Powder', 'Turmeric Powder', 'Ginger Powder'] },
+      { name: 'Whole Spices', items: ['Cinnamon (True Ceylon)', 'Black Pepper', 'White Pepper', 'Cloves', 'Cardamom', 'Nutmeg & Mace'] },
+      { name: 'Spice Blends', items: ['Roasted Curry Powder', 'Unroasted Curry Powder', 'Garam Masala', 'Generic Curry Blends'] },
+      { name: 'Spice Mixtures', items: ['Chilli Flakes', 'Chilli Powder', 'Turmeric Powder', 'Ginger Powder'] },
     ],
   },
   {
-    id: 'katugasma',
-    name: 'Katugasma Range',
+    id: 'Sauces',
+    name: 'Sauces',
     icon: <Utensils className="h-8 w-8 text-primary" />,
-    description: 'Traditional Sri Lankan condiments, sauces, and preserves bursting with flavour.',
-    imageDescription: "Colorful display of Katugasma sauces, chutneys, and jams in jars",
-    alt: "Katugasma Range",
+    description: 'Traditional Sri Lankan sauces bursting with flavour.',
+    imageDescription: "Colorful display of sauces",
+    alt: "Sauces",
     subCategories: [
-      { name: 'Sauces', items: ['Nai Miris Hot Sauce', 'Kochchi Hot Sauce', 'Sweet Chilli Sauce', 'Tomato Sauce', 'BBQ Sauce'] },
-      { name: 'Chutney', items: ['Mango Chutney', 'Date & Lime Chutney', 'Pineapple Chutney', 'Onion Chutney'] },
-      { name: 'Jam', items: ['Woodapple Jam', 'Guava Jam', 'Passion Fruit Jam', 'Mixed Fruit Jam'] },
-      { name: 'Moju', items: ['Brinjal Moju (Eggplant Pickle)', 'Ash Plantain Moju'] },
-      { name: 'Pickles', items: ['Lime Pickle', 'Mango Pickle', 'Garlic Pickle', 'Malay Pickle'] },
-      { name: 'Fries & Bites Seasoning', items: ['Spicy Cassava Chip Seasoning', 'Devilled Cashew Mix'] },
-      { name: 'Pastes & Sambols', items: ['Seeni Sambol (Caramelized Onion Relish)', 'Katta Sambol (Chilli & Onion Relish)', 'Lunu Miris (Chilli & Onion Paste)', 'Ginger Garlic Paste'] },
+      { name: 'Hot Sauces', items: ['Nai Miris Hot Sauce', 'Kochchi Hot Sauce', 'Cobra Chilli Sauce'] },
+      { name: 'Classic Sauces', items: ['Sweet Chilli Sauce', 'Tomato Sauce', 'BBQ Sauce'] }
     ],
   },
   {
-    id: 'fruitopia',
-    name: 'Fruitopia Wines',
-    icon: <GlassWater className="h-8 w-8 text-primary" />,
-    description: 'Exquisite wines crafted from tropical Ceylonese fruits, offering unique wellness benefits.',
-    imageDescription: "Elegant bottles of Fruitopia wines with fresh fruits",
-    alt: "Fruitopia Wines",
+    id: 'Chutney',
+    name: 'Chutney',
+    icon: <Leaf className="h-8 w-8 text-primary" />,
+    description: 'Delightful chutneys made from fresh tropical fruits.',
+    imageDescription: "Jars of chutneys",
+    alt: "Chutney",
     subCategories: [
-      { name: 'Wellness Wines', items: ['Ginger Wine', 'Beetroot Wine', 'Gotukola (Centella) Wine'] },
-      { name: 'Fruit Wines', items: ['King Coconut Wine', 'Passion Fruit Wine', 'Pineapple Wine', 'Mango Wine', 'Woodapple Wine'] },
+      { name: 'Fruit Chutney', items: ['Mango Chutney', 'Date & Lime Chutney', 'Pineapple Chutney', 'Amberella Chutney'] }
+    ],
+  },
+  {
+    id: 'Jam',
+    name: 'Jam',
+    icon: <Droplets className="h-8 w-8 text-primary" />,
+    description: 'Natural fruit jams perfect for your breakfast table.',
+    imageDescription: "Fresh fruit jams",
+    alt: "Jam",
+    subCategories: [
+      { name: 'Fruit Jam', items: ['Woodapple Jam', 'Guava Jam', 'Passion Fruit Jam', 'Mixed Fruit Jam', 'Strawberry Jam'] }
+    ],
+  },
+  {
+    id: 'Wines',
+    name: 'Wines',
+    icon: <GlassWater className="h-8 w-8 text-primary" />,
+    description: 'Exquisite wines crafted from tropical Ceylonese fruits.',
+    imageDescription: "Elegant bottles of fruit wines",
+    alt: "Wines",
+    subCategories: [
+      { name: 'Fruit Wine', items: ['King Coconut Wine', 'Passion Fruit Wine', 'Pineapple Wine', 'Mango Wine', 'Ginger Wine'] }
     ],
   },
 ];
@@ -80,7 +96,7 @@ const OurProductsPage = () => {
         transition={{ duration: 0.5 }}
         className="text-center"
       >
-        <img 
+        <img
           src="https://storage.googleapis.com/hostinger-horizons-assets-prod/909949a5-1a33-4bbc-9ce6-0f65e0d7ca06/cde322e75cd351356564d87ae629c91d.png"
           alt="Ceylon Spice Hub Logo"
           className="h-24 w-24 mx-auto mb-6"
@@ -102,17 +118,17 @@ const OurProductsPage = () => {
         >
           <Card className="overflow-hidden shadow-xl bg-card/80 backdrop-blur-sm border-primary/10">
             <div className="relative h-56 md:h-72">
-              <img  
-                className="w-full h-full object-cover" 
+              <img
+                className="w-full h-full object-cover"
                 alt={category.alt}
-               src="https://images.unsplash.com/photo-1694388001616-1176f534d72f" />
+                src="https://images.unsplash.com/photo-1694388001616-1176f534d72f" />
               <div className="absolute inset-0 bg-gradient-to-t from-primary/90 to-transparent flex flex-col justify-end p-6">
                 <div className="flex items-center space-x-3 mb-2">
                   {category.icon}
                   <h2 className="text-3xl md:text-4xl font-bold text-white">{category.name}</h2>
                 </div>
                 <p className="text-gray-100 text-md md:text-lg max-w-xl">{category.description}</p>
-                <Button 
+                <Button
                   asChild
                   className="mt-4 w-fit bg-white text-primary hover:bg-white/90"
                 >
@@ -122,7 +138,7 @@ const OurProductsPage = () => {
                 </Button>
               </div>
             </div>
-            
+
             <div className="p-6 md:p-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {category.subCategories.map(subCategory => {
                 let icon;
@@ -131,9 +147,9 @@ const OurProductsPage = () => {
                   else if (subCategory.name.includes('Blend')) icon = <Leaf className="h-6 w-6 text-accent" />;
                   else icon = <Droplets className="h-6 w-6 text-accent" />;
                 } else if (category.id === 'katugasma') {
-                   icon = <Utensils className="h-6 w-6 text-accent" />;
+                  icon = <Utensils className="h-6 w-6 text-accent" />;
                 } else {
-                   icon = <GlassWater className="h-6 w-6 text-accent" />;
+                  icon = <GlassWater className="h-6 w-6 text-accent" />;
                 }
                 return (
                   <ProductCard key={subCategory.name} name={subCategory.name} icon={icon} items={subCategory.items} />

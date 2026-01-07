@@ -8,6 +8,7 @@ import productRoutes from './routes/products.js';
 import orderRoutes from './routes/orders.js';
 import categoryRoutes from './routes/categories.js';
 import sliderRoutes from './routes/sliders.js';
+import userRoutes from './routes/users.js';
 
 // Configure environment variables
 dotenv.config();
@@ -20,7 +21,7 @@ const app = express();
 
 // CORS configuration
 app.use(cors({
-  origin: process.env.NODE_ENV === 'production' 
+  origin: process.env.NODE_ENV === 'production'
     ? ['https://ceylonspicehub.lk', 'https://www.ceylonspicehub.lk']
     : 'http://localhost:5173',
   credentials: true
@@ -36,6 +37,7 @@ app.use('/api/products', productRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/categories', categoryRoutes);
 app.use('/api/sliders', sliderRoutes);
+app.use('/api/users', userRoutes);
 
 // Handle any requests that don't match the API routes
 app.get('*', (req, res) => {
@@ -45,7 +47,7 @@ app.get('*', (req, res) => {
 // Error handling
 app.use((err, req, res, next) => {
   console.error('Error:', err);
-  res.status(500).json({ 
+  res.status(500).json({
     message: 'Something went wrong!',
     error: process.env.NODE_ENV === 'development' ? err.message : undefined
   });
@@ -64,16 +66,14 @@ const mongooseOptions = {
   dbName: 'ceylon-spice-hub'
 };
 
-// Connect to MongoDB and start server
-mongoose.connect(MONGODB_URI, mongooseOptions)
-  .then(() => {
-    console.log('Connected to MongoDB Atlas');
-    const PORT = process.env.PORT || 5000;
-    app.listen(PORT, () => {
-      console.log(`Server running on port ${PORT}`);
-    });
-  })
-  .catch(err => {
+// Connect to MongoDB
+const connectDB = async () => {
+  try {
+    if (mongoose.connection.readyState === 0) {
+      await mongoose.connect(MONGODB_URI, mongooseOptions);
+      console.log('Connected to MongoDB Atlas');
+    }
+  } catch (err) {
     console.error('MongoDB connection error:', err);
     if (err.name === 'MongoServerError' && err.code === 8000) {
       console.log('\nAuthentication failed. Please check:');
@@ -81,5 +81,22 @@ mongoose.connect(MONGODB_URI, mongooseOptions)
       console.log('2. Your IP address is whitelisted in MongoDB Atlas');
       console.log('3. The database user has the correct permissions\n');
     }
-    process.exit(1);
+    // Only exit if running locally, not in Vercel function
+    if (process.env.NODE_ENV !== 'production') {
+      process.exit(1);
+    }
+  }
+};
+
+// Initial connection
+connectDB();
+
+// Only listen if running directly (not imported)
+if (process.argv[1] === fileURLToPath(import.meta.url)) {
+  const PORT = process.env.PORT || 5000;
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
   });
+}
+
+export default app;

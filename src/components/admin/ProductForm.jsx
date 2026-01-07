@@ -16,6 +16,14 @@ import {
 import { Switch } from '@/components/ui/switch';
 import { Plus, Trash2, X } from 'lucide-react';
 
+const CATEGORY_STRUCTURE = {
+  'Sauces': ['Hot Sauces', 'Classic Sauces'],
+  'Chutney': ['Chutney'],
+  'Jam': ['Fruit Jam'],
+  'Wines': ['Fruit Wine'],
+  'Spices': ['Whole Spices', 'Spice Mixtures', 'Spice Blends']
+};
+
 const ProductForm = ({ initialData, onSubmit, onCancel }) => {
   const [formData, setFormData] = React.useState(initialData || {
     name: '',
@@ -24,7 +32,7 @@ const ProductForm = ({ initialData, onSubmit, onCancel }) => {
     price: '',
     weight: '',
     description: '',
-    stock: '',
+    stock_available: true,
     featured: false,
     variants: []
   });
@@ -59,6 +67,21 @@ const ProductForm = ({ initialData, onSubmit, onCancel }) => {
     }));
   };
 
+  const handleCategoryChange = (value) => {
+    setFormData(prev => ({
+      ...prev,
+      category: value,
+      subCategory: '' // Reset subcategory when category changes
+    }));
+  };
+
+  const handleSubCategoryChange = (value) => {
+    setFormData(prev => ({
+      ...prev,
+      subCategory: value
+    }));
+  };
+
   const handleAddVariant = () => {
     setFormData(prev => ({
       ...prev,
@@ -66,7 +89,7 @@ const ProductForm = ({ initialData, onSubmit, onCancel }) => {
         type: 'pouch',
         weight: '',
         price: '',
-        stock: ''
+        stock_available: true
       }]
     }));
   };
@@ -81,7 +104,7 @@ const ProductForm = ({ initialData, onSubmit, onCancel }) => {
   const handleVariantChange = (index, field, value) => {
     setFormData(prev => ({
       ...prev,
-      variants: prev.variants.map((variant, i) => 
+      variants: prev.variants.map((variant, i) =>
         i === index ? { ...variant, [field]: value } : variant
       )
     }));
@@ -89,8 +112,8 @@ const ProductForm = ({ initialData, onSubmit, onCancel }) => {
 
   // Variant builder functions
   const handleTypeToggle = (type) => {
-    setSelectedTypes(prev => 
-      prev.includes(type) 
+    setSelectedTypes(prev =>
+      prev.includes(type)
         ? prev.filter(t => t !== type)
         : [...prev, type]
     );
@@ -126,13 +149,13 @@ const ProductForm = ({ initialData, onSubmit, onCancel }) => {
         const exists = formData.variants?.some(
           v => v.type === type && v.weight === weight
         );
-        
+
         if (!exists) {
           newVariants.push({
             type,
             weight,
             price: '',
-            stock: ''
+            stock_available: true
           });
         }
       });
@@ -159,7 +182,7 @@ const ProductForm = ({ initialData, onSubmit, onCancel }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     // Validate variants if using them
     if (useVariants) {
       if (!formData.variants || formData.variants.length === 0) {
@@ -170,7 +193,7 @@ const ProductForm = ({ initialData, onSubmit, onCancel }) => {
         });
         return;
       }
-      
+
       // Validate each variant
       for (let i = 0; i < formData.variants.length; i++) {
         const variant = formData.variants[i];
@@ -190,35 +213,23 @@ const ProductForm = ({ initialData, onSubmit, onCancel }) => {
           });
           return;
         }
-        if (variant.stock === '' || variant.stock === undefined || isNaN(parseInt(variant.stock))) {
-          toast({
-            title: "Validation Error",
-            description: `Please enter a valid stock quantity for variant ${i + 1} (${variant.type} - ${variant.weight}).`,
-            variant: "destructive"
-          });
-          return;
-        }
       }
-      
+
       // Convert string numbers to actual numbers and validate
       let processedVariants;
       try {
         processedVariants = formData.variants.map((v, index) => {
           const price = parseFloat(v.price);
-          const stock = parseInt(v.stock);
-          
+
           if (isNaN(price) || price < 0) {
             throw new Error(`Invalid price for variant ${index + 1}. Please enter a valid number.`);
           }
-          if (isNaN(stock) || stock < 0) {
-            throw new Error(`Invalid stock for variant ${index + 1}. Please enter a valid number.`);
-          }
-          
+
           return {
             type: v.type,
             weight: v.weight.trim(),
             price: price,
-            stock: stock
+            stock_available: v.stock_available !== false // Default to true if undefined
           };
         });
       } catch (validationError) {
@@ -229,7 +240,7 @@ const ProductForm = ({ initialData, onSubmit, onCancel }) => {
         });
         return;
       }
-      
+
       // Create submit data without legacy fields when using variants
       const submitData = {
         name: formData.name,
@@ -238,8 +249,9 @@ const ProductForm = ({ initialData, onSubmit, onCancel }) => {
         description: formData.description,
         featured: formData.featured || false,
         variants: processedVariants
+        // Top-level stock_available will be inferred by backend or logic from variants
       };
-      
+
       // Only include imageUrl if provided
       if (formData.imageUrl) {
         submitData.imageUrl = formData.imageUrl;
@@ -250,7 +262,7 @@ const ProductForm = ({ initialData, onSubmit, onCancel }) => {
       if (formData.imageDescription) {
         submitData.imageDescription = formData.imageDescription;
       }
-      
+
       try {
         console.log('Submitting product data:', JSON.stringify(submitData, null, 2));
         await onSubmit(submitData);
@@ -261,21 +273,14 @@ const ProductForm = ({ initialData, onSubmit, onCancel }) => {
       } catch (error) {
         console.error('Error submitting product:', error);
         console.error('Error response:', error.response?.data);
-        
-        // Extract detailed error message
+
         let errorMessage = "Failed to save product";
         if (error.response?.data) {
-          if (error.response.data.details) {
-            // Mongoose validation errors
-            const errorDetails = Object.values(error.response.data.details).map(err => err.message).join(', ');
-            errorMessage = errorDetails || error.response.data.error || error.response.data.message;
-          } else {
-            errorMessage = error.response.data.error || error.response.data.message || errorMessage;
-          }
+          errorMessage = error.response.data.message || error.response.data.error || errorMessage;
         } else if (error.message) {
           errorMessage = error.message;
         }
-        
+
         toast({
           title: "Error",
           description: errorMessage,
@@ -284,8 +289,19 @@ const ProductForm = ({ initialData, onSubmit, onCancel }) => {
       }
     } else {
       // Legacy product without variants
+      const submitData = {
+        ...formData,
+        stock_available: formData.stock_available
+      };
+      // Check price
+      if (!submitData.price || isNaN(parseFloat(submitData.price))) {
+        toast({ title: "Error", description: "Price is required", variant: "destructive" });
+        return;
+      }
+
+
       try {
-        await onSubmit(formData);
+        await onSubmit(submitData);
         toast({
           title: initialData ? "Product Updated" : "Product Created",
           description: `Product has been successfully ${initialData ? 'updated' : 'created'}.`
@@ -293,7 +309,7 @@ const ProductForm = ({ initialData, onSubmit, onCancel }) => {
       } catch (error) {
         toast({
           title: "Error",
-          description: error.message,
+          description: error.response?.data?.message || error.message,
           variant: "destructive"
         });
       }
@@ -321,28 +337,48 @@ const ProductForm = ({ initialData, onSubmit, onCancel }) => {
               <Select
                 name="category"
                 value={formData.category}
-                onValueChange={(value) => handleChange({ target: { name: 'category', value } })}
+                onValueChange={handleCategoryChange}
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Select category" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="ceylon-spices">Ceylon Spices</SelectItem>
-                  <SelectItem value="katugasma">Katugasma</SelectItem>
-                  <SelectItem value="fruitopia">Fruitopia</SelectItem>
+                  <SelectItem value="Sauces">Sauces</SelectItem>
+                  <SelectItem value="Chutney">Chutney</SelectItem>
+                  <SelectItem value="Jam">Jam</SelectItem>
+                  <SelectItem value="Wines">Wines</SelectItem>
+                  <SelectItem value="Spices">Spices</SelectItem>
                 </SelectContent>
               </Select>
             </div>
 
             <div>
               <Label htmlFor="subCategory">Sub Category</Label>
-              <Input
-                id="subCategory"
-                name="subCategory"
-                value={formData.subCategory}
-                onChange={handleChange}
-                required
-              />
+              {formData.category && CATEGORY_STRUCTURE[formData.category] ? (
+                <Select
+                  name="subCategory"
+                  value={formData.subCategory}
+                  onValueChange={handleSubCategoryChange}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select sub-category" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {CATEGORY_STRUCTURE[formData.category].map(sub => (
+                      <SelectItem key={sub} value={sub}>{sub}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              ) : (
+                <Input
+                  id="subCategory"
+                  name="subCategory"
+                  value={formData.subCategory}
+                  onChange={handleChange}
+                  placeholder="Enter sub-category"
+                  required
+                />
+              )}
             </div>
           </div>
 
@@ -360,7 +396,7 @@ const ProductForm = ({ initialData, onSubmit, onCancel }) => {
               }}
             />
             <Label htmlFor="useVariants" className="cursor-pointer">
-              This product has multiple variants (different types like Pouch/Bottle and weights like 50g/100g)
+              This product has multiple variants (different types like Pouch/Bottle and weights)
             </Label>
           </div>
 
@@ -374,7 +410,7 @@ const ProductForm = ({ initialData, onSubmit, onCancel }) => {
                     Select all package types and add all available weights. The system will automatically create all combinations.
                   </p>
                 </div>
-                
+
                 {/* Type Selection */}
                 <div className="mb-6">
                   <Label className="mb-3 block text-base font-medium">
@@ -397,20 +433,14 @@ const ProductForm = ({ initialData, onSubmit, onCancel }) => {
                       </Button>
                     ))}
                   </div>
-                  {selectedTypes.length === 0 && (
-                    <p className="text-sm text-muted-foreground mt-2">
-                      Select at least one package type (you can select both)
-                    </p>
-                  )}
                 </div>
 
-                {/* Weight Input - Enhanced */}
+                {/* Weight Input */}
                 <div className="mb-6">
                   <Label className="mb-3 block text-base font-medium">
                     Step 2: Add All Available Weights
                   </Label>
-                  
-                  {/* Single weight input */}
+
                   <div className="flex gap-2 mb-3">
                     <Input
                       value={weightInput}
@@ -430,76 +460,27 @@ const ProductForm = ({ initialData, onSubmit, onCancel }) => {
                     </Button>
                   </div>
 
-                  {/* Bulk weight input */}
-                  <div className="mb-3">
-                    <Label className="text-sm mb-2 block">Or add multiple weights at once (comma or line separated):</Label>
-                    <Textarea
-                      placeholder="50g, 100g, 250g, 500g&#10;or one per line:&#10;50g&#10;100g&#10;250g"
-                      rows={3}
-                      onChange={(e) => {
-                        const value = e.target.value;
-                        // Parse comma or line separated weights
-                        const parsedWeights = value
-                          .split(/[,\n]/)
-                          .map(w => w.trim())
-                          .filter(w => w.length > 0);
-                        
-                        if (parsedWeights.length > 0) {
-                          // Add all unique weights
-                          parsedWeights.forEach(weight => {
-                            if (weight && !weights.includes(weight)) {
-                              setWeights(prev => [...prev, weight]);
-                            }
-                          });
-                          e.target.value = ''; // Clear after adding
-                        }
-                      }}
-                      className="text-sm"
-                    />
-                  </div>
-                  
                   {/* Display added weights */}
                   {weights.length > 0 && (
-                    <div>
-                      <Label className="text-sm mb-2 block">
-                        Added Weights ({weights.length}):
-                      </Label>
-                      <div className="flex flex-wrap gap-2 p-3 bg-background border rounded-md">
-                        {weights.map(weight => (
-                          <div
-                            key={weight}
-                            className="flex items-center gap-1 bg-primary/10 border border-primary/20 rounded-md px-3 py-1.5 text-sm font-medium"
+                    <div className="flex flex-wrap gap-2 p-3 bg-background border rounded-md">
+                      {weights.map(weight => (
+                        <div
+                          key={weight}
+                          className="flex items-center gap-1 bg-primary/10 border border-primary/20 rounded-md px-3 py-1.5 text-sm font-medium"
+                        >
+                          <span>{weight}</span>
+                          <button
+                            type="button"
+                            onClick={() => handleRemoveWeight(weight)}
+                            className="text-muted-foreground hover:text-destructive ml-1"
                           >
-                            <span>{weight}</span>
-                            <button
-                              type="button"
-                              onClick={() => handleRemoveWeight(weight)}
-                              className="text-muted-foreground hover:text-destructive ml-1"
-                            >
-                              <X className="h-3 w-3" />
-                            </button>
-                          </div>
-                        ))}
-                      </div>
+                            <X className="h-3 w-3" />
+                          </button>
+                        </div>
+                      ))}
                     </div>
                   )}
                 </div>
-
-                {/* Preview and Generate */}
-                {selectedTypes.length > 0 && weights.length > 0 && (
-                  <div className="mb-4 p-4 bg-muted/50 rounded-md">
-                    <p className="text-sm font-medium mb-2">
-                      Preview: {selectedTypes.length} type(s) × {weights.length} weight(s) = <span className="text-primary font-bold">{selectedTypes.length * weights.length} variants</span> will be created
-                    </p>
-                    <div className="text-xs text-muted-foreground">
-                      {selectedTypes.map(type => 
-                        weights.map(weight => 
-                          `${type === 'pouch' ? 'Pouch' : 'Glass Bottle'} - ${weight}`
-                        ).join(', ')
-                      ).join(', ')}
-                    </div>
-                  </div>
-                )}
 
                 {/* Generate Button */}
                 <Button
@@ -516,50 +497,33 @@ const ProductForm = ({ initialData, onSubmit, onCancel }) => {
 
               {/* Variants List */}
               <div>
-                <div className="flex justify-between items-center mb-4">
-                  <div>
-                    <Label className="text-base font-semibold">
-                      Step 3: Set Price & Stock for Each Variant ({formData.variants?.length || 0})
-                    </Label>
-                    <p className="text-sm text-muted-foreground mt-1">
-                      After generating variants above, set the price and stock for each combination below.
-                    </p>
-                  </div>
-                  <Button type="button" onClick={handleAddVariant} size="sm" variant="outline">
-                    <Plus className="h-4 w-4 mr-2" />
-                    Add Single Variant
-                  </Button>
-                </div>
-              
+                <Label className="text-base font-semibold mb-4 block">
+                  Step 3: Set Price & Availability ({formData.variants?.length || 0})
+                </Label>
+
                 {formData.variants && formData.variants.length > 0 ? (
                   <div className="space-y-4">
                     {formData.variants.map((variant, index) => (
                       <Card key={index} className="p-4">
                         <div className="flex justify-between items-start mb-4">
-                          <div>
-                            <h4 className="font-semibold">
-                              {variant.type === 'pouch' ? 'Pouch' : 'Glass Bottle'} - {variant.weight}
-                            </h4>
-                          </div>
+                          <h4 className="font-semibold">
+                            {variant.type === 'pouch' ? 'Pouch' : 'Glass Bottle'} - {variant.weight}
+                          </h4>
                           <Button
-                            type="button"
-                            variant="ghost"
-                            size="sm"
+                            type="button" variant="ghost" size="sm"
                             onClick={() => handleRemoveVariant(index)}
                           >
                             <Trash2 className="h-4 w-4 text-destructive" />
                           </Button>
                         </div>
-                        <div className="grid grid-cols-2 gap-4">
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 items-end">
                           <div>
                             <Label>Type</Label>
                             <Select
                               value={variant.type}
                               onValueChange={(value) => handleVariantChange(index, 'type', value)}
                             >
-                              <SelectTrigger>
-                                <SelectValue />
-                              </SelectTrigger>
+                              <SelectTrigger><SelectValue /></SelectTrigger>
                               <SelectContent>
                                 <SelectItem value="pouch">Pouch</SelectItem>
                                 <SelectItem value="glass-bottle">Glass Bottle</SelectItem>
@@ -571,8 +535,6 @@ const ProductForm = ({ initialData, onSubmit, onCancel }) => {
                             <Input
                               value={variant.weight}
                               onChange={(e) => handleVariantChange(index, 'weight', e.target.value)}
-                              placeholder="e.g., 50g, 100g"
-                              required
                             />
                           </div>
                           <div>
@@ -585,14 +547,12 @@ const ProductForm = ({ initialData, onSubmit, onCancel }) => {
                               required
                             />
                           </div>
-                          <div>
-                            <Label>Stock</Label>
-                            <Input
-                              type="number"
-                              value={variant.stock}
-                              onChange={(e) => handleVariantChange(index, 'stock', e.target.value)}
-                              required
+                          <div className="flex items-center h-10 space-x-2">
+                            <Switch
+                              checked={variant.stock_available !== false}
+                              onCheckedChange={(checked) => handleVariantChange(index, 'stock_available', checked)}
                             />
+                            <Label>In Stock</Label>
                           </div>
                         </div>
                       </Card>
@@ -600,74 +560,49 @@ const ProductForm = ({ initialData, onSubmit, onCancel }) => {
                   </div>
                 ) : (
                   <p className="text-sm text-muted-foreground">
-                    Use the Quick Variant Builder above to generate all combinations, or click "Add Single Variant" to add one manually.
+                    No variants. use the builder above.
                   </p>
                 )}
               </div>
             </div>
           ) : (
             <div className="grid grid-cols-2 gap-4">
+              {/* Legacy input fields */}
               <div>
-                <Label htmlFor="price">Price (LKR)</Label>
-                <Input
-                  id="price"
-                  name="price"
-                  type="number"
-                  step="0.01"
-                  value={formData.price}
-                  onChange={handleChange}
-                  required={!useVariants}
-                />
+                <Label>Price</Label>
+                <Input type="number" name="price" value={formData.price} onChange={handleChange} />
               </div>
-
               <div>
-                <Label htmlFor="weight">Weight/Volume</Label>
-                <Input
-                  id="weight"
-                  name="weight"
-                  value={formData.weight}
-                  onChange={handleChange}
-                  required={!useVariants}
-                />
+                <Label>Weight</Label>
+                <Input name="weight" value={formData.weight} onChange={handleChange} />
               </div>
             </div>
           )}
 
           <div>
-            <Label htmlFor="description">Description</Label>
-            <Textarea
-              id="description"
-              name="description"
-              value={formData.description}
-              onChange={handleChange}
-              required
-            />
+            <Label>Description</Label>
+            <Textarea name="description" value={formData.description} onChange={handleChange} required />
           </div>
 
           {!useVariants && (
-            <div>
-              <Label htmlFor="stock">Stock</Label>
-              <Input
-                id="stock"
-                name="stock"
-                type="number"
-                value={formData.stock}
-                onChange={handleChange}
-                required={!useVariants}
+            <div className="flex items-center space-x-2">
+              <Switch
+                checked={formData.stock_available}
+                onCheckedChange={(c) => handleChange({ target: { name: 'stock_available', value: c } })}
               />
+              <Label>Available in Stock</Label>
             </div>
           )}
 
           <div className="flex items-center space-x-2">
             <Switch
-              id="featured"
               name="featured"
               checked={formData.featured}
-              onCheckedChange={(checked) => 
+              onCheckedChange={(checked) =>
                 handleChange({ target: { name: 'featured', value: checked } })
               }
             />
-            <Label htmlFor="featured">Featured Product</Label>
+            <Label>Featured Product</Label>
           </div>
         </div>
 

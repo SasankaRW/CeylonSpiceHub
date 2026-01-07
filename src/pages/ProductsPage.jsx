@@ -35,25 +35,27 @@ const ProductsPage = () => {
         setLoading(false);
       }
     };
-    
+
     fetchProducts();
   }, [toast]);
 
   // Ensure products is always an array before filtering
   const filteredProducts = (Array.isArray(products) ? products : []).filter(product => {
     const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         product.description.toLowerCase().includes(searchTerm.toLowerCase());
+      product.description.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCategory = selectedCategory === 'all' || product.category === selectedCategory;
     const matchesPrice = product.price >= priceRange.min && product.price <= priceRange.max;
-    
+
     return matchesSearch && matchesCategory && matchesPrice;
   });
 
   const categories = [
     { id: 'all', name: 'All Products' },
-    { id: 'ceylon-spices', name: 'Ceylon Spices' },
-    { id: 'katugasma', name: 'Katugasma Range' },
-    { id: 'fruitopia', name: 'Fruitopia Wines' }
+    { id: 'Sauces', name: 'Sauces' },
+    { id: 'Chutney', name: 'Chutney' },
+    { id: 'Jam', name: 'Jam' },
+    { id: 'Wines', name: 'Wines' },
+    { id: 'Spices', name: 'Spices' }
   ];
 
   return (

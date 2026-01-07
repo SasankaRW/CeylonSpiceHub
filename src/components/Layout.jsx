@@ -39,14 +39,14 @@ const Layout = ({ children }) => {
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container flex h-20 items-center justify-between">
           <Link to="/" className="flex items-center space-x-3">
-            <img 
+            <img
               src="https://storage.googleapis.com/hostinger-horizons-assets-prod/909949a5-1a33-4bbc-9ce6-0f65e0d7ca06/cde322e75cd351356564d87ae629c91d.png"
               alt="Ceylon Spice Hub Logo"
               className="h-12 w-12"
             />
             <span className="text-xl md:text-2xl font-bold text-primary tracking-tight">Ceylon Spice Hub</span>
           </Link>
-          
+
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-4">
             <NavigationMenu>
@@ -54,10 +54,10 @@ const Layout = ({ children }) => {
                 {isAdmin ? (
                   <>
                     <NavigationMenuItem>
-                      <NavLink 
-                        to="/admin" 
+                      <NavLink
+                        to="/admin"
                         className={({ isActive }) => cn(
-                          navigationMenuTriggerStyle(), 
+                          navigationMenuTriggerStyle(),
                           isActive ? 'bg-primary text-primary-foreground' : 'hover:bg-primary/10'
                         )}
                       >
@@ -65,10 +65,10 @@ const Layout = ({ children }) => {
                       </NavLink>
                     </NavigationMenuItem>
                     <NavigationMenuItem>
-                      <NavLink 
-                        to="/admin/products" 
+                      <NavLink
+                        to="/admin/products"
                         className={({ isActive }) => cn(
-                          navigationMenuTriggerStyle(), 
+                          navigationMenuTriggerStyle(),
                           isActive ? 'bg-primary text-primary-foreground' : 'hover:bg-primary/10'
                         )}
                       >
@@ -76,10 +76,10 @@ const Layout = ({ children }) => {
                       </NavLink>
                     </NavigationMenuItem>
                     <NavigationMenuItem>
-                      <NavLink 
-                        to="/admin/orders" 
+                      <NavLink
+                        to="/admin/orders"
                         className={({ isActive }) => cn(
-                          navigationMenuTriggerStyle(), 
+                          navigationMenuTriggerStyle(),
                           isActive ? 'bg-primary text-primary-foreground' : 'hover:bg-primary/10'
                         )}
                       >
@@ -90,10 +90,10 @@ const Layout = ({ children }) => {
                 ) : (
                   navLinks.map((link) => (
                     <NavigationMenuItem key={link.to}>
-                      <NavLink 
-                        to={link.to} 
+                      <NavLink
+                        to={link.to}
                         className={({ isActive }) => cn(
-                          navigationMenuTriggerStyle(), 
+                          navigationMenuTriggerStyle(),
                           isActive ? 'bg-primary text-primary-foreground' : 'hover:bg-primary/10'
                         )}
                       >
@@ -128,8 +128,8 @@ const Layout = ({ children }) => {
               <nav className="container py-4">
                 {isAdmin ? (
                   <div className="flex flex-col space-y-2">
-                    <NavLink 
-                      to="/admin" 
+                    <NavLink
+                      to="/admin"
                       className={({ isActive }) => cn(
                         "px-4 py-2 rounded-md",
                         isActive ? "bg-primary text-primary-foreground" : "hover:bg-primary/10"
@@ -138,7 +138,7 @@ const Layout = ({ children }) => {
                     >
                       Dashboard
                     </NavLink>
-                    <NavLink 
+                    <NavLink
                       to="/admin/products"
                       className={({ isActive }) => cn(
                         "px-4 py-2 rounded-md",
@@ -148,7 +148,7 @@ const Layout = ({ children }) => {
                     >
                       Products
                     </NavLink>
-                    <NavLink 
+                    <NavLink
                       to="/admin/orders"
                       className={({ isActive }) => cn(
                         "px-4 py-2 rounded-md",
@@ -196,7 +196,7 @@ const Layout = ({ children }) => {
       <footer className="bg-primary text-primary-foreground py-12">
         <div className="container grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
           <div className="flex flex-col items-center md:items-start">
-            <img 
+            <img
               src="https://storage.googleapis.com/hostinger-horizons-assets-prod/909949a5-1a33-4bbc-9ce6-0f65e0d7ca06/cde322e75cd351356564d87ae629c91d.png"
               alt="Ceylon Spice Hub Logo"
               className="h-16 w-16 mb-3"
@@ -214,6 +214,11 @@ const Layout = ({ children }) => {
                   </Link>
                 </li>
               ))}
+              <li>
+                <Link to="/admin" className="text-sm hover:text-accent transition-colors opacity-80 hover:opacity-100">
+                  Admin Panel
+                </Link>
+              </li>
             </ul>
           </div>
           <div>

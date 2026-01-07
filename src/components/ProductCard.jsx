@@ -13,7 +13,7 @@ const ProductCard = ({ product }) => {
   const handleAddToCart = () => {
     // Add the product to cart with quantity 1
     addToCart(product, 1);
-    
+
     // Show a toast notification
     toast({
       title: "Added to Cart",
@@ -29,16 +29,12 @@ const ProductCard = ({ product }) => {
     >
       <Card className="h-full flex flex-col overflow-hidden hover:shadow-lg transition-all duration-300">
         <div className="relative aspect-square overflow-hidden">
-          <img 
+          <img
             className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
             alt={product.alt || product.name}
             loading="lazy"
             src={product.image || "https://images.unsplash.com/photo-1694388001616-1176f534d72f"} />
-          {product.stock < 10 && product.stock > 0 && (
-            <div className="absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded-full text-xs">
-              Only {product.stock} left!
-            </div>
-          )}
+          {/* "Only X left" badge removed as stock is now boolean */}
         </div>
         <CardHeader>
           <CardTitle className="text-xl text-primary">{product.name}</CardTitle>
@@ -52,10 +48,10 @@ const ProductCard = ({ product }) => {
           <Button
             onClick={handleAddToCart}
             className="flex-1"
-            disabled={product.stock === 0}
+            disabled={!product.stock_available}
           >
             <ShoppingCart className="w-4 h-4 mr-2" />
-            {product.stock === 0 ? 'Out of Stock' : 'Add to Cart'}
+            {!product.stock_available ? 'Out of Stock' : 'Add to Cart'}
           </Button>
           <Button
             variant="outline"
