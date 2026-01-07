@@ -40,7 +40,7 @@ const Layout = ({ children }) => {
         <div className="container flex h-20 items-center justify-between">
           <Link to="/" className="flex items-center space-x-3">
             <img
-              src="https://storage.googleapis.com/hostinger-horizons-assets-prod/909949a5-1a33-4bbc-9ce6-0f65e0d7ca06/cde322e75cd351356564d87ae629c91d.png"
+              src="/logo.png"
               alt="Ceylon Spice Hub Logo"
               className="h-12 w-12"
             />
@@ -197,7 +197,7 @@ const Layout = ({ children }) => {
         <div className="container grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
           <div className="flex flex-col items-center md:items-start">
             <img
-              src="https://storage.googleapis.com/hostinger-horizons-assets-prod/909949a5-1a33-4bbc-9ce6-0f65e0d7ca06/cde322e75cd351356564d87ae629c91d.png"
+              src="/logo.png"
               alt="Ceylon Spice Hub Logo"
               className="h-16 w-16 mb-3"
             />

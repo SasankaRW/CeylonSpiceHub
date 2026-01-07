@@ -43,7 +43,7 @@ const OrderConfirmation = () => {
         </div>
         <h1 className="text-3xl font-bold mb-2">Order Placed Successfully!</h1>
         <p className="text-gray-600">
-          Thank you for your purchase. We've received your order and will process it right away.
+          Thank you for ordering from us. You will receive your order quickly and someone from our side will contact you.
         </p>
       </div>
 

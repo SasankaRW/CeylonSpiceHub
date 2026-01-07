@@ -10,6 +10,14 @@ import { getCart, getCartTotal, clearCart } from '@/lib/cartStore';
 import { createOrder as createLocalOrder } from '@/lib/orderStore';
 import { createOrder as createApiOrder } from '@/api/index';
 import { useToast } from '@/components/ui/use-toast';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
+import { CheckCircle } from 'lucide-react';
 
 const CheckoutPage = () => {
   const navigate = useNavigate();
@@ -28,12 +36,15 @@ const CheckoutPage = () => {
     postalCode: '',
   });
 
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [lastOrderId, setLastOrderId] = useState(null);
+
   // Use useEffect to handle navigation when cart is empty
   React.useEffect(() => {
-    if (cart.length === 0) {
+    if (cart.length === 0 && !showSuccessModal) {
       navigate('/cart');
     }
-  }, [cart.length, navigate]);
+  }, [cart.length, navigate, showSuccessModal]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -43,9 +54,14 @@ const CheckoutPage = () => {
     }));
   };
 
+  const handleCloseModal = () => {
+    setShowSuccessModal(false);
+    navigate('/');
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     try {
       // Format cart items to match API expectations
       const formattedItems = cart.map(item => ({
@@ -55,7 +71,7 @@ const CheckoutPage = () => {
         price: item.price,
         quantity: item.quantity
       }));
-      
+
       // Prepare order data with proper format
       const orderData = {
         items: formattedItems,
@@ -64,28 +80,23 @@ const CheckoutPage = () => {
         status: 'pending',
         createdAt: new Date().toISOString()
       };
-      
+
       // Create order in the database via API
       const createdOrder = await createApiOrder(orderData);
-      
+
       // Also create in local storage for backup
       createLocalOrder(cart, formData);
-      
+
       // Clear cart
       clearCart();
-      
-      // Show success message
-      toast({
-        title: "Order Placed Successfully!",
-        description: `Order #${createdOrder?.id || createdOrder?._id || 'New'} has been placed. We'll send you an email with the details.`,
-      });
-      
-      // Redirect to success page or home
-      navigate('/');
+
+      setLastOrderId(createdOrder?.id || createdOrder?._id || 'New');
+      setShowSuccessModal(true);
+
     } catch (error) {
       console.error('Error creating order:', error);
       let errorMessage = "There was a problem placing your order. Please try again.";
-      
+
       // More specific error messages based on the error
       if (error.response) {
         // The request was made and the server responded with a status code
@@ -95,7 +106,7 @@ const CheckoutPage = () => {
         // The request was made but no response was received
         errorMessage = "No response from server. Please check your connection.";
       }
-      
+
       toast({
         title: "Order Failed",
         description: errorMessage,
@@ -243,6 +254,28 @@ const CheckoutPage = () => {
           </Card>
         </div>
       </div>
+
+      <Dialog open={showSuccessModal} onOpenChange={setShowSuccessModal}>
+        <DialogContent className="sm:max-w-md text-center">
+          <DialogHeader>
+            <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-green-100">
+              <CheckCircle className="h-6 w-6 text-green-600" />
+            </div>
+            <DialogTitle className="text-center text-xl">Order Placed Successfully!</DialogTitle>
+            <DialogDescription className="text-center text-base pt-2">
+              Thank you for ordering from us. You will receive your order quickly and someone from our side will contact you.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="mt-4">
+            <p className="text-sm text-muted-foreground mb-4">
+              Order Reference: <span className="font-mono font-medium text-foreground">#{lastOrderId ? lastOrderId.slice(-6).toUpperCase() : ''}</span>
+            </p>
+            <Button onClick={handleCloseModal} className="w-full">
+              Continue Shopping
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </motion.div>
   );
 };

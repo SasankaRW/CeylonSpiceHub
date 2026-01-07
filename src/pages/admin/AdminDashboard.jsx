@@ -27,7 +27,7 @@ const AdminDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [products, setProducts] = useState([]);
   const navigate = useNavigate();
-  
+
   const lowStockProducts = (Array.isArray(products) ? products : []).filter(p => p && p.stock < 10);
 
   useEffect(() => {
@@ -49,22 +49,22 @@ const AdminDashboard = () => {
   const fetchDashboardData = async () => {
     try {
       setLoading(true);
-      
+
       // Fetch order stats
       const statsResponse = await getDashboardStats();
       setStats(statsResponse);
-      
+
       // Fetch recent orders
       const ordersResponse = await api.get('/orders');
       // Take the 5 most recent orders
-      const sortedOrders = ordersResponse.data.sort((a, b) => 
+      const sortedOrders = ordersResponse.data.sort((a, b) =>
         new Date(b.createdAt) - new Date(a.createdAt)
       ).slice(0, 5);
       setRecentOrders(sortedOrders);
-      
+
       // Generate fake revenue trend data (to be replaced with real data)
       generateRevenueTrend(ordersResponse.data);
-      
+
       setLoading(false);
     } catch (error) {
       console.error('Error fetching dashboard data:', error);
@@ -80,20 +80,20 @@ const AdminDashboard = () => {
       date.setDate(date.getDate() - i);
       return date;
     }).reverse();
-    
+
     const labels = last7Days.map(date => format(date, 'MMM dd'));
-    
+
     // Calculate revenue per day
     const data = last7Days.map(date => {
       const dayOrders = orders.filter(order => {
         const orderDate = new Date(order.createdAt);
         return orderDate.toDateString() === date.toDateString();
       });
-      
+
       const dayRevenue = dayOrders.reduce((sum, order) => sum + order.total, 0);
       return dayRevenue;
     });
-    
+
     setRevenueTrend({
       labels,
       data
@@ -221,7 +221,7 @@ const AdminDashboard = () => {
         </CardContent>
       </Card>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="space-y-6">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between">
             <CardTitle>Recent Orders</CardTitle>
@@ -246,48 +246,13 @@ const AdminDashboard = () => {
                       <div className="mr-4">
                         <span className="font-medium">LKR {order.total.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                       </div>
-                      <span className={`px-2 py-1 text-xs rounded-full ${
-                        order.status === 'completed' 
-                          ? 'bg-green-100 text-green-800' 
+                      <span className={`px-2 py-1 text-xs rounded-full ${order.status === 'completed'
+                          ? 'bg-green-100 text-green-800'
                           : order.status === 'processing'
                             ? 'bg-blue-100 text-blue-800'
                             : 'bg-yellow-100 text-yellow-800'
-                      }`}>
+                        }`}>
                         {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
-                      </span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between">
-            <CardTitle>Low Stock Products</CardTitle>
-            <Button variant="outline" size="sm" onClick={() => navigate('/admin/products')}>
-              View All
-            </Button>
-          </CardHeader>
-          <CardContent>
-            {lowStockProducts.length === 0 ? (
-              <p className="text-sm text-muted-foreground">No low stock products found.</p>
-            ) : (
-              <div className="space-y-4">
-                {lowStockProducts.slice(0, 5).map(product => (
-                  <div key={product.id} className="flex items-center justify-between">
-                    <div>
-                      <p className="font-medium">{product.name}</p>
-                      <p className="text-sm text-muted-foreground">{product.category}</p>
-                    </div>
-                    <div>
-                      <span className={`px-2 py-1 text-xs rounded-full ${
-                        product.stock === 0 
-                          ? 'bg-red-100 text-red-800' 
-                          : 'bg-yellow-100 text-yellow-800'
-                      }`}>
-                        {product.stock} in stock
                       </span>
                     </div>
                   </div>

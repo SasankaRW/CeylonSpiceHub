@@ -596,15 +596,57 @@ const ProductForm = ({ initialData, onSubmit, onCancel }) => {
 
           <div className="flex items-center space-x-2">
             <Switch
+              id="featured"
               name="featured"
               checked={formData.featured}
               onCheckedChange={(checked) =>
                 handleChange({ target: { name: 'featured', value: checked } })
               }
             />
-            <Label>Featured Product</Label>
+            <Label htmlFor="featured">Featured Product</Label>
           </div>
         </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <Label htmlFor="imageUrl">Product Image URL</Label>
+            <Input
+              id="imageUrl"
+              name="imageUrl"
+              value={formData.imageUrl || ''}
+              onChange={handleChange}
+              placeholder="https://example.com/image.jpg"
+            />
+            <p className="text-xs text-muted-foreground mt-1">
+              Enter a direct link to the product image.
+            </p>
+          </div>
+          <div>
+            <Label htmlFor="alt">Image Alt Text</Label>
+            <Input
+              id="alt"
+              name="alt"
+              value={formData.alt || ''}
+              onChange={handleChange}
+              placeholder="e.g., Red Hot Chili Sauce Bottle"
+            />
+          </div>
+        </div>
+
+        {formData.imageUrl && (
+          <div className="mt-2">
+            <Label>Image Preview</Label>
+            <div className="mt-2 border rounded-md p-2 w-fit">
+              <img
+                src={formData.imageUrl}
+                alt="Preview"
+                className="h-32 w-32 object-cover rounded-md"
+                onError={(e) => { e.target.src = "https://placehold.co/100?text=Invalid+URL"; }}
+              />
+            </div>
+          </div>
+        )}
+
 
         <div className="flex justify-end space-x-2">
           <Button type="button" variant="outline" onClick={onCancel}>
