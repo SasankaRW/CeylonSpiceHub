@@ -163,11 +163,15 @@ async function connectToDatabase() {
     }
 
     if (mongoose.connection.readyState === 2) {
+      console.log('Waiting for existing connection attempt...');
       // Wait for it to connect
       while (mongoose.connection.readyState === 2) {
         await new Promise(resolve => setTimeout(resolve, 100));
       }
-      return mongoose.connection;
+      // If connected, return. If not, proceed to connect()
+      if (mongoose.connection.readyState === 1) {
+        return mongoose.connection;
+      }
     }
 
     await mongoose.connect(MONGODB_URI, mongooseOptions);
