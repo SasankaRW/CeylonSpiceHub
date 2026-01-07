@@ -21,7 +21,7 @@ const navLinks = [
   { to: '/our-products', label: 'Our Products' },
   { to: '/products', label: 'Shop' },
   { to: '/accomplishments', label: 'Accomplishments' },
-  { to: '/gallery-blog', label: 'Gallery & Blog' },
+  { to: '/recipes', label: 'Recipes' },
   { to: '/contact-us', label: 'Contact Us' },
 ];
 

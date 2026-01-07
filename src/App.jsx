@@ -14,7 +14,7 @@ import AdminProducts from '@/pages/admin/AdminProducts';
 import AdminOrders from '@/pages/admin/AdminOrders';
 import LoginPage from '@/pages/admin/LoginPage';
 import AccomplishmentsPage from '@/pages/AccomplishmentsPage';
-import GalleryBlogPage from '@/pages/GalleryBlogPage';
+import RecipesPage from '@/pages/RecipesPage';
 import ContactUsPage from '@/pages/ContactUsPage';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import { AnimatePresence } from 'framer-motion';
@@ -38,7 +38,7 @@ function App() {
           <Route path="/admin/products" element={<AdminProducts />} />
           <Route path="/admin/orders" element={<AdminOrders />} />
           <Route path="/accomplishments" element={<AccomplishmentsPage />} />
-          <Route path="/gallery-blog" element={<GalleryBlogPage />} />
+          <Route path="/recipes" element={<RecipesPage />} />
           <Route path="/contact-us" element={<ContactUsPage />} />
         </Routes>
       </AnimatePresence>

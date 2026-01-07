@@ -75,7 +75,7 @@ const AdminOrders = () => {
   };
 
   const getStatusIcon = (status) => {
-    switch(status) {
+    switch (status) {
       case 'pending': return <Clock className="h-4 w-4" />;
       case 'processing': return <Package className="h-4 w-4" />;
       case 'completed': return <Check className="h-4 w-4" />;
@@ -84,7 +84,7 @@ const AdminOrders = () => {
   };
 
   const getStatusColor = (status) => {
-    switch(status) {
+    switch (status) {
       case 'pending': return 'bg-yellow-100 text-yellow-800 border-yellow-200';
       case 'processing': return 'bg-blue-100 text-blue-800 border-blue-200';
       case 'completed': return 'bg-green-100 text-green-800 border-green-200';
@@ -122,7 +122,7 @@ const AdminOrders = () => {
         <div className="space-y-6">
           {orders.map((order) => (
             <Card key={order._id || order.id} className="overflow-hidden">
-              <div 
+              <div
                 className="p-6 cursor-pointer hover:bg-gray-50 transition-colors"
                 onClick={() => toggleOrderDetails(order._id || order.id)}
               >
@@ -138,16 +138,16 @@ const AdminOrders = () => {
                       </p>
                     </div>
                   </div>
-                  
+
                   <div className="flex flex-col items-end gap-2">
                     <Badge className={`flex items-center gap-1 px-3 py-1 ${getStatusColor(order.status)}`}>
                       {getStatusIcon(order.status)}
                       {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
                     </Badge>
-                    <span className="text-lg font-bold">${order.total.toFixed(2)}</span>
+                    <span className="text-lg font-bold">LKR {order.total.toFixed(2)}</span>
                   </div>
                 </div>
-                
+
                 {/* Order summary - preview */}
                 <div className="flex items-center mt-3">
                   <span className="text-sm font-medium">
@@ -159,7 +159,7 @@ const AdminOrders = () => {
                   </span>
                 </div>
               </div>
-              
+
               {/* Extended order details */}
               {expandedOrder === (order._id || order.id) && (
                 <div className="border-t border-gray-100 p-6 bg-gray-50">
@@ -196,7 +196,7 @@ const AdminOrders = () => {
                         </div>
                       </div>
                     </div>
-                    
+
                     {/* Order Status Management */}
                     <div>
                       <h4 className="font-semibold text-gray-700 mb-3 flex items-center gap-2">
@@ -236,7 +236,7 @@ const AdminOrders = () => {
                       </div>
                     </div>
                   </div>
-                  
+
                   {/* Order Items */}
                   <div className="mt-8">
                     <h4 className="font-semibold text-gray-700 mb-4 flex items-center gap-2">
@@ -255,16 +255,16 @@ const AdminOrders = () => {
                         </thead>
                         <tbody>
                           {order.items.map((item, index) => (
-                            <tr 
-                              key={`${order._id || order.id}-item-${index}`} 
+                            <tr
+                              key={`${order._id || order.id}-item-${index}`}
                               className="border-b border-gray-100 last:border-none"
                             >
                               <td className="px-4 py-3">
                                 <div className="flex items-center">
                                   {item.productDetails?.imageUrl && (
                                     <div className="h-16 w-16 mr-3 rounded overflow-hidden border border-gray-100">
-                                      <img 
-                                        src={item.productDetails.imageUrl} 
+                                      <img
+                                        src={item.productDetails.imageUrl}
                                         alt={item.name}
                                         className="h-full w-full object-cover"
                                       />
@@ -295,9 +295,9 @@ const AdminOrders = () => {
                                   </div>
                                 </div>
                               </td>
-                              <td className="px-4 py-3">${item.price.toFixed(2)}</td>
+                              <td className="px-4 py-3">LKR {item.price.toFixed(2)}</td>
                               <td className="px-4 py-3">{item.quantity}</td>
-                              <td className="px-4 py-3 text-right font-medium">${(item.price * item.quantity).toFixed(2)}</td>
+                              <td className="px-4 py-3 text-right font-medium">LKR {(item.price * item.quantity).toFixed(2)}</td>
                             </tr>
                           ))}
                         </tbody>
@@ -307,7 +307,7 @@ const AdminOrders = () => {
                               Total:
                             </td>
                             <td className="px-4 py-3 font-bold text-right">
-                              ${order.total.toFixed(2)}
+                              LKR {order.total.toFixed(2)}
                             </td>
                           </tr>
                         </tfoot>

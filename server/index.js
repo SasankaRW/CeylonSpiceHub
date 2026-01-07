@@ -67,23 +67,32 @@ const mongooseOptions = {
 };
 
 // Connect to MongoDB
-const connectDB = async () => {
+// Connect to MongoDB with retry logic
+const connectDB = async (retries = 5) => {
   try {
     if (mongoose.connection.readyState === 0) {
       await mongoose.connect(MONGODB_URI, mongooseOptions);
       console.log('Connected to MongoDB Atlas');
     }
   } catch (err) {
-    console.error('MongoDB connection error:', err);
+    console.error(`MongoDB connection error (Attempt ${6 - retries}/5):`, err.message);
+
     if (err.name === 'MongoServerError' && err.code === 8000) {
       console.log('\nAuthentication failed. Please check:');
       console.log('1. Your MongoDB Atlas username and password are correct');
       console.log('2. Your IP address is whitelisted in MongoDB Atlas');
       console.log('3. The database user has the correct permissions\n');
     }
-    // Only exit if running locally, not in Vercel function
-    if (process.env.NODE_ENV !== 'production') {
-      process.exit(1);
+
+    if (retries > 0) {
+      console.log(`Retrying in 5 seconds... (${retries} retries left)`);
+      setTimeout(() => connectDB(retries - 1), 5000);
+    } else {
+      console.error('Failed to connect to MongoDB after multiple attempts.');
+      // Keep server running but log error, don't exit in dev mode so we can see logs
+      if (process.env.NODE_ENV === 'production') {
+        process.exit(1);
+      }
     }
   }
 };
