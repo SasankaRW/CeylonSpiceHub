@@ -185,7 +185,7 @@ async function connectToDatabase() {
 
 
 // Health check endpoint
-app.get('/health', async (req, res) => {
+app.get(['/health', '/api/health'], async (req, res) => {
   try {
     const dbStatus = mongoose.connection.readyState === 1 ? 'connected' : 'disconnected';
     res.json({
