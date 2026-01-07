@@ -58,7 +58,7 @@ const ProductsPage = () => {
 
   // Get subcategories for selected category
   const availableSubCategories = selectedCategory === 'all'
-    ? [...new Set(products.map(p => p.subCategory).filter(Boolean))]
+    ? []
     : [...new Set(products.filter(p => p.category === selectedCategory).map(p => p.subCategory).filter(Boolean))];
 
   // Toggle subcategory selection
@@ -80,8 +80,11 @@ const ProductsPage = () => {
 
   // Filter products
   const filteredProducts = products.filter(product => {
-    const matchesSearch = (product.name?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
-      (product.description?.toLowerCase() || '').includes(searchTerm.toLowerCase());
+    const term = searchTerm.toLowerCase().trim();
+    if (!term) return true;
+
+    const matchesSearch = (product.name?.toLowerCase() || '').includes(term) ||
+      (product.description?.toLowerCase() || '').includes(term);
     const matchesCategory = selectedCategory === 'all' || product.category === selectedCategory;
     const matchesSubCategory = selectedSubCategories.length === 0 || selectedSubCategories.includes(product.subCategory);
     const matchesPrice = (product.price || 0) >= priceRange[0] && (product.price || 0) <= priceRange[1];
@@ -110,8 +113,8 @@ const ProductsPage = () => {
                 setSelectedSubCategories([]); // Reset subcategories when changing category
               }}
               className={`w-full text-left px-3 py-2 rounded-md transition-colors ${selectedCategory === category
-                  ? 'bg-primary text-primary-foreground'
-                  : 'hover:bg-muted'
+                ? 'bg-primary text-primary-foreground'
+                : 'hover:bg-muted'
                 }`}
               whileHover={{ x: 4 }}
               whileTap={{ scale: 0.98 }}
@@ -174,27 +177,17 @@ const ProductsPage = () => {
 
   return (
     <div className="space-y-8">
-      <motion.div
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="text-center"
-      >
-        <h1 className="text-4xl font-bold text-primary mb-4 font-serif">Shop</h1>
-        <p className="text-lg text-muted-foreground">
-          Discover our authentic collection of Ceylon spices and artisanal products
-        </p>
-      </motion.div>
-
-      {/* Search Bar */}
-      <div className="relative max-w-md mx-auto">
-        <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-        <Input
-          placeholder="Search products..."
-          className="pl-10"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
+      {/* Minimal Search Section */}
+      <div className="w-full max-w-2xl mx-auto mb-8">
+        <div className="relative group">
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground group-focus-within:text-primary transition-colors" />
+          <Input
+            placeholder="Search for spices, sauces..."
+            className="pl-12 pr-4 h-12 w-full bg-background shadow-sm border-border focus-visible:ring-1 focus-visible:ring-primary transition-all text-base rounded-full"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </div>
       </div>
 
       {/* Mobile Filter Toggle */}
