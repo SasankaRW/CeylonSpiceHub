@@ -17,12 +17,14 @@ import AccomplishmentsPage from '@/pages/AccomplishmentsPage';
 import RecipesPage from '@/pages/RecipesPage';
 import ContactUsPage from '@/pages/ContactUsPage';
 import ProtectedRoute from '@/components/ProtectedRoute';
+import ScrollToTop from '@/components/ScrollToTop';
 import { AnimatePresence } from 'framer-motion';
 
 function App() {
   const location = useLocation();
   return (
     <Layout>
+      <ScrollToTop />
       <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>
           <Route path="/" element={<HomePage />} />

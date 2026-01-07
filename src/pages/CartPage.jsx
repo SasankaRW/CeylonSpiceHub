@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -35,7 +35,7 @@ const CartPage = () => {
       description: "The item has been removed from your cart.",
     });
   };
-  
+
   const handleBrowseProducts = React.useCallback(() => {
     navigate('/products');
   }, [navigate]);
@@ -65,78 +65,95 @@ const CartPage = () => {
       animate={{ opacity: 1, y: 0 }}
       className="max-w-4xl mx-auto"
     >
-      <h1 className="text-3xl font-bold text-primary mb-8">Shopping Cart</h1>
+      <h1 className="text-3xl font-bold text-primary mb-8 font-serif">Shopping Cart</h1>
 
-      <div className="space-y-4">
+      <AnimatePresence mode="popLayout">
         {cart.map((item) => {
           const itemId = item.cartItemId || item._id || item.id;
           const itemImage = item.imageUrl || item.image || "https://images.unsplash.com/photo-1694388001616-1176f534d72f";
-          const variantInfo = item.variantType && item.variantWeight 
+          const variantInfo = item.variantType && item.variantWeight
             ? `${item.variantType === 'pouch' ? 'Pouch' : 'Glass Bottle'} - ${item.variantWeight}`
             : '';
           return (
-            <Card key={`cart-item-${itemId}`} className="p-4">
-              <div className="flex items-center gap-4">
-                <img
-                  src={itemImage}
-                  alt={item.name}
-                  loading="lazy"
-                  className="w-24 h-24 object-cover rounded"
-                />
-                <div className="flex-grow">
-                  <h3 className="font-semibold text-lg">{item.name}</h3>
-                  <p className="text-muted-foreground">{item.weight || item.variantWeight}</p>
-                  {variantInfo && (
-                    <p className="text-sm text-muted-foreground">{variantInfo}</p>
-                  )}
-                  <p className="text-primary font-bold">LKR {item.price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
+            <motion.div
+              key={`cart-item-${itemId}`}
+              layout
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 20, transition: { duration: 0.2 } }}
+              transition={{ duration: 0.3 }}
+            >
+              <Card className="p-4 shadow-soft hover:shadow-glow transition-all duration-300 border border-border/50">
+                <div className="flex items-center gap-4">
+                  <img
+                    src={itemImage}
+                    alt={item.name}
+                    loading="lazy"
+                    className="w-24 h-24 object-cover rounded"
+                  />
+                  <div className="flex-grow">
+                    <h3 className="font-semibold text-lg">{item.name}</h3>
+                    <p className="text-muted-foreground">{item.weight || item.variantWeight}</p>
+                    {variantInfo && (
+                      <p className="text-sm text-muted-foreground">{variantInfo}</p>
+                    )}
+                    <p className="text-primary font-bold">LKR {item.price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                      <Button
+                        variant="outline"
+                        size="icon"
+                        onClick={() => handleQuantityChange(itemId, item.quantity - 1)}
+                        disabled={item.quantity <= 1}
+                      >
+                        <Minus className="h-4 w-4" />
+                      </Button>
+                    </motion.div>
+                    <span className="w-8 text-center">{item.quantity}</span>
+                    <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                      <Button
+                        variant="outline"
+                        size="icon"
+                        onClick={() => handleQuantityChange(itemId, item.quantity + 1)}
+                        disabled={item.quantity >= (item.stock || 999)}
+                      >
+                        <Plus className="h-4 w-4" />
+                      </Button>
+                    </motion.div>
+                    <motion.div whileHover={{ scale: 1.1, rotate: 5 }} whileTap={{ scale: 0.9 }}>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="text-destructive hover:text-destructive/90 hover:bg-destructive/10"
+                        onClick={() => handleRemoveItem(itemId)}
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </motion.div>
+                  </div>
                 </div>
-                <div className="flex items-center gap-2">
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    onClick={() => handleQuantityChange(itemId, item.quantity - 1)}
-                    disabled={item.quantity <= 1}
-                  >
-                    <Minus className="h-4 w-4" />
-                  </Button>
-                  <span className="w-8 text-center">{item.quantity}</span>
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    onClick={() => handleQuantityChange(itemId, item.quantity + 1)}
-                    disabled={item.quantity >= (item.stock || 999)}
-                  >
-                    <Plus className="h-4 w-4" />
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="text-destructive"
-                    onClick={() => handleRemoveItem(itemId)}
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
-                </div>
-              </div>
-            </Card>
+              </Card>
+            </motion.div>
           );
         })}
-      </div>
+      </AnimatePresence>
 
       <div className="mt-8 space-y-4">
-        <Card className="p-6">
+        <Card className="p-6 shadow-soft hover:shadow-glow transition-all duration-300 border border-border/50">
           <div className="flex justify-between items-center text-lg font-semibold mb-4">
             <span>Subtotal:</span>
             <span>LKR {total.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
           </div>
-          <Button
-            className="w-full"
-            size="lg"
-            onClick={handleProceedToCheckout}
-          >
-            Proceed to Checkout
-          </Button>
+          <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+            <Button
+              className="w-full"
+              size="lg"
+              onClick={handleProceedToCheckout}
+            >
+              Proceed to Checkout
+            </Button>
+          </motion.div>
         </Card>
       </div>
     </motion.div>

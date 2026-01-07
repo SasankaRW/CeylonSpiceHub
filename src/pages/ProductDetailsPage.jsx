@@ -1,21 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { ShoppingCart, Minus, Plus } from 'lucide-react';
+import { ShoppingCart, Minus, Plus, Package, Check } from 'lucide-react';
 import { getProductById } from '@/api/index';
 import { addToCart } from '@/lib/cartStore';
 import { useToast } from '@/components/ui/use-toast';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
 
 const ProductDetailsPage = () => {
   const { id } = useParams();
@@ -26,7 +19,6 @@ const ProductDetailsPage = () => {
   const [selectedType, setSelectedType] = useState(null);
   const [selectedWeight, setSelectedWeight] = useState(null);
   const [selectedVariant, setSelectedVariant] = useState(null);
-
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -44,7 +36,7 @@ const ProductDetailsPage = () => {
           return;
         }
         setProduct(foundProduct);
-        
+
         // If product has variants, set default selections
         if (foundProduct.variants && foundProduct.variants.length > 0) {
           const firstVariant = foundProduct.variants[0];
@@ -63,7 +55,7 @@ const ProductDetailsPage = () => {
         setLoading(false);
       }
     };
-    
+
     fetchProduct();
   }, [id, navigate, toast]);
 
@@ -97,7 +89,7 @@ const ProductDetailsPage = () => {
 
   const handleAddToCart = () => {
     if (!product) return;
-    
+
     // If product has variants, ensure one is selected
     if (product.variants && product.variants.length > 0) {
       if (!selectedVariant) {
@@ -108,7 +100,7 @@ const ProductDetailsPage = () => {
         });
         return;
       }
-      
+
       // Create a product object with variant info
       const productWithVariant = {
         ...product,
@@ -119,7 +111,7 @@ const ProductDetailsPage = () => {
         variantWeight: selectedVariant.weight,
         variantId: `${selectedVariant.type}-${selectedVariant.weight}`
       };
-      
+
       addToCart(productWithVariant, quantity);
       toast({
         title: "Added to Cart",
@@ -151,92 +143,219 @@ const ProductDetailsPage = () => {
     return product?.weight || '';
   };
 
+  const getTypeLabel = (type) => {
+    if (type === 'pouch') return 'Pouch';
+    if (type === 'glass-bottle') return 'Glass Bottle';
+    return type;
+  };
+
   if (loading) {
     return (
-      <div className="text-center py-12">
+      <div className="text-center py-20">
+        <div className="inline-block animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-primary mb-4"></div>
         <p className="text-lg text-muted-foreground">Loading product details...</p>
       </div>
     );
   }
-  
+
   if (!product) return null;
 
-  return (
-    <div className="max-w-6xl mx-auto">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="grid grid-cols-1 md:grid-cols-2 gap-8"
-      >
-        <Card className="overflow-hidden">
-          <img
-            src={product.imageUrl || product.image || "https://images.unsplash.com/photo-1694388001616-1176f534d72f"}
-            alt={product.alt || product.name}
-            loading="lazy"
-            className="w-full h-[400px] object-cover"
-          />
-        </Card>
+  const availableTypes = getAvailableTypes();
+  const availableWeights = getAvailableWeights();
 
+  return (
+    <div className="max-w-7xl mx-auto">
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="grid grid-cols-1 lg:grid-cols-2 gap-12"
+      >
+        {/* Image Section */}
+        <div className="space-y-4">
+          <Card className="overflow-hidden shadow-glow border-border/50">
+            <motion.div
+              whileHover={{ scale: 1.02 }}
+              transition={{ duration: 0.3 }}
+              className="relative aspect-square bg-muted/30"
+            >
+              <img
+                src={product.imageUrl || product.image || "https://images.unsplash.com/photo-1694388001616-1176f534d72f"}
+                alt={product.alt || product.name}
+                loading="lazy"
+                className="w-full h-full object-cover"
+              />
+              {getCurrentStock() === 0 && (
+                <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
+                  <span className="bg-destructive text-destructive-foreground px-6 py-3 rounded-full text-lg font-semibold shadow-lg">
+                    Out of Stock
+                  </span>
+                </div>
+              )}
+            </motion.div>
+          </Card>
+
+          {/* Product Info Card */}
+          <Card className="p-6 bg-gradient-to-br from-muted/30 to-background shadow-soft border-border/50">
+            <h3 className="font-semibold text-xl mb-4 text-foreground">Product Details</h3>
+            <div className="grid grid-cols-2 gap-4 text-sm">
+              <div>
+                <p className="text-muted-foreground mb-1">Category</p>
+                <p className="font-medium text-foreground">{product.category}</p>
+              </div>
+              <div>
+                <p className="text-muted-foreground mb-1">Sub-category</p>
+                <p className="font-medium text-foreground">{product.subCategory}</p>
+              </div>
+              {selectedVariant && (
+                <>
+                  <div>
+                    <p className="text-muted-foreground mb-1">Package Type</p>
+                    <p className="font-medium text-foreground">{getTypeLabel(selectedVariant.type)}</p>
+                  </div>
+                  <div>
+                    <p className="text-muted-foreground mb-1">Weight</p>
+                    <p className="font-medium text-foreground">{selectedVariant.weight}</p>
+                  </div>
+                </>
+              )}
+              <div>
+                <p className="text-muted-foreground mb-1">Availability</p>
+                <p className={`font-medium ${getCurrentStock() > 0 ? 'text-primary' : 'text-destructive'}`}>
+                  {getCurrentStock() > 0 ? `${getCurrentStock()} in stock` : 'Out of Stock'}
+                </p>
+              </div>
+            </div>
+          </Card>
+        </div>
+
+        {/* Product Info Section */}
         <div className="space-y-6">
+          {/* Title & Description */}
           <div>
-            <h1 className="text-3xl font-bold text-primary mb-2">{product.name}</h1>
-            <p className="text-muted-foreground">{getCurrentWeight()}</p>
+            <motion.h1
+              className="text-4xl md:text-5xl font-bold text-foreground mb-3 leading-tight"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.2 }}
+            >
+              {product.name}
+            </motion.h1>
+            <p className="text-lg text-muted-foreground leading-relaxed">{product.description}</p>
           </div>
 
-          <p className="text-lg">{product.description}</p>
-
-          <div className="space-y-4">
-            {/* Variant Selection */}
-            {product.variants && product.variants.length > 0 && (
-              <div className="space-y-4">
-                <div>
-                  <Label htmlFor="type">Package Type</Label>
-                  <Select value={selectedType || ''} onValueChange={setSelectedType}>
-                    <SelectTrigger id="type">
-                      <SelectValue placeholder="Select type" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {getAvailableTypes().map(type => (
-                        <SelectItem key={type} value={type}>
-                          {type === 'pouch' ? 'Pouch' : type === 'glass-bottle' ? 'Glass Bottle' : type}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                {selectedType && (
-                  <div>
-                    <Label htmlFor="weight">Weight</Label>
-                    <Select value={selectedWeight || ''} onValueChange={setSelectedWeight}>
-                      <SelectTrigger id="weight">
-                        <SelectValue placeholder="Select weight" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {getAvailableWeights().map(weight => (
-                          <SelectItem key={weight} value={weight}>
-                            {weight}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-                )}
-              </div>
-            )}
-
-            <p className="text-3xl font-bold text-primary">
+          {/* Price */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.3 }}
+          >
+            <p className="text-5xl font-bold text-primary">
               LKR {getCurrentPrice().toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
             </p>
-            
-            <div className="flex items-center space-x-4">
+          </motion.div>
+
+          {/* Variant Selection */}
+          {product.variants && product.variants.length > 0 && (
+            <motion.div
+              className="space-y-6 p-6 rounded-xl bg-gradient-to-br from-card via-background to-card border border-border/50 shadow-soft"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 }}
+            >
+              {/* Package Type Selection */}
+              <div>
+                <Label className="text-base font-semibold text-foreground mb-3 flex items-center gap-2">
+                  <Package className="h-5 w-5 text-primary" />
+                  Package Type
+                </Label>
+                <div className="flex flex-wrap gap-3">
+                  {availableTypes.map((type) => (
+                    <motion.button
+                      key={type}
+                      onClick={() => setSelectedType(type)}
+                      className={`relative px-6 py-3 rounded-lg font-medium transition-all duration-200 ${selectedType === type
+                          ? 'bg-primary text-primary-foreground shadow-md ring-2 ring-primary ring-offset-2'
+                          : 'bg-muted hover:bg-muted/80 text-foreground border border-border hover:border-primary/50'
+                        }`}
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.98 }}
+                    >
+                      {selectedType === type && (
+                        <motion.div
+                          layoutId="selected-type"
+                          className="absolute -top-2 -right-2 bg-primary text-primary-foreground rounded-full p-1"
+                          initial={{ scale: 0 }}
+                          animate={{ scale: 1 }}
+                        >
+                          <Check className="h-3 w-3" />
+                        </motion.div>
+                      )}
+                      {getTypeLabel(type)}
+                    </motion.button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Weight Selection */}
+              <AnimatePresence mode="wait">
+                {selectedType && availableWeights.length > 0 && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <Label className="text-base font-semibold text-foreground mb-3 block">
+                      Select Weight
+                    </Label>
+                    <div className="flex flex-wrap gap-3">
+                      {availableWeights.map((weight) => (
+                        <motion.button
+                          key={weight}
+                          onClick={() => setSelectedWeight(weight)}
+                          className={`relative px-6 py-3 rounded-lg font-medium transition-all duration-200 ${selectedWeight === weight
+                              ? 'bg-secondary text-secondary-foreground shadow-md ring-2 ring-secondary ring-offset-2'
+                              : 'bg-muted hover:bg-muted/80 text-foreground border border-border hover:border-secondary/50'
+                            }`}
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.98 }}
+                          initial={{ opacity: 0, scale: 0.9 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          transition={{ delay: 0.1 }}
+                        >
+                          {selectedWeight === weight && (
+                            <motion.div
+                              layoutId="selected-weight"
+                              className="absolute -top-2 -right-2 bg-secondary text-secondary-foreground rounded-full p-1"
+                              initial={{ scale: 0 }}
+                              animate={{ scale: 1 }}
+                            >
+                              <Check className="h-3 w-3" />
+                            </motion.div>
+                          )}
+                          {weight}
+                        </motion.button>
+                      ))}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </motion.div>
+          )}
+
+          {/* Quantity Selection */}
+          <div className="space-y-3">
+            <Label className="text-base font-semibold text-foreground">Quantity</Label>
+            <div className="flex items-center gap-4">
               <Button
                 variant="outline"
                 size="icon"
                 onClick={() => handleQuantityChange(quantity - 1)}
                 disabled={quantity <= 1}
+                className="h-12 w-12 rounded-lg border-2 hover:border-primary hover:text-primary"
               >
-                <Minus className="h-4 w-4" />
+                <Minus className="h-5 w-5" />
               </Button>
               <Input
                 type="number"
@@ -244,47 +363,44 @@ const ProductDetailsPage = () => {
                 max={getCurrentStock()}
                 value={quantity}
                 onChange={(e) => handleQuantityChange(parseInt(e.target.value) || 1)}
-                className="w-20 text-center"
+                className="w-24 h-12 text-center text-xl font-semibold border-2"
               />
               <Button
                 variant="outline"
                 size="icon"
                 onClick={() => handleQuantityChange(quantity + 1)}
                 disabled={quantity >= getCurrentStock()}
+                className="h-12 w-12 rounded-lg border-2 hover:border-primary hover:text-primary"
               >
-                <Plus className="h-4 w-4" />
+                <Plus className="h-5 w-5" />
               </Button>
+              {getCurrentStock() < 10 && getCurrentStock() > 0 && (
+                <motion.p
+                  className="text-sm text-destructive font-medium"
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                >
+                  Only {getCurrentStock()} left!
+                </motion.p>
+              )}
             </div>
+          </div>
 
+          {/* Add to Cart Button */}
+          <motion.div
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+          >
             <Button
               onClick={handleAddToCart}
-              className="w-full"
+              className="w-full h-14 text-lg shadow-md hover:shadow-lg transition-all duration-300 group"
               size="lg"
               disabled={getCurrentStock() === 0 || (product.variants && product.variants.length > 0 && !selectedVariant)}
             >
-              <ShoppingCart className="mr-2 h-5 w-5" />
+              <ShoppingCart className="mr-2 h-5 w-5 group-hover:scale-110 transition-transform" />
               {getCurrentStock() === 0 ? 'Out of Stock' : 'Add to Cart'}
             </Button>
-
-            {getCurrentStock() < 10 && getCurrentStock() > 0 && (
-              <p className="text-red-500 text-sm">
-                Only {getCurrentStock()} items left in stock!
-              </p>
-            )}
-          </div>
-
-          <Card className="p-4 bg-muted/50">
-            <h3 className="font-semibold mb-2">Product Details</h3>
-            <ul className="space-y-2 text-sm">
-              <li><span className="font-medium">Category:</span> {product.category}</li>
-              <li><span className="font-medium">Sub-category:</span> {product.subCategory}</li>
-              <li><span className="font-medium">Weight:</span> {getCurrentWeight()}</li>
-              {selectedVariant && (
-                <li><span className="font-medium">Package Type:</span> {selectedVariant.type === 'pouch' ? 'Pouch' : 'Glass Bottle'}</li>
-              )}
-              <li><span className="font-medium">Stock Status:</span> {getCurrentStock() > 0 ? 'In Stock' : 'Out of Stock'}</li>
-            </ul>
-          </Card>
+          </motion.div>
         </div>
       </motion.div>
     </div>

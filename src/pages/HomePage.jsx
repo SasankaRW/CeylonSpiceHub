@@ -73,13 +73,13 @@ const HomePage = () => {
       <CustomSlideshow slides={slideshowData} />
 
       <motion.section
-        className="text-center py-12 bg-card rounded-lg shadow-md"
+        className="text-center py-16 px-6 bg-gradient-to-br from-card via-background to-card rounded-2xl shadow-soft border border-border/50"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.2 }}
       >
-        <h2 className="text-3xl md:text-4xl font-bold text-primary mb-4">Ayu-Bo-Wewa! May You Live Long.</h2>
-        <div className="text-lg text-muted-foreground max-w-4xl mx-auto mb-6 space-y-4">
+        <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6 text-balance">Ayu-Bo-Wewa! May You Live Long.</h2>
+        <div className="text-lg text-muted-foreground max-w-4xl mx-auto mb-8 space-y-4 leading-relaxed">
           <p>
             We're delighted to welcome you to The Ceylon Spice Hub—where every product is a reflection of tradition,
             sustainability, and the vibrant essence of rural Sri Lanka.
@@ -95,28 +95,47 @@ const HomePage = () => {
             your taste buds but also promote a healthier lifestyle and a greener planet.
           </p>
         </div>
-        <Button asChild size="lg" className="bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-primary-foreground">
-          <Link to="/we-are">Discover Our Story</Link>
+        <Button asChild size="lg" className="shadow-md hover:shadow-lg transition-all duration-300 group">
+          <Link to="/we-are" className="flex items-center">
+            Discover Our Story
+            <motion.span
+              className="ml-2 inline-block"
+              animate={{ x: [0, 4, 0] }}
+              transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
+            >
+              →
+            </motion.span>
+          </Link>
         </Button>
       </motion.section>
 
-      <section>
-        <h2 className="text-3xl font-bold text-center mb-10 text-primary">Our Featured Products</h2>
+      <section className="space-y-12">
+        <div className="text-center">
+          <h2 className="text-4xl md:text-5xl font-bold mb-4 text-foreground">Our Featured Products</h2>
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">Explore our carefully curated selection of premium Ceylon products</p>
+        </div>
         <div className="grid md:grid-cols-3 gap-8">
           {featuredCategories.map((category, index) => (
             <motion.div
               key={category.title}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 + 0.4 }}
+              transition={{ duration: 0.6, delay: index * 0.15 + 0.3, ease: "easeOut" }}
+              whileHover={{ y: -8 }}
             >
-              <Card className="h-full flex flex-col text-center hover:border-primary transition-all duration-300 ease-in-out transform hover:scale-105">
-                <CardHeader>
-                  <div className="mx-auto">{category.icon}</div>
-                  <CardTitle className="text-2xl text-primary">{category.title}</CardTitle>
+              <Card className="h-full flex flex-col text-center shadow-soft hover:shadow-glow transition-all duration-300 border-border/50 hover:border-primary/30 group">
+                <CardHeader className="pb-4">
+                  <motion.div
+                    className="mx-auto mb-2"
+                    whileHover={{ scale: 1.1, rotate: [0, -5, 5, 0] }}
+                    transition={{ duration: 0.5 }}
+                  >
+                    {category.icon}
+                  </motion.div>
+                  <CardTitle className="text-2xl text-foreground group-hover:text-primary transition-colors">{category.title}</CardTitle>
                 </CardHeader>
                 <CardContent className="flex-grow">
-                  <CardDescription>{category.description}</CardDescription>
+                  <CardDescription className="text-base leading-relaxed">{category.description}</CardDescription>
                 </CardContent>
                 <div className="p-6 pt-0">
                   <Button asChild variant="outline" className="border-primary text-primary hover:bg-primary hover:text-primary-foreground">
@@ -130,30 +149,58 @@ const HomePage = () => {
       </section>
 
       <motion.section
-        className="py-12 bg-gradient-to-br from-accent/20 via-background to-secondary/20 rounded-lg shadow-md"
+        className="py-16 px-6 bg-gradient-to-br from-muted/30 via-background to-accent/5 rounded-2xl border border-border/40"
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ once: true, amount: 0.3 }}
         transition={{ duration: 0.7 }}
       >
         <div className="container mx-auto text-center">
-          <h2 className="text-3xl font-bold text-primary mb-6">Why Choose Ceylon Spice Hub?</h2>
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="p-6">
-              <img alt="Quality Spices Icon" className="h-16 w-16 mx-auto mb-4" src="https://images.unsplash.com/photo-1610635366300-29658a5313f5" />
-              <h3 className="text-xl font-semibold text-secondary mb-2">Uncompromising Quality</h3>
-              <p className="text-muted-foreground">Sourced from the best, ensuring authentic taste and aroma in every pinch.</p>
-            </div>
-            <div className="p-6">
-              <img alt="Ethical Sourcing Icon" className="h-16 w-16 mx-auto mb-4" src="https://images.unsplash.com/photo-1532666661413-871a4227e256" />
-              <h3 className="text-xl font-semibold text-secondary mb-2">Ethically Sourced</h3>
-              <p className="text-muted-foreground">Supporting local farmers and sustainable practices for a better tomorrow.</p>
-            </div>
-            <div className="p-6">
-              <img alt="Freshness Guaranteed Icon" className="h-16 w-16 mx-auto mb-4" src="https://images.unsplash.com/photo-1647462906359-a22489637a21" />
-              <h3 className="text-xl font-semibold text-secondary mb-2">Freshness Guaranteed</h3>
-              <p className="text-muted-foreground">Packed with care to lock in freshness, from our home to yours.</p>
-            </div>
+          <h2 className="text-4xl md:text-5xl font-bold mb-4 text-foreground">Why Choose Ceylon Spice Hub?</h2>
+          <p className="text-lg text-muted-foreground mb-12 max-w-2xl mx-auto">Committed to quality, ethics, and the authentic taste of Ceylon</p>
+          <div className="grid md:grid-cols-3 gap-12">
+            <motion.div
+              className="p-8 rounded-xl bg-card/50 backdrop-blur-sm shadow-soft hover:shadow-glow transition-all duration-300 border border-border/30"
+              whileHover={{ y: -4 }}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+            >
+              <div className="mb-6 relative h-20 w-20 mx-auto rounded-full overflow-hidden shadow-md">
+                <img alt="Quality Spices Icon" className="w-full h-full object-cover" src="https://images.unsplash.com/photo-1610635366300-29658a5313f5" />
+              </div>
+              <h3 className="text-xl font-semibold text-foreground mb-3">Uncompromising Quality</h3>
+              <p className="text-muted-foreground leading-relaxed">Sourced from the best, ensuring authentic taste and aroma in every pinch.</p>
+            </motion.div>
+            <motion.div
+              className="p-8 rounded-xl bg-card/50 backdrop-blur-sm shadow-soft hover:shadow-glow transition-all duration-300 border border-border/30"
+              whileHover={{ y: -4 }}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+            >
+              <div className="mb-6 relative h-20 w-20 mx-auto rounded-full overflow-hidden shadow-md">
+                <img alt="Ethical Sourcing Icon" className="w-full h-full object-cover" src="https://images.unsplash.com/photo-1532666661413-871a4227e256" />
+              </div>
+              <h3 className="text-xl font-semibold text-foreground mb-3">Ethically Sourced</h3>
+              <p className="text-muted-foreground leading-relaxed">Supporting local farmers and sustainable practices for a better tomorrow.</p>
+            </motion.div>
+            <motion.div
+              className="p-8 rounded-xl bg-card/50 backdrop-blur-sm shadow-soft hover:shadow-glow transition-all duration-300 border border-border/30"
+              whileHover={{ y: -4 }}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.3 }}
+            >
+              <div className="mb-6 relative h-20 w-20 mx-auto rounded-full overflow-hidden shadow-md">
+                <img alt="Freshness Guaranteed Icon" className="w-full h-full object-cover" src="https://images.unsplash.com/photo-1647462906359-a22489637a21" />
+              </div>
+              <h3 className="text-xl font-semibold text-foreground mb-3">Freshness Guaranteed</h3>
+              <p className="text-muted-foreground leading-relaxed">Packed with care to lock in freshness, from our home to yours.</p>
+            </motion.div>
           </div>
         </div>
       </motion.section>

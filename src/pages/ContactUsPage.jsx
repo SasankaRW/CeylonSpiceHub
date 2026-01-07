@@ -1,6 +1,7 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+import { useInView } from 'react-intersection-observer';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -22,7 +23,7 @@ const ContactUsPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
+
     // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 1500));
 
@@ -36,15 +37,17 @@ const ContactUsPage = () => {
     setIsSubmitting(false);
   };
 
+  const [contactRef, contactInView] = useInView({ threshold: 0.1, triggerOnce: true });
+
   return (
-    <div className="space-y-12">
+    <div className="space-y-16">
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
         className="text-center"
       >
-        <h1 className="text-4xl md:text-5xl font-bold text-primary mb-4">Get in Touch</h1>
+        <h1 className="text-4xl md:text-5xl font-bold text-primary mb-4 font-serif">Get in Touch</h1>
         <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
           We'd love to hear from you! Whether you have a question, a suggestion, or just want to say hello, feel free to reach out.
         </p>
@@ -52,38 +55,46 @@ const ContactUsPage = () => {
 
       <div className="grid md:grid-cols-2 gap-12 items-start">
         <motion.div
+          ref={contactRef}
           initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
+          animate={contactInView ? { opacity: 1, x: 0 } : {}}
           transition={{ duration: 0.5, delay: 0.2 }}
         >
-          <Card className="shadow-xl">
+          <Card className="shadow-soft hover:shadow-glow transition-all duration-300 border border-border/50">
             <CardHeader>
-              <CardTitle className="text-2xl text-primary">Send Us a Message</CardTitle>
+              <CardTitle className="text-2xl text-primary font-serif">Send Us a Message</CardTitle>
             </CardHeader>
             <CardContent>
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <Label htmlFor="name" className="text-foreground">Full Name</Label>
-                    <Input id="name" name="name" type="text" placeholder="Your Name" value={formData.name} onChange={handleChange} required className="mt-1 bg-background/70 focus:ring-primary"/>
+                    <Input id="name" name="name" type="text" placeholder="Your Name" value={formData.name} onChange={handleChange} required className="mt-1 bg-background/70 focus:ring-primary" />
                   </div>
                   <div>
                     <Label htmlFor="email" className="text-foreground">Email Address</Label>
-                    <Input id="email" name="email" type="email" placeholder="your@email.com" value={formData.email} onChange={handleChange} required className="mt-1 bg-background/70 focus:ring-primary"/>
+                    <Input id="email" name="email" type="email" placeholder="your@email.com" value={formData.email} onChange={handleChange} required className="mt-1 bg-background/70 focus:ring-primary" />
                   </div>
                 </div>
                 <div>
                   <Label htmlFor="subject" className="text-foreground">Subject</Label>
-                  <Input id="subject" name="subject" type="text" placeholder="Reason for contacting" value={formData.subject} onChange={handleChange} required className="mt-1 bg-background/70 focus:ring-primary"/>
+                  <Input id="subject" name="subject" type="text" placeholder="Reason for contacting" value={formData.subject} onChange={handleChange} required className="mt-1 bg-background/70 focus:ring-primary" />
                 </div>
                 <div>
                   <Label htmlFor="message" className="text-foreground">Message</Label>
-                  <Textarea id="message" name="message" placeholder="Your message here..." value={formData.message} onChange={handleChange} required rows={5} className="mt-1 bg-background/70 focus:ring-primary"/>
+                  <Textarea id="message" name="message" placeholder="Your message here..." value={formData.message} onChange={handleChange} required rows={5} className="mt-1 bg-background/70 focus:ring-primary" />
                 </div>
-                <Button type="submit" className="w-full bg-primary hover:bg-primary/90 text-primary-foreground text-lg py-3" disabled={isSubmitting}>
+                <Button type="submit" className="w-full bg-primary hover:bg-primary/90 text-primary-foreground text-lg py-3 group" disabled={isSubmitting}>
                   {isSubmitting ? 'Sending...' : (
                     <>
-                      <Send className="mr-2 h-5 w-5" /> Send Message
+                      <motion.div
+                        className="inline-block mr-2"
+                        whileHover={{ x: 3 }}
+                        transition={{ duration: 0.2 }}
+                      >
+                        <Send className="h-5 w-5" />
+                      </motion.div>
+                      Send Message
                     </>
                   )}
                 </Button>
@@ -94,13 +105,13 @@ const ContactUsPage = () => {
 
         <motion.div
           initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
+          animate={contactInView ? { opacity: 1, x: 0 } : {}}
           transition={{ duration: 0.5, delay: 0.4 }}
           className="space-y-8"
         >
-          <Card className="shadow-xl bg-gradient-to-br from-primary/5 via-card to-secondary/5">
+          <Card className="shadow-soft hover:shadow-glow transition-all duration-300 border border-border/50 bg-gradient-to-br from-primary/5 via-card to-secondary/5">
             <CardHeader>
-              <CardTitle className="text-2xl text-primary">Contact Information</CardTitle>
+              <CardTitle className="text-2xl text-primary font-serif">Contact Information</CardTitle>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="flex items-start space-x-4">
@@ -114,7 +125,7 @@ const ContactUsPage = () => {
                 <Mail className="h-8 w-8 text-secondary mt-1 flex-shrink-0" />
                 <div>
                   <h3 className="text-lg font-semibold text-foreground">Email Us</h3>
-                  <a href="mailto:info@ceylonspicehub.com" className="text-muted-foreground hover:text-primary transition-colors">info@ceylonspicehub.com</a><br/>
+                  <a href="mailto:info@ceylonspicehub.com" className="text-muted-foreground hover:text-primary transition-colors">info@ceylonspicehub.com</a><br />
                   <a href="mailto:sales@ceylonspicehub.com" className="text-muted-foreground hover:text-primary transition-colors">sales@ceylonspicehub.com</a>
                 </div>
               </div>
@@ -128,18 +139,23 @@ const ContactUsPage = () => {
               </div>
             </CardContent>
           </Card>
-          
-          <div className="rounded-lg overflow-hidden shadow-xl h-72">
-             <iframe 
-                width="100%" 
-                height="100%" 
-                style={{ border:0 }}
-                loading="lazy" 
-                allowFullScreen
-                referrerPolicy="no-referrer-when-downgrade"
-                src="https://www.openstreetmap.org/export/embed.html?bbox=79.8488%2C6.9000%2C79.8700%2C6.9200&layer=mapnik&marker=6.9100%2C79.8594">
-             </iframe>
-          </div>
+
+
+          <motion.div
+            className="rounded-lg overflow-hidden shadow-soft hover:shadow-glow h-72 transition-all duration-300"
+            whileHover={{ scale: 1.01 }}
+            transition={{ duration: 0.3 }}
+          >
+            <iframe
+              width="100%"
+              height="100%"
+              style={{ border: 0 }}
+              loading="lazy"
+              allowFullScreen
+              referrerPolicy="no-referrer-when-downgrade"
+              src="https://www.openstreetmap.org/export/embed.html?bbox=79.8488%2C6.9000%2C79.8700%2C6.9200&layer=mapnik&marker=6.9100%2C79.8594">
+            </iframe>
+          </motion.div>
 
         </motion.div>
       </div>
@@ -148,4 +164,4 @@ const ContactUsPage = () => {
 };
 
 export default ContactUsPage;
-  
+

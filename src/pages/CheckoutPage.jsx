@@ -121,12 +121,12 @@ const CheckoutPage = () => {
       animate={{ opacity: 1, y: 0 }}
       className="max-w-4xl mx-auto"
     >
-      <h1 className="text-3xl font-bold text-primary mb-8">Checkout</h1>
+      <h1 className="text-3xl font-bold text-primary mb-8 font-serif">Checkout</h1>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div className="space-y-6">
-          <Card className="p-6">
-            <h2 className="text-xl font-semibold mb-4">Shipping Information</h2>
+          <Card className="p-6 shadow-soft hover:shadow-glow transition-all duration-300 border border-border/50">
+            <h2 className="text-xl font-semibold mb-4 font-serif">Shipping Information</h2>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
@@ -220,16 +220,18 @@ const CheckoutPage = () => {
                 />
               </div>
 
-              <Button type="submit" className="w-full" size="lg">
-                Place Order
-              </Button>
+              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                <Button type="submit" className="w-full" size="lg">
+                  Place Order
+                </Button>
+              </motion.div>
             </form>
           </Card>
         </div>
 
         <div className="space-y-6">
-          <Card className="p-6">
-            <h2 className="text-xl font-semibold mb-4">Order Summary</h2>
+          <Card className="p-6 shadow-soft hover:shadow-glow transition-all duration-300 border border-border/50">
+            <h2 className="text-xl font-semibold mb-4 font-serif">Order Summary</h2>
             <div className="space-y-4">
               {cart.map((item, index) => (
                 <div key={`checkout-item-${item.id}-${index}`} className="flex justify-between">

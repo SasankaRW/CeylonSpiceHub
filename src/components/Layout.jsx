@@ -36,15 +36,17 @@ const Layout = ({ children }) => {
 
   return (
     <div className="flex min-h-screen flex-col">
-      <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/80 backdrop-blur-xl supports-[backdrop-filter]:bg-background/80 shadow-sm">
         <div className="container flex h-20 items-center justify-between">
-          <Link to="/" className="flex items-center space-x-3">
-            <img
+          <Link to="/" className="flex items-center space-x-3 group">
+            <motion.img
               src="/logo.png"
               alt="Ceylon Spice Hub Logo"
-              className="h-12 w-12"
+              className="h-14 w-14 transition-transform duration-300 group-hover:scale-105"
+              whileHover={{ rotate: [0, -5, 5, 0] }}
+              transition={{ duration: 0.5 }}
             />
-            <span className="text-xl md:text-2xl font-bold text-primary tracking-tight">Ceylon Spice Hub</span>
+            <span className="text-xl md:text-2xl font-bold text-primary tracking-tight group-hover:text-primary/80 transition-colors">Ceylon Spice Hub</span>
           </Link>
 
           {/* Desktop Navigation */}
@@ -193,43 +195,49 @@ const Layout = ({ children }) => {
         {children}
       </motion.main>
 
-      <footer className="bg-primary text-primary-foreground py-12">
-        <div className="container grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
-          <div className="flex flex-col items-center md:items-start">
-            <img
-              src="/logo.png"
-              alt="Ceylon Spice Hub Logo"
-              className="h-16 w-16 mb-3"
-            />
-            <h3 className="text-xl font-semibold mb-2">Ceylon Spice Hub</h3>
-            <p className="text-sm opacity-80">Authentic Taste of Nature</p>
-          </div>
-          <div>
-            <h4 className="text-lg font-semibold mb-3">Quick Links</h4>
-            <ul className="space-y-2">
-              {navLinks.map(link => (
-                <li key={`footer-${link.to}`}>
-                  <Link to={link.to} className="text-sm hover:text-accent transition-colors opacity-80 hover:opacity-100">
-                    {link.label}
+      <footer className="bg-gradient-to-br from-primary via-primary to-primary/90 text-primary-foreground py-16 mt-24">
+        <div className="container">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 text-center md:text-left">
+            <div className="flex flex-col items-center md:items-start">
+              <img
+                src="/logo.png"
+                alt="Ceylon Spice Hub Logo"
+                className="h-20 w-20 mb-4 opacity-90"
+              />
+              <h3 className="text-2xl font-bold mb-2">Ceylon Spice Hub</h3>
+              <p className="text-sm opacity-80 font-light">Authentic Taste of Nature</p>
+            </div>
+            <div>
+              <h4 className="text-lg font-semibold mb-4">Quick Links</h4>
+              <ul className="space-y-2.5">
+                {navLinks.map(link => (
+                  <li key={`footer-${link.to}`}>
+                    <Link to={link.to} className="text-sm hover:text-accent transition-all duration-200 opacity-80 hover:opacity-100 hover:translate-x-1 inline-block">
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+                <li>
+                  <Link to="/admin" className="text-sm hover:text-accent transition-all duration-200 opacity-80 hover:opacity-100 hover:translate-x-1 inline-block">
+                    Admin Panel
                   </Link>
                 </li>
-              ))}
-              <li>
-                <Link to="/admin" className="text-sm hover:text-accent transition-colors opacity-80 hover:opacity-100">
-                  Admin Panel
-                </Link>
-              </li>
-            </ul>
+              </ul>
+            </div>
+            <div>
+              <h4 className="text-lg font-semibold mb-4">Contact Us</h4>
+              <div className="space-y-2 text-sm opacity-80">
+                <p>123 Spice Route, Colombo, Sri Lanka</p>
+                <p className="hover:text-accent transition-colors cursor-pointer">info@ceylonspicehub.com</p>
+                <p>+94 11 234 5678</p>
+              </div>
+            </div>
           </div>
-          <div>
-            <h4 className="text-lg font-semibold mb-3">Contact Us</h4>
-            <p className="text-sm opacity-80">123 Spice Route, Colombo, Sri Lanka</p>
-            <p className="text-sm opacity-80">info@ceylonspicehub.com</p>
-            <p className="text-sm opacity-80">+94 11 234 5678</p>
+          <div className="mt-12 pt-8 border-t border-primary-foreground/20 text-center">
+            <p className="text-sm opacity-70 font-light">
+              &copy; {new Date().getFullYear()} Ceylon Spice Hub (Pvt) Ltd. All Rights Reserved.
+            </p>
           </div>
-        </div>
-        <div className="container mt-8 pt-8 border-t border-primary-foreground/20 text-center text-sm opacity-70">
-          &copy; {new Date().getFullYear()} Ceylon Spice Hub (Pvt) Ltd. All Rights Reserved.
         </div>
       </footer>
       <Toaster />
