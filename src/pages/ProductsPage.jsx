@@ -81,10 +81,11 @@ const ProductsPage = () => {
   // Filter products
   const filteredProducts = products.filter(product => {
     const term = searchTerm.toLowerCase().trim();
-    if (!term) return true;
 
-    const matchesSearch = (product.name?.toLowerCase() || '').includes(term) ||
+    const matchesSearch = !term ||
+      (product.name?.toLowerCase() || '').includes(term) ||
       (product.description?.toLowerCase() || '').includes(term);
+
     const matchesCategory = selectedCategory === 'all' || product.category === selectedCategory;
     const matchesSubCategory = selectedSubCategories.length === 0 || selectedSubCategories.includes(product.subCategory);
     const matchesPrice = (product.price || 0) >= priceRange[0] && (product.price || 0) <= priceRange[1];
