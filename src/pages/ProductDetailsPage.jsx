@@ -241,7 +241,7 @@ const ProductDetailsPage = () => {
             >
               {product.name}
             </motion.h1>
-            <p className="text-lg text-muted-foreground leading-relaxed">{product.description}</p>
+            <p className="text-lg text-muted-foreground leading-relaxed whitespace-pre-line">{product.description}</p>
           </div>
 
           {/* Price */}
@@ -275,8 +275,8 @@ const ProductDetailsPage = () => {
                       key={type}
                       onClick={() => setSelectedType(type)}
                       className={`relative px-6 py-3 rounded-lg font-medium transition-all duration-200 ${selectedType === type
-                          ? 'bg-primary text-primary-foreground shadow-md ring-2 ring-primary ring-offset-2'
-                          : 'bg-muted hover:bg-muted/80 text-foreground border border-border hover:border-primary/50'
+                        ? 'bg-primary text-primary-foreground shadow-md ring-2 ring-primary ring-offset-2'
+                        : 'bg-muted hover:bg-muted/80 text-foreground border border-border hover:border-primary/50'
                         }`}
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.98 }}
@@ -315,8 +315,8 @@ const ProductDetailsPage = () => {
                           key={weight}
                           onClick={() => setSelectedWeight(weight)}
                           className={`relative px-6 py-3 rounded-lg font-medium transition-all duration-200 ${selectedWeight === weight
-                              ? 'bg-secondary text-secondary-foreground shadow-md ring-2 ring-secondary ring-offset-2'
-                              : 'bg-muted hover:bg-muted/80 text-foreground border border-border hover:border-secondary/50'
+                            ? 'bg-secondary text-secondary-foreground shadow-md ring-2 ring-secondary ring-offset-2'
+                            : 'bg-muted hover:bg-muted/80 text-foreground border border-border hover:border-secondary/50'
                             }`}
                           whileHover={{ scale: 1.05 }}
                           whileTap={{ scale: 0.98 }}
