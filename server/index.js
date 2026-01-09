@@ -105,6 +105,7 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
   const PORT = process.env.PORT || 5000;
   app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
+    console.log(`Server reloaded at ${new Date().toISOString()}`);
   });
 }
 

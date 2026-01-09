@@ -9,11 +9,11 @@ const JWT_SECRET = process.env.JWT_SECRET || 'spicehub-secret-key';
 export const authenticateToken = (req, res, next) => {
   const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.split(' ')[1];
-  
+
   if (!token) {
     return res.status(401).json({ message: 'Access token required' });
   }
-  
+
   jwt.verify(token, JWT_SECRET, (err, user) => {
     if (err) {
       return res.status(403).json({ message: 'Invalid or expired token' });
@@ -35,36 +35,36 @@ export const requireAdmin = (req, res, next) => {
 router.post('/login', async (req, res) => {
   try {
     const { username, password } = req.body;
-    
+
     // Find user
     const user = await User.findOne({ username });
     if (!user) {
       return res.status(401).json({ message: 'Invalid username or password' });
     }
-    
+
     // Check if user is active
     if (!user.isActive) {
       return res.status(401).json({ message: 'Account is disabled' });
     }
-    
+
     // Check password
     const isMatch = await user.comparePassword(password);
     if (!isMatch) {
       return res.status(401).json({ message: 'Invalid username or password' });
     }
-    
+
     // Update last login time
     user.lastLogin = new Date();
     await user.save();
-    
+
     // Generate JWT token
-    const token = jwt.sign({ 
+    const token = jwt.sign({
       id: user._id,
       username: user.username,
       role: user.role
     }, JWT_SECRET, { expiresIn: '24h' });
-    
-    res.json({ 
+
+    res.json({
       token,
       user: {
         id: user._id,
@@ -83,18 +83,18 @@ router.post('/login', async (req, res) => {
 router.post('/', authenticateToken, requireAdmin, async (req, res) => {
   try {
     const { username, password, email, role = 'staff' } = req.body;
-    
+
     // Check if username or email already exists
-    const existingUser = await User.findOne({ 
+    const existingUser = await User.findOne({
       $or: [{ username }, { email }]
     });
-    
+
     if (existingUser) {
-      return res.status(400).json({ 
-        message: 'Username or email already in use' 
+      return res.status(400).json({
+        message: 'Username or email already in use'
       });
     }
-    
+
     // Create new user
     const user = new User({
       username,
@@ -102,9 +102,9 @@ router.post('/', authenticateToken, requireAdmin, async (req, res) => {
       email,
       role
     });
-    
+
     await user.save();
-    
+
     res.status(201).json({
       id: user._id,
       username: user.username,
@@ -131,7 +131,7 @@ router.get('/', authenticateToken, requireAdmin, async (req, res) => {
 router.get('/seed-admin', async (req, res) => {
   try {
     const adminCount = await User.countDocuments({ role: 'admin' });
-    
+
     if (adminCount === 0) {
       const adminUser = new User({
         username: 'admin',
@@ -139,7 +139,7 @@ router.get('/seed-admin', async (req, res) => {
         email: 'admin@ceylonspicehub.com',
         role: 'admin'
       });
-      
+
       await adminUser.save();
       res.status(201).json({ message: 'Admin user created successfully' });
     } else {

@@ -5,6 +5,7 @@ import { ShoppingBag, Package, Clock, DollarSign, TrendingUp } from 'lucide-reac
 import { format } from 'date-fns';
 import api, { getDashboardStats, getProducts } from '@/api';
 import { useNavigate } from 'react-router-dom';
+import { logout } from '@/lib/auth';
 import { Button } from '@/components/ui/button';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
@@ -184,7 +185,10 @@ const AdminDashboard = () => {
           <h1 className="text-3xl font-bold text-primary">Admin Dashboard</h1>
           <p className="text-muted-foreground">Welcome to your dashboard</p>
         </div>
-        <Button onClick={fetchDashboardData}>Refresh Data</Button>
+        <div className="flex gap-2">
+          <Button onClick={fetchDashboardData}>Refresh Data</Button>
+          <Button variant="destructive" onClick={logout}>Logout</Button>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -247,10 +251,10 @@ const AdminDashboard = () => {
                         <span className="font-medium">LKR {order.total.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                       </div>
                       <span className={`px-2 py-1 text-xs rounded-full ${order.status === 'completed'
-                          ? 'bg-green-100 text-green-800'
-                          : order.status === 'processing'
-                            ? 'bg-blue-100 text-blue-800'
-                            : 'bg-yellow-100 text-yellow-800'
+                        ? 'bg-green-100 text-green-800'
+                        : order.status === 'processing'
+                          ? 'bg-blue-100 text-blue-800'
+                          : 'bg-yellow-100 text-yellow-800'
                         }`}>
                         {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
                       </span>
