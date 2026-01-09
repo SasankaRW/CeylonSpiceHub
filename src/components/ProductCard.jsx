@@ -21,6 +21,15 @@ const ProductCard = ({ product }) => {
     });
   };
 
+  const isOutOfStock = () => {
+    if (product.variants && product.variants.length > 0) {
+      // If variants exist, product is out of stock only if ALL variants are out of stock
+      return product.variants.every(v => v.stock_available === false);
+    }
+    // Otherwise rely on the main flag
+    return product.stock_available === false;
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -56,9 +65,11 @@ const ProductCard = ({ product }) => {
           </Link>
 
           {/* Out of stock badge */}
-          {!product.stock_available && (
-            <div className="absolute top-3 left-3 bg-destructive text-destructive-foreground px-3 py-1 rounded-full text-xs font-semibold shadow-md">
-              Out of Stock
+          {isOutOfStock() && (
+            <div className="absolute top-2 left-2 z-10">
+              <span className="bg-destructive text-destructive-foreground px-3 py-1 text-xs font-bold uppercase tracking-wider rounded shadow-md">
+                Out of Stock
+              </span>
             </div>
           )}
         </div>
@@ -76,7 +87,22 @@ const ProductCard = ({ product }) => {
         <CardContent className="flex-grow pb-3">
           <div className="flex items-baseline gap-2">
             <p className="text-2xl font-bold text-primary">
-              LKR {product.price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+              {(() => {
+                if (product.price) {
+                  return `LKR ${product.price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+                } else if (product.variants && product.variants.length > 0) {
+                  const prices = product.variants.map(v => v.price).filter(p => !isNaN(p));
+                  if (prices.length > 0) {
+                    const minPrice = Math.min(...prices);
+                    const maxPrice = Math.max(...prices);
+                    if (minPrice === maxPrice) {
+                      return `LKR ${minPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+                    }
+                    return `LKR ${minPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} - ${maxPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+                  }
+                }
+                return 'LKR N/A';
+              })()}
             </p>
           </div>
         </CardContent>
@@ -86,10 +112,10 @@ const ProductCard = ({ product }) => {
           <Button
             onClick={handleAddToCart}
             className="flex-1 shadow-sm hover:shadow-md transition-all duration-200 group/button"
-            disabled={!product.stock_available}
+            disabled={isOutOfStock()}
           >
             <ShoppingCart className="w-4 h-4 mr-2 group-hover/button:scale-110 transition-transform" />
-            {!product.stock_available ? 'Out of Stock' : 'Add to Cart'}
+            {isOutOfStock() ? 'Out of Stock' : 'Add to Cart'}
           </Button>
         </CardFooter>
       </Card>

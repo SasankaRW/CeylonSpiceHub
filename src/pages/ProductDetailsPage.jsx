@@ -81,8 +81,41 @@ const ProductDetailsPage = () => {
     return [...new Set(product.variants.filter(v => v.type === selectedType).map(v => v.weight))];
   };
 
+  const getCurrentStock = () => {
+    // Check boolean availability first
+    const isAvailable = selectedVariant
+      ? (selectedVariant.stock_available !== false)
+      : (product?.stock_available !== false);
+
+    if (!isAvailable) return 0;
+
+    // If available, check count
+    const stockCount = selectedVariant
+      ? selectedVariant.stock
+      : product?.stock;
+
+    // If stock count is undefined/null but stock_available is true (new product), assume in stock (e.g. 100)
+    // If stock count exists (legacy), return it
+    return (stockCount !== undefined && stockCount !== null) ? stockCount : 100;
+  };
+
+  const isProductOutOfStock = () => {
+    return getCurrentStock() === 0;
+  };
+
+  const getVariantStockStatus = (type, weight) => {
+    if (!product?.variants) return true;
+    const v = product.variants.find(v => v.type === type && v.weight === weight);
+    return v ? (v.stock_available !== false) : false;
+  };
+
+  const getCurrentWeight = () => {
+    if (selectedVariant) return selectedVariant.weight;
+    return product?.weight || '';
+  };
+
   const handleQuantityChange = (value) => {
-    const maxStock = selectedVariant?.stock || product?.stock || 0;
+    const maxStock = getCurrentStock();
     const newQuantity = Math.max(1, Math.min(maxStock, value));
     setQuantity(newQuantity);
   };
@@ -133,15 +166,7 @@ const ProductDetailsPage = () => {
     return product?.price || 0;
   };
 
-  const getCurrentStock = () => {
-    if (selectedVariant) return selectedVariant.stock;
-    return product?.stock || 0;
-  };
 
-  const getCurrentWeight = () => {
-    if (selectedVariant) return selectedVariant.weight;
-    return product?.weight || '';
-  };
 
   const getTypeLabel = (type) => {
     if (type === 'pouch') return 'Pouch';
@@ -185,7 +210,7 @@ const ProductDetailsPage = () => {
                 loading="lazy"
                 className="w-full h-full object-cover"
               />
-              {getCurrentStock() === 0 && (
+              {isProductOutOfStock() && (
                 <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
                   <span className="bg-destructive text-destructive-foreground px-6 py-3 rounded-full text-lg font-semibold shadow-lg">
                     Out of Stock
@@ -221,8 +246,8 @@ const ProductDetailsPage = () => {
               )}
               <div>
                 <p className="text-muted-foreground mb-1">Availability</p>
-                <p className={`font-medium ${getCurrentStock() > 0 ? 'text-primary' : 'text-destructive'}`}>
-                  {getCurrentStock() > 0 ? `${getCurrentStock()} in stock` : 'Out of Stock'}
+                <p className={`font-medium ${getCurrentStock() > 0 ? 'text-green-600' : 'text-destructive'}`}>
+                  {getCurrentStock() > 0 ? 'In Stock' : 'Out of Stock'}
                 </p>
               </div>
             </div>
@@ -374,15 +399,7 @@ const ProductDetailsPage = () => {
               >
                 <Plus className="h-5 w-5" />
               </Button>
-              {getCurrentStock() < 10 && getCurrentStock() > 0 && (
-                <motion.p
-                  className="text-sm text-destructive font-medium"
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                >
-                  Only {getCurrentStock()} left!
-                </motion.p>
-              )}
+              {/* Low stock warning removed to hide exact count */}
             </div>
           </div>
 
@@ -395,10 +412,10 @@ const ProductDetailsPage = () => {
               onClick={handleAddToCart}
               className="w-full h-14 text-lg shadow-md hover:shadow-lg transition-all duration-300 group"
               size="lg"
-              disabled={getCurrentStock() === 0 || (product.variants && product.variants.length > 0 && !selectedVariant)}
+              disabled={isProductOutOfStock() || (product.variants && product.variants.length > 0 && !selectedVariant)}
             >
               <ShoppingCart className="mr-2 h-5 w-5 group-hover:scale-110 transition-transform" />
-              {getCurrentStock() === 0 ? 'Out of Stock' : 'Add to Cart'}
+              {isProductOutOfStock() ? 'Out of Stock' : 'Add to Cart'}
             </Button>
           </motion.div>
         </div>
