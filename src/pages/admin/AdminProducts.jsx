@@ -11,13 +11,26 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogDescription,
+  DialogFooter,
 } from '@/components/ui/dialog';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import api from '@/api';
 
 const AdminProducts = () => {
   const [products, setProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [stockFilter, setStockFilter] = useState('all'); // all, in-stock, out-of-stock
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
+  const [productToDelete, setProductToDelete] = useState(null);
   const [editingProduct, setEditingProduct] = useState(null);
   const { toast } = useToast();
 
@@ -65,14 +78,23 @@ const AdminProducts = () => {
     }
   };
 
-  const handleDelete = async (id) => {
+  const handleDeleteClick = (product) => {
+    setProductToDelete(product);
+    setIsDeleteConfirmOpen(true);
+  };
+
+  const confirmDelete = async () => {
+    if (!productToDelete) return;
+
     try {
-      await api.delete(`/products/${id}`);
+      await api.delete(`/products/${productToDelete._id}`);
       fetchProducts();
       toast({
         title: "Success",
         description: "Product deleted successfully"
       });
+      setIsDeleteConfirmOpen(false);
+      setProductToDelete(null);
     } catch (error) {
       toast({
         title: "Error",
@@ -92,9 +114,28 @@ const AdminProducts = () => {
     setIsDialogOpen(true);
   };
 
-  const filteredProducts = (Array.isArray(products) ? products : []).filter(product =>
-    product.name && product.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // Determine effective stock status (considering variants)
+  const isOutOfStock = (product) => {
+    if (product.variants && product.variants.length > 0) {
+      return product.variants.every(v => v.stock_available === false);
+    }
+    return product.stock_available === false;
+  };
+
+  const filteredProducts = (Array.isArray(products) ? products : []).filter(product => {
+    const matchesSearch = product.name && product.name.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesCategory = selectedCategory === 'all' || product.category === selectedCategory;
+
+    const outOfStock = isOutOfStock(product);
+    let matchesStock = true;
+    if (stockFilter === 'in-stock') {
+      matchesStock = !outOfStock;
+    } else if (stockFilter === 'out-of-stock') {
+      matchesStock = outOfStock;
+    }
+
+    return matchesSearch && matchesCategory && matchesStock;
+  });
 
   return (
     <motion.div
@@ -112,18 +153,43 @@ const AdminProducts = () => {
         </Button>
       </div>
 
-      <div className="flex items-center space-x-4">
+      <div className="flex flex-col md:flex-row items-center gap-4">
         <Input
           placeholder="Search products..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           className="max-w-sm"
         />
+
+        <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+          <SelectTrigger className="w-[180px]">
+            <SelectValue placeholder="Category" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All Categories</SelectItem>
+            <SelectItem value="Sauces">Sauces</SelectItem>
+            <SelectItem value="Chutney">Chutney</SelectItem>
+            <SelectItem value="Jam">Jam</SelectItem>
+            <SelectItem value="Wines">Wines</SelectItem>
+            <SelectItem value="Spices">Spices</SelectItem>
+          </SelectContent>
+        </Select>
+
+        <Select value={stockFilter} onValueChange={setStockFilter}>
+          <SelectTrigger className="w-[180px]">
+            <SelectValue placeholder="Stock Status" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All Status</SelectItem>
+            <SelectItem value="in-stock">In Stock</SelectItem>
+            <SelectItem value="out-of-stock">Out of Stock</SelectItem>
+          </SelectContent>
+        </Select>
       </div>
 
       <div className="grid gap-6">
         {filteredProducts.map((product) => (
-          <Card key={product._id} className="p-4">
+          <Card key={product._id} className={`p-4 transition-all ${isOutOfStock(product) ? 'border-destructive/50 bg-destructive/5' : ''}`}>
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div className="flex items-center space-x-4">
                 <img
@@ -140,10 +206,28 @@ const AdminProducts = () => {
               </div>
               <div className="flex items-center space-x-2">
                 <span className="text-lg font-semibold text-primary">
-                  LKR {product.price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                  {(() => {
+                    if (product.price) {
+                      return `LKR ${product.price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+                    } else if (product.variants && product.variants.length > 0) {
+                      const prices = product.variants.map(v => v.price).filter(p => !isNaN(p));
+                      if (prices.length > 0) {
+                        const minPrice = Math.min(...prices);
+                        const maxPrice = Math.max(...prices);
+                        if (minPrice === maxPrice) {
+                          return `LKR ${minPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+                        }
+                        return `LKR ${minPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} - ${maxPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+                      }
+                    }
+                    return 'N/A';
+                  })()}
                 </span>
-                <span className="text-sm text-muted-foreground">
-                  Stock: {product.stock}
+                <span className={`text-sm font-medium ${isOutOfStock(product)
+                  ? 'text-destructive font-bold'
+                  : 'text-green-600'
+                  }`}>
+                  {isOutOfStock(product) ? 'Out of Stock' : 'In Stock'}
                 </span>
                 <Button variant="ghost" size="icon" onClick={() => handleEdit(product)}>
                   <Pencil className="h-4 w-4" />
@@ -152,7 +236,7 @@ const AdminProducts = () => {
                   variant="ghost"
                   size="icon"
                   className="text-destructive"
-                  onClick={() => handleDelete(product._id)}
+                  onClick={() => handleDeleteClick(product)}
                 >
                   <Trash2 className="h-4 w-4" />
                 </Button>
@@ -172,6 +256,25 @@ const AdminProducts = () => {
             onSubmit={handleSubmit}
             onCancel={() => setIsDialogOpen(false)}
           />
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={isDeleteConfirmOpen} onOpenChange={setIsDeleteConfirmOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Confirm Deletion</DialogTitle>
+            <DialogDescription>
+              Are you sure you want to delete "{productToDelete?.name}"? This action cannot be undone.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter className="gap-2 sm:gap-0">
+            <Button variant="outline" onClick={() => setIsDeleteConfirmOpen(false)}>
+              Cancel
+            </Button>
+            <Button variant="destructive" onClick={confirmDelete}>
+              Delete Product
+            </Button>
+          </DialogFooter>
         </DialogContent>
       </Dialog>
     </motion.div>
