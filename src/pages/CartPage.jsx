@@ -40,6 +40,10 @@ const CartPage = () => {
     navigate('/products');
   }, [navigate]);
 
+  const handleProceedToCheckout = React.useCallback(() => {
+    navigate('/checkout');
+  }, [navigate]);
+
   if (cart.length === 0) {
     return (
       <motion.div
@@ -54,10 +58,6 @@ const CartPage = () => {
       </motion.div>
     );
   }
-
-  const handleProceedToCheckout = React.useCallback(() => {
-    navigate('/checkout');
-  }, [navigate]);
 
   return (
     <motion.div
