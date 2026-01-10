@@ -177,4 +177,23 @@ export const getSliders = async () => {
   }
 };
 
+export const getLatestProducts = async () => {
+  try {
+    const response = await api.get('/products/latest');
+    // Ensure we always return an array
+    const data = response.data;
+    if (!Array.isArray(data)) {
+      console.warn('API returned non-array data for latest products:', data);
+      return [];
+    }
+    return data;
+  } catch (error) {
+    console.error('Error fetching latest products:', error);
+    if (error.response?.status === 404) {
+      return [];
+    }
+    return [];
+  }
+};
+
 export default api;

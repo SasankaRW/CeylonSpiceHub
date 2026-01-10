@@ -1,6 +1,5 @@
 
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import ProductCard from '@/components/ProductCard';
 import CustomSlideshow from '@/components/CustomSlideshow';
 import { Card, CardContent } from '@/components/ui/card';
@@ -9,6 +8,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Input } from '@/components/ui/input';
 import { Mail } from 'lucide-react';
+import { getLatestProducts } from '@/api/index';
 
 const slideshowData = [
   {
@@ -53,19 +53,19 @@ const featuredCategories = [
   {
     title: "Ceylon Spices",
     description: "The purest form of Ceylon's legendary spices, from fragrant cinnamon to fiery peppercorns.",
-    image: "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?q=80&w=1000&auto=format&fit=crop",
+    image: "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=800&q=80",
     link: "/products?category=Spices"
   },
   {
     title: "Katugasma Range",
     description: "Traditional chutneys, sauces, and jams made from family recipes.",
-    image: "https://images.unsplash.com/photo-1622035345717-380d603e8712?q=80&w=1000&auto=format&fit=crop",
+    image: "https://images.unsplash.com/photo-1622035345717-380d603e8712?auto=format&fit=crop&w=800&q=80",
     link: "/products?category=Sauces"
   },
   {
     title: "Fruitopia Range",
     description: "Unique fruit wines and beverages, fermented to perfection.",
-    image: "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?q=80&w=1000&auto=format&fit=crop",
+    image: "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=800&q=80",
     link: "/products?category=Wines"
   }
 ];
@@ -76,8 +76,8 @@ const HomePage = () => {
   useEffect(() => {
     const fetchNewArrivals = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/products/latest');
-        setNewArrivals(response.data);
+        const products = await getLatestProducts();
+        setNewArrivals(products);
       } catch (error) {
         console.error('Error fetching new arrivals:', error);
       }

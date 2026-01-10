@@ -44,9 +44,18 @@ const CustomSlideshow = ({ slides }) => {
   };
 
   useEffect(() => {
-    const timer = setTimeout(handleNext, 7000); // Auto-play every 7 seconds
+    const timer = setTimeout(handleNext, 7000);
     return () => clearTimeout(timer);
-  }, [currentIndex, slides.length]); // Added slides.length to dependency array
+  }, [currentIndex, slides.length]);
+
+  // Preload next image
+  useEffect(() => {
+    if (slides && slides.length > 0) {
+      const nextIndex = (currentIndex + 1) % slides.length;
+      const img = new Image();
+      img.src = "https://images.unsplash.com/photo-1675023112817-52b789fd2ef0?auto=format&fit=crop&w=1920&q=80";
+    }
+  }, [currentIndex, slides]);
 
   if (!slides || slides.length === 0) {
     return <div>No slides to display.</div>;
@@ -67,7 +76,9 @@ const CustomSlideshow = ({ slides }) => {
           <img
             className="w-full h-full object-cover"
             alt={slides[currentIndex].alt}
-            src="https://images.unsplash.com/photo-1675023112817-52b789fd2ef0" />
+            src="https://images.unsplash.com/photo-1675023112817-52b789fd2ef0?auto=format&fit=crop&w=1920&q=80"
+            loading="eager"
+            fetchpriority="high" />
           <div className="absolute inset-0 bg-black/50 flex flex-col items-center justify-center text-center p-8">
             <motion.h2
               className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4"
