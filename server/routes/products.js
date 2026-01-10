@@ -28,6 +28,22 @@ router.get('/', async (req, res) => {
   }
 });
 
+// Get latest products
+router.get('/latest', async (req, res) => {
+  try {
+    console.log('Fetching latest products...');
+    const products = await Product.find().sort({ createdAt: -1 }).limit(4);
+    console.log(`Found ${products.length} latest products`);
+    res.json(products);
+  } catch (error) {
+    console.error('Error fetching latest products:', error);
+    res.status(500).json({
+      message: 'Failed to fetch latest products',
+      error: process.env.NODE_ENV === 'development' ? error.message : undefined
+    });
+  }
+});
+
 // Get featured products
 router.get('/featured', async (req, res) => {
   try {

@@ -1,6 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -63,10 +64,10 @@ const CustomSlideshow = ({ slides }) => {
           exit="exit"
           className="absolute inset-0 w-full h-full"
         >
-          <img 
+          <img
             className="w-full h-full object-cover"
             alt={slides[currentIndex].alt}
-           src="https://images.unsplash.com/photo-1675023112817-52b789fd2ef0" />
+            src="https://images.unsplash.com/photo-1675023112817-52b789fd2ef0" />
           <div className="absolute inset-0 bg-black/50 flex flex-col items-center justify-center text-center p-8">
             <motion.h2
               className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4"
@@ -77,13 +78,22 @@ const CustomSlideshow = ({ slides }) => {
               {slides[currentIndex].title}
             </motion.h2>
             <motion.p
-              className="text-lg md:text-xl text-gray-200 max-w-2xl"
+              className="text-lg md:text-xl text-gray-200 max-w-2xl mb-8"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5, duration: 0.5 }}
             >
               {slides[currentIndex].tagline}
             </motion.p>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.7, duration: 0.5 }}
+            >
+              <Button asChild size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-lg px-8 py-6 shadow-xl hover:shadow-2xl transition-all duration-300">
+                <Link to="/products">Shop Now</Link>
+              </Button>
+            </motion.div>
           </div>
         </motion.div>
       </AnimatePresence>
@@ -124,4 +134,3 @@ const CustomSlideshow = ({ slides }) => {
 };
 
 export default CustomSlideshow;
-  

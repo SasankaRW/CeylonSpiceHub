@@ -1,5 +1,7 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import ProductCard from '@/components/ProductCard';
 import CustomSlideshow from '@/components/CustomSlideshow';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -69,6 +71,21 @@ const featuredCategories = [
 ];
 
 const HomePage = () => {
+  const [newArrivals, setNewArrivals] = useState([]);
+
+  useEffect(() => {
+    const fetchNewArrivals = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/api/products/latest');
+        setNewArrivals(response.data);
+      } catch (error) {
+        console.error('Error fetching new arrivals:', error);
+      }
+    };
+
+    fetchNewArrivals();
+  }, []);
+
   return (
     <div className="space-y-24 pb-12">
       <CustomSlideshow slides={slideshowData} />
@@ -125,6 +142,37 @@ const HomePage = () => {
             <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-primary/10 rounded-full blur-3xl -z-10"></div>
             <div className="absolute -top-6 -left-6 w-32 h-32 bg-yellow-500/10 rounded-full blur-3xl -z-10"></div>
           </motion.div>
+        </div>
+      </section>
+
+      {/* NEW ARRIVALS SECTION */}
+      <section className="container mx-auto px-6 py-10">
+        <div className="flex flex-col md:flex-row justify-between items-end mb-10 gap-4">
+          <div className="text-center md:text-left">
+            <h2 className="text-3xl md:text-4xl font-bold mb-2">New Arrivals</h2>
+            <p className="text-muted-foreground text-lg">Fresh from the farm, straight to your table.</p>
+          </div>
+          <Button asChild variant="outline" className="hidden md:flex">
+            <Link to="/products">View All Products</Link>
+          </Button>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {newArrivals.length > 0 ? (
+            newArrivals.map((product) => (
+              <ProductCard key={product._id} product={product} />
+            ))
+          ) : (
+            Array(4).fill(0).map((_, i) => (
+              <div key={i} className="h-[400px] bg-muted/20 animate-pulse rounded-xl"></div>
+            ))
+          )}
+        </div>
+
+        <div className="mt-12 text-center">
+          <Button asChild size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-lg px-12 py-6 shadow-xl hover:scale-105 transition-transform">
+            <Link to="/products">Shop All Products</Link>
+          </Button>
         </div>
       </section>
 
@@ -213,33 +261,7 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* NEWSLETTER SECTION */}
-      <section className="container mx-auto px-6 pb-12">
-        <div className="relative rounded-3xl overflow-hidden bg-primary text-primary-foreground">
-          {/* Subtle pattern or image overlay */}
-          <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
 
-          <div className="relative z-10 p-10 md:p-16 flex flex-col md:flex-row items-center justify-between gap-12">
-            <div className="space-y-4 max-w-xl text-center md:text-left">
-              <h2 className="text-3xl md:text-4xl font-bold">Join Our Spice Journey</h2>
-              <p className="text-primary-foreground/90 text-lg">
-                Subscribe to our newsletter for exclusive recipes, new arrivals, and stories from the heart of Ceylon.
-              </p>
-            </div>
-
-            <div className="w-full max-w-md bg-white/10 backdrop-blur-sm p-2 rounded-xl flex shadow-lg">
-              <Input
-                type="email"
-                placeholder="Enter your email"
-                className="bg-background/90 border-0 focus-visible:ring-0 text-foreground placeholder:text-muted-foreground"
-              />
-              <Button size="lg" className="ml-2 bg-background text-primary hover:bg-background/90">
-                <Mail className="mr-2 h-4 w-4" /> Subscribe
-              </Button>
-            </div>
-          </div>
-        </div>
-      </section>
     </div>
   );
 };
