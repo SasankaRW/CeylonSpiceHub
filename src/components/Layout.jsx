@@ -61,7 +61,7 @@ const Layout = ({ children }) => {
                         to="/admin"
                         className={({ isActive }) => cn(
                           navigationMenuTriggerStyle(),
-                          isActive ? 'bg-primary text-primary-foreground' : 'hover:bg-primary/10'
+                          isActive ? 'bg-primary text-primary-foreground' : 'hover:bg-primary/10 hover:text-primary'
                         )}
                       >
                         Dashboard
@@ -72,7 +72,7 @@ const Layout = ({ children }) => {
                         to="/admin/products"
                         className={({ isActive }) => cn(
                           navigationMenuTriggerStyle(),
-                          isActive ? 'bg-primary text-primary-foreground' : 'hover:bg-primary/10'
+                          isActive ? 'bg-primary text-primary-foreground' : 'hover:bg-primary/10 hover:text-primary'
                         )}
                       >
                         Products
@@ -83,7 +83,7 @@ const Layout = ({ children }) => {
                         to="/admin/orders"
                         className={({ isActive }) => cn(
                           navigationMenuTriggerStyle(),
-                          isActive ? 'bg-primary text-primary-foreground' : 'hover:bg-primary/10'
+                          isActive ? 'bg-primary text-primary-foreground' : 'hover:bg-primary/10 hover:text-primary'
                         )}
                       >
                         Orders
@@ -97,7 +97,7 @@ const Layout = ({ children }) => {
                         to={link.to}
                         className={({ isActive }) => cn(
                           navigationMenuTriggerStyle(),
-                          isActive ? 'bg-primary text-primary-foreground' : 'hover:bg-primary/10'
+                          isActive ? 'bg-primary text-primary-foreground' : 'hover:bg-primary/10 hover:text-primary'
                         )}
                       >
                         {link.label}
@@ -141,7 +141,7 @@ const Layout = ({ children }) => {
                       to="/admin"
                       className={({ isActive }) => cn(
                         "px-4 py-2 rounded-md",
-                        isActive ? "bg-primary text-primary-foreground" : "hover:bg-primary/10"
+                        isActive ? "bg-primary text-primary-foreground" : "hover:bg-primary/10 hover:text-primary"
                       )}
                       onClick={() => setIsMobileMenuOpen(false)}
                     >
@@ -151,7 +151,7 @@ const Layout = ({ children }) => {
                       to="/admin/products"
                       className={({ isActive }) => cn(
                         "px-4 py-2 rounded-md",
-                        isActive ? "bg-primary text-primary-foreground" : "hover:bg-primary/10"
+                        isActive ? "bg-primary text-primary-foreground" : "hover:bg-primary/10 hover:text-primary"
                       )}
                       onClick={() => setIsMobileMenuOpen(false)}
                     >
@@ -161,7 +161,7 @@ const Layout = ({ children }) => {
                       to="/admin/orders"
                       className={({ isActive }) => cn(
                         "px-4 py-2 rounded-md",
-                        isActive ? "bg-primary text-primary-foreground" : "hover:bg-primary/10"
+                        isActive ? "bg-primary text-primary-foreground" : "hover:bg-primary/10 hover:text-primary"
                       )}
                       onClick={() => setIsMobileMenuOpen(false)}
                     >
@@ -176,7 +176,7 @@ const Layout = ({ children }) => {
                         to={link.to}
                         className={({ isActive }) => cn(
                           "px-4 py-2 rounded-md",
-                          isActive ? "bg-primary text-primary-foreground" : "hover:bg-primary/10"
+                          isActive ? "bg-primary text-primary-foreground" : "hover:bg-primary/10 hover:text-primary"
                         )}
                         onClick={() => setIsMobileMenuOpen(false)}
                       >
