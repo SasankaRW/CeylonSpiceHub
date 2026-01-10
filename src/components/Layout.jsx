@@ -14,6 +14,7 @@ import { cn } from '@/lib/utils';
 import CartIcon from '@/components/CartIcon';
 import { Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import ThemeToggle from '@/components/ThemeToggle';
 
 const navLinks = [
   { to: '/', label: 'Home' },
@@ -106,11 +107,17 @@ const Layout = ({ children }) => {
                 )}
               </NavigationMenuList>
             </NavigationMenu>
-            {!isAdmin && <CartIcon />}
+            {!isAdmin && (
+              <div className="flex items-center space-x-2">
+                <ThemeToggle />
+                <CartIcon />
+              </div>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
-          <div className="md:hidden flex items-center">
+          <div className="md:hidden flex items-center space-x-2">
+            <ThemeToggle />
             {!isAdmin && <CartIcon />}
             <Button variant="ghost" size="icon" onClick={toggleMobileMenu} className="ml-2">
               {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
@@ -195,7 +202,7 @@ const Layout = ({ children }) => {
         {children}
       </motion.main>
 
-      <footer className="bg-gradient-to-br from-primary via-primary to-primary/90 text-primary-foreground py-16 mt-24">
+      <footer className="bg-gradient-to-br from-primary via-primary to-primary/90 text-primary-foreground dark:text-foreground dark:from-black dark:to-neutral-950 dark:border-t dark:border-primary/20 py-16 mt-24">
         <div className="container">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12 text-center md:text-left">
             <div className="flex flex-col items-center md:items-start">

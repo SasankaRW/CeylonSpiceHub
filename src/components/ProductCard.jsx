@@ -57,7 +57,7 @@ const ProductCard = ({ product }) => {
           >
             <Button
               size="sm"
-              className="bg-white text-primary hover:bg-white/90 shadow-lg transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300"
+              className="bg-white text-primary hover:bg-white/90 dark:bg-primary dark:text-primary-foreground dark:hover:bg-primary/90 shadow-lg transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300"
             >
               <Eye className="w-4 h-4 mr-2" />
               Quick View

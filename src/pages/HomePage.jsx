@@ -231,9 +231,9 @@ const HomePage = () => {
               <Input
                 type="email"
                 placeholder="Enter your email"
-                className="bg-white/90 border-0 focus-visible:ring-0 text-foreground placeholder:text-muted-foreground"
+                className="bg-background/90 border-0 focus-visible:ring-0 text-foreground placeholder:text-muted-foreground"
               />
-              <Button size="lg" className="ml-2 bg-white text-primary hover:bg-white/90">
+              <Button size="lg" className="ml-2 bg-background text-primary hover:bg-background/90">
                 <Mail className="mr-2 h-4 w-4" /> Subscribe
               </Button>
             </div>

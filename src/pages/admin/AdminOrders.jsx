@@ -160,12 +160,12 @@ const AdminOrders = () => {
             {filteredOrders.map((order) => (
               <Card key={order._id || order.id} className="overflow-hidden">
                 <div
-                  className="p-6 cursor-pointer hover:bg-gray-50 transition-colors"
+                  className="p-6 cursor-pointer hover:bg-muted/50 dark:hover:bg-muted/20 transition-colors"
                   onClick={() => toggleOrderDetails(order._id || order.id)}
                 >
                   <div className="flex justify-between items-start mb-2">
                     <div className="flex items-center gap-3">
-                      <div className="bg-primary rounded-full p-2 text-white">
+                      <div className="bg-primary rounded-full p-2 text-primary-foreground">
                         <ShoppingBag className="h-5 w-5" />
                       </div>
                       <div>
@@ -199,14 +199,14 @@ const AdminOrders = () => {
 
                 {/* Extended order details */}
                 {expandedOrder === (order._id || order.id) && (
-                  <div className="border-t border-gray-100 p-6 bg-gray-50">
+                  <div className="border-t border-border p-6 bg-muted/10">
                     <div className="grid md:grid-cols-2 gap-8">
                       {/* Customer Information */}
                       <div>
-                        <h4 className="font-semibold text-gray-700 mb-3 flex items-center gap-2">
+                        <h4 className="font-semibold text-foreground mb-3 flex items-center gap-2">
                           Customer Information
                         </h4>
-                        <div className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm">
+                        <div className="bg-card p-4 rounded-lg border border-border shadow-sm">
                           <div className="grid grid-cols-2 gap-4">
                             <div>
                               <p className="text-xs text-gray-500">Full Name</p>
@@ -236,10 +236,10 @@ const AdminOrders = () => {
 
                       {/* Order Status Management */}
                       <div>
-                        <h4 className="font-semibold text-gray-700 mb-3 flex items-center gap-2">
+                        <h4 className="font-semibold text-foreground mb-3 flex items-center gap-2">
                           Order Management
                         </h4>
-                        <div className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm">
+                        <div className="bg-card p-4 rounded-lg border border-border shadow-sm">
                           <p className="text-sm mb-3">Change order status:</p>
                           <div className="flex flex-wrap gap-2">
                             <Button
@@ -276,13 +276,13 @@ const AdminOrders = () => {
 
                     {/* Order Items */}
                     <div className="mt-8">
-                      <h4 className="font-semibold text-gray-700 mb-4 flex items-center gap-2">
+                      <h4 className="font-semibold text-foreground mb-4 flex items-center gap-2">
                         <ShoppingBag className="h-4 w-4" />
                         Order Items
                       </h4>
-                      <div className="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden">
+                      <div className="bg-card rounded-lg border border-border shadow-sm overflow-hidden">
                         <table className="w-full text-sm">
-                          <thead className="bg-gray-50 text-left">
+                          <thead className="bg-muted/50 text-left">
                             <tr>
                               <th className="px-4 py-3 font-medium">Product</th>
                               <th className="px-4 py-3 font-medium">Unit Price</th>
@@ -338,7 +338,7 @@ const AdminOrders = () => {
                               </tr>
                             ))}
                           </tbody>
-                          <tfoot className="bg-gray-50">
+                          <tfoot className="bg-muted/50">
                             <tr>
                               <td colSpan="3" className="px-4 py-3 font-medium text-right">
                                 Total:

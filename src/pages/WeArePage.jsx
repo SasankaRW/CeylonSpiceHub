@@ -56,7 +56,7 @@ const WeArePage = () => {
       <section className="grid md:grid-cols-2 gap-8">
         <Card className="bg-primary/5 border-primary/20">
           <CardContent className="p-8 space-y-4">
-            <div className="bg-white p-3 w-fit rounded-full shadow-sm mb-2">
+            <div className="bg-background p-3 w-fit rounded-full shadow-sm mb-2">
               <Eye className="h-8 w-8 text-primary" />
             </div>
             <h2 className="text-2xl font-bold text-foreground">Vision</h2>
@@ -66,10 +66,10 @@ const WeArePage = () => {
           </CardContent>
         </Card>
 
-        <Card className="bg-green-50/50 border-green-200">
+        <Card className="bg-secondary/5 border-secondary/20">
           <CardContent className="p-8 space-y-4">
-            <div className="bg-white p-3 w-fit rounded-full shadow-sm mb-2">
-              <Target className="h-8 w-8 text-green-600" />
+            <div className="bg-background p-3 w-fit rounded-full shadow-sm mb-2">
+              <Target className="h-8 w-8 text-primary" />
             </div>
             <h2 className="text-2xl font-bold text-foreground">Mission</h2>
             <p className="text-muted-foreground text-lg">
@@ -113,7 +113,7 @@ const WeArePage = () => {
         <h2 className="text-3xl font-bold">Strategic Focus Areas</h2>
         <div className="flex flex-wrap justify-center gap-4">
           {["Production", "Product Development", "Export Marketing", "Sales & Marketing"].map((area) => (
-            <div key={area} className="bg-white px-6 py-3 rounded-full shadow-sm border font-semibold text-lg text-primary">
+            <div key={area} className="bg-card px-6 py-3 rounded-full shadow-sm border font-semibold text-lg text-primary">
               {area}
             </div>
           ))}

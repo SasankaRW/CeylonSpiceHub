@@ -1,5 +1,6 @@
 import React from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
+import { ThemeProvider } from '@/components/ThemeProvider';
 import Layout from '@/components/Layout';
 import HomePage from '@/pages/HomePage';
 import WeArePage from '@/pages/WeArePage';
@@ -23,41 +24,43 @@ import { AnimatePresence } from 'framer-motion';
 function App() {
   const location = useLocation();
   return (
-    <Layout>
-      <ScrollToTop />
-      <AnimatePresence mode="wait">
-        <Routes location={location} key={location.pathname}>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/we-are" element={<WeArePage />} />
-          <Route path="/our-products" element={<OurProductsPage />} />
-          <Route path="/products" element={<ProductsPage />} />
-          <Route path="/product/:id" element={<ProductDetailsPage />} />
-          <Route path="/cart" element={<CartPage />} />
-          <Route path="/checkout" element={<CheckoutPage />} />
-          <Route path="/order-confirmation" element={<OrderConfirmation />} />
+    <ThemeProvider defaultTheme="dark" storageKey="ceylon-spice-theme">
+      <Layout>
+        <ScrollToTop />
+        <AnimatePresence mode="wait">
+          <Routes location={location} key={location.pathname}>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/we-are" element={<WeArePage />} />
+            <Route path="/our-products" element={<OurProductsPage />} />
+            <Route path="/products" element={<ProductsPage />} />
+            <Route path="/product/:id" element={<ProductDetailsPage />} />
+            <Route path="/cart" element={<CartPage />} />
+            <Route path="/checkout" element={<CheckoutPage />} />
+            <Route path="/order-confirmation" element={<OrderConfirmation />} />
 
-          <Route path="/admin/login" element={<LoginPage />} />
-          <Route path="/admin" element={
-            <ProtectedRoute>
-              <AdminDashboard />
-            </ProtectedRoute>
-          } />
-          <Route path="/admin/products" element={
-            <ProtectedRoute>
-              <AdminProducts />
-            </ProtectedRoute>
-          } />
-          <Route path="/admin/orders" element={
-            <ProtectedRoute>
-              <AdminOrders />
-            </ProtectedRoute>
-          } />
-          <Route path="/accomplishments" element={<AccomplishmentsPage />} />
-          <Route path="/recipes" element={<RecipesPage />} />
-          <Route path="/contact-us" element={<ContactUsPage />} />
-        </Routes>
-      </AnimatePresence>
-    </Layout>
+            <Route path="/admin/login" element={<LoginPage />} />
+            <Route path="/admin" element={
+              <ProtectedRoute>
+                <AdminDashboard />
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/products" element={
+              <ProtectedRoute>
+                <AdminProducts />
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/orders" element={
+              <ProtectedRoute>
+                <AdminOrders />
+              </ProtectedRoute>
+            } />
+            <Route path="/accomplishments" element={<AccomplishmentsPage />} />
+            <Route path="/recipes" element={<RecipesPage />} />
+            <Route path="/contact-us" element={<ContactUsPage />} />
+          </Routes>
+        </AnimatePresence>
+      </Layout>
+    </ThemeProvider>
   );
 }
 

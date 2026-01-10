@@ -45,33 +45,42 @@
   }
 
   .dark {
-    --background: 24 20% 12%;
-    --foreground: 40 40% 97%;
+    /* Deep Rich Black Background */
+    --background: 0 0% 5%;
+    /* Soft Gold Foreground */
+    --foreground: 45 30% 90%;
 
-    --card: 24 20% 15%;
-    --card-foreground: 40 40% 97%;
+    /* Dark Charcoal Card */
+    --card: 0 0% 10%;
+    --card-foreground: 45 30% 90%;
 
-    --popover: 24 20% 15%;
-    --popover-foreground: 40 40% 97%;
+    --popover: 0 0% 10%;
+    --popover-foreground: 45 30% 90%;
 
-    --primary: 142 48% 52%;
-    --primary-foreground: 24 20% 12%;
+    /* Gold Primary */
+    --primary: 48 96% 51%;
+    /* #FCCA03 (Vibrant Gold) */
+    --primary-foreground: 0 0% 0%;
 
-    --secondary: 20 65% 65%;
-    --secondary-foreground: 24 20% 12%;
+    /* Muted Gold Secondary */
+    --secondary: 45 50% 20%;
+    --secondary-foreground: 48 96% 51%;
 
-    --muted: 24 20% 22%;
-    --muted-foreground: 40 30% 70%;
+    /* Dark Muted */
+    --muted: 0 0% 15%;
+    --muted-foreground: 45 10% 70%;
 
-    --accent: 40 85% 70%;
-    --accent-foreground: 24 20% 12%;
+    /* Bright Gold Accent */
+    --accent: 48 96% 51%;
+    --accent-foreground: 0 0% 0%;
 
-    --destructive: 0 75% 55%;
-    --destructive-foreground: 0 0% 100%;
+    --destructive: 0 62% 30%;
+    --destructive-foreground: 45 30% 90%;
 
-    --border: 24 20% 25%;
-    --input: 24 20% 28%;
-    --ring: 142 48% 52%;
+    /* Gold-tinted Border */
+    --border: 45 20% 15%;
+    --input: 45 20% 15%;
+    --ring: 48 96% 51%;
   }
 }
 

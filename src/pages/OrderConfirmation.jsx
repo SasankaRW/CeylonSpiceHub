@@ -39,18 +39,18 @@ const OrderConfirmation = () => {
     >
       <div className="text-center mb-12">
         <div className="flex justify-center mb-6">
-          <CheckCircle size={80} className="text-green-500" />
+          <CheckCircle size={80} className="text-primary" />
         </div>
         <h1 className="text-3xl font-bold mb-2">Order Placed Successfully!</h1>
-        <p className="text-gray-600">
+        <p className="text-muted-foreground">
           Thank you for ordering from us. You will receive your order quickly and someone from our side will contact you.
         </p>
       </div>
 
-      <div className="bg-white rounded-lg shadow-md p-8 mb-8">
+      <div className="bg-card rounded-lg shadow-md p-8 mb-8">
         <div className="border-b pb-4 mb-6">
           <h2 className="text-2xl font-semibold">Order #{generateOrderNumber()}</h2>
-          <p className="text-gray-500">
+          <p className="text-muted-foreground">
             {order.createdAt ? format(new Date(order.createdAt), 'MMMM dd, yyyy') : format(new Date(), 'MMMM dd, yyyy')}
           </p>
         </div>
@@ -61,7 +61,7 @@ const OrderConfirmation = () => {
             <div key={index} className="flex justify-between">
               <div>
                 <p className="font-medium">{item.name}</p>
-                <p className="text-sm text-gray-500">Quantity: {item.quantity}</p>
+                <p className="text-sm text-muted-foreground">Quantity: {item.quantity}</p>
               </div>
               <p className="font-medium">LKR {(item.price * item.quantity).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
             </div>
@@ -75,13 +75,13 @@ const OrderConfirmation = () => {
         <div className="border-t pt-6">
           <h3 className="font-semibold mb-3">Shipping Information</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-3">
-            <p><span className="text-gray-500">Name:</span> {order.customerInfo.firstName} {order.customerInfo.lastName}</p>
-            <p><span className="text-gray-500">Email:</span> {order.customerInfo.email}</p>
-            <p><span className="text-gray-500">Phone:</span> {order.customerInfo.phone}</p>
-            <p><span className="text-gray-500">Address:</span> {order.customerInfo.address}</p>
-            <p><span className="text-gray-500">City:</span> {order.customerInfo.city}</p>
-            <p><span className="text-gray-500">Country:</span> {order.customerInfo.country}</p>
-            <p><span className="text-gray-500">Postal Code:</span> {order.customerInfo.postalCode}</p>
+            <p><span className="text-muted-foreground">Name:</span> {order.customerInfo.firstName} {order.customerInfo.lastName}</p>
+            <p><span className="text-muted-foreground">Email:</span> {order.customerInfo.email}</p>
+            <p><span className="text-muted-foreground">Phone:</span> {order.customerInfo.phone}</p>
+            <p><span className="text-muted-foreground">Address:</span> {order.customerInfo.address}</p>
+            <p><span className="text-muted-foreground">City:</span> {order.customerInfo.city}</p>
+            <p><span className="text-muted-foreground">Country:</span> {order.customerInfo.country}</p>
+            <p><span className="text-muted-foreground">Postal Code:</span> {order.customerInfo.postalCode}</p>
           </div>
         </div>
       </div>
