@@ -16,6 +16,7 @@ import AdminOrders from '@/pages/admin/AdminOrders';
 import LoginPage from '@/pages/admin/LoginPage';
 import AccomplishmentsPage from '@/pages/AccomplishmentsPage';
 import RecipesPage from '@/pages/RecipesPage';
+import RecipeDetailsPage from '@/pages/RecipeDetailsPage';
 import ContactUsPage from '@/pages/ContactUsPage';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import ScrollToTop from '@/components/ScrollToTop';
@@ -56,6 +57,7 @@ function App() {
             } />
             <Route path="/accomplishments" element={<AccomplishmentsPage />} />
             <Route path="/recipes" element={<RecipesPage />} />
+            <Route path="/recipes/:id" element={<RecipeDetailsPage />} />
             <Route path="/contact-us" element={<ContactUsPage />} />
           </Routes>
         </AnimatePresence>
