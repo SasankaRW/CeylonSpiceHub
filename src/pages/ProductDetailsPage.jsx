@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -13,15 +13,28 @@ import { useToast } from '@/components/ui/use-toast';
 const ProductDetailsPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
   const { toast } = useToast();
-  const [product, setProduct] = useState(null);
+  const [product, setProduct] = useState(location.state?.product || null); // Initialize with passed state
   const [quantity, setQuantity] = useState(1);
   const [selectedType, setSelectedType] = useState(null);
   const [selectedWeight, setSelectedWeight] = useState(null);
   const [selectedVariant, setSelectedVariant] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(!location.state?.product); // Only load if no state
 
   useEffect(() => {
+    // If we have product data from navigation state, initialize variants and skip fetch
+    if (location.state?.product) {
+      const initialProduct = location.state.product;
+      if (initialProduct.variants && initialProduct.variants.length > 0) {
+        const firstVariant = initialProduct.variants[0];
+        setSelectedType(firstVariant.type);
+        setSelectedWeight(firstVariant.weight);
+        setSelectedVariant(firstVariant);
+      }
+      return;
+    }
+
     const fetchProduct = async () => {
       try {
         setLoading(true);
@@ -57,7 +70,7 @@ const ProductDetailsPage = () => {
     };
 
     fetchProduct();
-  }, [id, navigate, toast]);
+  }, [id, navigate, toast, location.state]);
 
   // Update selected variant when type or weight changes
   useEffect(() => {

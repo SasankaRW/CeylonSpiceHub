@@ -53,6 +53,7 @@ const ProductCard = ({ product }) => {
           {/* Quick view button */}
           <Link
             to={`/product/${product._id || product.id}`}
+            state={{ product }}
             className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300"
           >
             <Button

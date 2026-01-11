@@ -46,7 +46,16 @@ const OurProductsPage = () => {
     };
 
     fetchProducts();
+    fetchProducts();
   }, [toast]);
+
+  // Preload category images
+  useEffect(() => {
+    Object.values(categoryImages).forEach((src) => {
+      const img = new Image();
+      img.src = src;
+    });
+  }, []);
 
   const getCategories = (productList) => {
     const categories = [...new Set(productList.map(p => p.category).filter(Boolean))];

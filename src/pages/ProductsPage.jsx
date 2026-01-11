@@ -26,25 +26,58 @@ const ProductsPage = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        setLoading(true);
+        // 1. Check Cache First (Stale-While-Revalidate)
+        const cachedData = sessionStorage.getItem('cached_products');
+        if (cachedData) {
+          const parsedData = JSON.parse(cachedData);
+          setProducts(parsedData);
+          setLoading(false); // Show cached data immediately
+
+          // Calculate max price from cache
+          if (parsedData.length > 0) {
+            const max = Math.max(...parsedData.map(p => p.price || 0));
+            setMaxPrice(Math.ceil(max / 100) * 100);
+            setPriceRange([0, Math.ceil(max / 100) * 100]);
+          }
+        } else {
+          setLoading(true); // Only show loading if no cache
+        }
+
+        // 2. Fetch Fresh Data in Background
         const data = await getProducts();
         const productArray = Array.isArray(data) ? data : [];
-        setProducts(productArray);
 
-        // Calculate max price from products
+        // Update state and cache
+        setProducts(productArray);
+        sessionStorage.setItem('cached_products', JSON.stringify(productArray));
+        if (!cachedData) setLoading(false); // Turn off loading if we didn't have cache
+
+        // Calculate max price from fresh data
         if (productArray.length > 0) {
           const max = Math.max(...productArray.map(p => p.price || 0));
-          setMaxPrice(Math.ceil(max / 100) * 100); // Round up to nearest 100
+          setMaxPrice(Math.ceil(max / 100) * 100);
           setPriceRange([0, Math.ceil(max / 100) * 100]);
         }
+
+        // 3. Preload Images
+        productArray.forEach((product) => {
+          if (product.imageUrl || product.image) {
+            const img = new Image();
+            img.src = product.imageUrl || product.image;
+          }
+        });
+
       } catch (error) {
         console.error('Error fetching products:', error);
-        setProducts([]);
-        toast({
-          title: "Error",
-          description: "Failed to load products. Please try again later.",
-          variant: "destructive"
-        });
+        // Keep cached data if API fails, only error if no cache
+        if (!sessionStorage.getItem('cached_products')) {
+          setProducts([]);
+          toast({
+            title: "Error",
+            description: "Failed to load products. Please try again later.",
+            variant: "destructive"
+          });
+        }
       } finally {
         setLoading(false);
       }
