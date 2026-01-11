@@ -9,6 +9,8 @@ import api from '@/api/index';
 import { useToast } from '@/components/ui/use-toast';
 import { Skeleton } from '@/components/ui/skeleton';
 
+import { getCachedData, setCachedData } from '@/utils/cache';
+
 const OurProductsPage = () => {
   const [products, setProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -21,17 +23,26 @@ const OurProductsPage = () => {
     const fetchProducts = async () => {
       try {
         setLoading(true);
+
+        // 1. Check Time-Based Cache
+        const cachedProducts = getCachedData();
+
+        if (cachedProducts) {
+          setProducts(cachedProducts);
+          initializeCategories(cachedProducts);
+          setLoading(false);
+          return;
+        }
+
+        // 2. Fetch from API
         const response = await api.get('/products');
         const data = response.data;
-        setProducts(Array.isArray(data) ? data : []);
+        const productArray = Array.isArray(data) ? data : [];
 
-        // Auto-expand all categories initially
-        const categories = getCategories(Array.isArray(data) ? data : []);
-        const expanded = {};
-        categories.forEach(cat => {
-          expanded[cat] = true;
-        });
-        setExpandedCategories(expanded);
+        setProducts(productArray);
+        setCachedData(productArray);
+        initializeCategories(productArray);
+
       } catch (error) {
         console.error('Error fetching products:', error);
         setProducts([]);
@@ -45,7 +56,16 @@ const OurProductsPage = () => {
       }
     };
 
-    fetchProducts();
+    // Helper to auto-expand categories logic
+    const initializeCategories = (data) => {
+      const categories = getCategories(data);
+      const expanded = {};
+      categories.forEach(cat => {
+        expanded[cat] = true;
+      });
+      setExpandedCategories(expanded);
+    }
+
     fetchProducts();
   }, [toast]);
 

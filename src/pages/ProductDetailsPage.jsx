@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate, useLocation } from 'react-router-dom';
+import { useParams, useNavigate, useLocation, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { ShoppingCart, Minus, Plus, Package, Check } from 'lucide-react';
+import { ShoppingCart, Minus, Plus, Package, Check, ArrowLeft } from 'lucide-react';
 import { getProductById } from '@/api/index';
 import { addToCart } from '@/lib/cartStore';
 import { useToast } from '@/components/ui/use-toast';
@@ -203,6 +203,15 @@ const ProductDetailsPage = () => {
 
   return (
     <div className="max-w-7xl mx-auto">
+      {/* Back to Shop Button */}
+      <div className="mb-8">
+        <Link to="/products">
+          <Button variant="ghost" className="pl-0 hover:bg-transparent hover:text-primary transition-colors">
+            <ArrowLeft className="mr-2 h-4 w-4" /> Back to Shop
+          </Button>
+        </Link>
+      </div>
+
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
