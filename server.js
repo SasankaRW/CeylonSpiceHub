@@ -16,6 +16,7 @@ import orderRoutes from './server/routes/orders.js';
 import sliderRoutes from './server/routes/sliders.js';
 import categoryRoutes from './server/routes/categories.js';
 import userRoutes from './server/routes/users.js';
+import recipeRoutes from './server/routes/recipes.js';
 import { seedDatabase } from './server/seed/initialData.js';
 
 // Configure environment variables
@@ -36,10 +37,12 @@ app.use('/api/products', productRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/sliders', sliderRoutes);
 app.use('/api/categories', categoryRoutes);
+
 app.use('/api/users', userRoutes);
+app.use('/api/recipes', recipeRoutes);
 
 // Define MongoDB connection string
-const MONGODB_URI = process.env.MONGODB_URI || 
+const MONGODB_URI = process.env.MONGODB_URI ||
   'mongodb://localhost:27017/spicehub';
 
 // MongoDB connection options
@@ -57,30 +60,30 @@ const connectToMongoDB = async () => {
     console.log('Connecting to MongoDB...');
     await mongoose.connect(MONGODB_URI, mongooseOptions);
     console.log('Connected to MongoDB successfully');
-    
+
     // Seed the database with initial data if needed
     if (process.env.SEED_DATABASE === 'true') {
       await seedDatabase();
       console.log('Database seeded successfully');
     }
-    
+
     // Create default admin user if needed
     try {
-      const baseUrl = process.env.NODE_ENV === 'production' 
-        ? `http://localhost:${process.env.PORT || 5000}` 
+      const baseUrl = process.env.NODE_ENV === 'production'
+        ? `http://localhost:${process.env.PORT || 5000}`
         : 'http://localhost:5000';
-      
+
       const response = await fetch(`${baseUrl}/api/users/seed-admin`);
       const data = await response.json();
       console.log('Admin user check:', data.message);
     } catch (error) {
       console.error('Error checking admin user:', error.message);
     }
-    
+
     return true;
   } catch (error) {
     console.error('MongoDB connection error:', error);
-    
+
     // Check for DNS resolution issues with SRV records
     if (error.code === 'ENOTFOUND' && MONGODB_URI.includes('mongodb+srv')) {
       console.log('\nDNS resolution error detected with SRV record.');
@@ -92,7 +95,7 @@ const connectToMongoDB = async () => {
       console.log('If using MongoDB Atlas, ensure your IP address is whitelisted in the Atlas dashboard');
       console.log('For help, refer to the MONGODB_GUIDE.md file\n');
     }
-    
+
     // For development, you can use a local MongoDB instance
     if (process.env.NODE_ENV !== 'production') {
       console.log('Attempting to connect to local MongoDB instance...');
@@ -104,7 +107,7 @@ const connectToMongoDB = async () => {
         console.error('Failed to connect to local MongoDB:', localError);
       }
     }
-    
+
     return false;
   }
 };

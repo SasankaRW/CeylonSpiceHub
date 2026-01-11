@@ -89,6 +89,17 @@ const Layout = ({ children }) => {
                         Orders
                       </NavLink>
                     </NavigationMenuItem>
+                    <NavigationMenuItem>
+                      <NavLink
+                        to="/admin/recipes"
+                        className={({ isActive }) => cn(
+                          navigationMenuTriggerStyle(),
+                          isActive ? 'bg-primary text-primary-foreground' : 'hover:bg-primary/10 hover:text-primary'
+                        )}
+                      >
+                        Recipes
+                      </NavLink>
+                    </NavigationMenuItem>
                   </>
                 ) : (
                   navLinks.map((link) => (
@@ -166,6 +177,16 @@ const Layout = ({ children }) => {
                       onClick={() => setIsMobileMenuOpen(false)}
                     >
                       Orders
+                    </NavLink>
+                    <NavLink
+                      to="/admin/recipes"
+                      className={({ isActive }) => cn(
+                        "px-4 py-2 rounded-md",
+                        isActive ? "bg-primary text-primary-foreground" : "hover:bg-primary/10 hover:text-primary"
+                      )}
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      Recipes
                     </NavLink>
                   </div>
                 ) : (

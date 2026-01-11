@@ -1,24 +1,58 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { Clock, Users, ArrowRight, ChefHat } from 'lucide-react';
-import { recipes } from '@/data/recipes';
+import { getRecipes } from '@/api';
+import { useToast } from '@/components/ui/use-toast';
 
 const RecipesPage = () => {
+  const [recipes, setRecipes] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const { toast } = useToast();
+
   useEffect(() => {
-    // Preload images for instant detail view
-    recipes.forEach((recipe) => {
-      if (recipe.secondaryImage) {
-        const img = new Image();
-        img.src = recipe.secondaryImage;
+    const fetchRecipesData = async () => {
+      try {
+        setLoading(true);
+        const data = await getRecipes();
+        const recipesArray = Array.isArray(data) ? data : [];
+        setRecipes(recipesArray);
+
+        // Preload images for instant detail view
+        recipesArray.forEach((recipe) => {
+          if (recipe.secondaryImage) {
+            const img = new Image();
+            img.src = recipe.secondaryImage;
+          }
+          if (recipe.image) {
+            const mainImg = new Image();
+            mainImg.src = recipe.image;
+          }
+        });
+      } catch (error) {
+        console.error("Error fetching recipes:", error);
+        toast({
+          title: "Error",
+          description: "Failed to load recipes.",
+          variant: "destructive"
+        });
+      } finally {
+        setLoading(false);
       }
-      // Also ensure main image is cached if not already
-      const mainImg = new Image();
-      mainImg.src = recipe.image;
-    });
-  }, []);
+    };
+
+    fetchRecipesData();
+  }, [toast]);
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-12">
@@ -38,7 +72,7 @@ const RecipesPage = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-10 max-w-6xl mx-auto">
         {recipes.map((recipe, index) => (
           <motion.div
-            key={recipe.id}
+            key={recipe._id || recipe.id}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: index * 0.1 }}
@@ -75,7 +109,7 @@ const RecipesPage = () => {
                 </div>
 
                 <div className="mt-auto">
-                  <Link to={`/recipes/${recipe.id}`}>
+                  <Link to={`/recipes/${recipe._id || recipe.id}`}>
                     <Button className="w-full group">
                       View Full Recipe
                       <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
@@ -86,6 +120,11 @@ const RecipesPage = () => {
             </Card>
           </motion.div>
         ))}
+        {recipes.length === 0 && (
+          <div className="col-span-full text-center text-muted-foreground">
+            No recipes found.
+          </div>
+        )}
       </div>
     </div>
   );

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { ShoppingBag, Package, Clock, DollarSign, TrendingUp } from 'lucide-react';
+import { ShoppingBag, Package, Clock, DollarSign, TrendingUp, ChefHat } from 'lucide-react';
 import { format } from 'date-fns';
 import api, { getDashboardStats, getProducts } from '@/api';
 import { useNavigate } from 'react-router-dom';
@@ -225,7 +225,7 @@ const AdminDashboard = () => {
         </CardContent>
       </Card>
 
-      <div className="space-y-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between">
             <CardTitle>Recent Orders</CardTitle>
@@ -265,8 +265,28 @@ const AdminDashboard = () => {
             )}
           </CardContent>
         </Card>
-      </div>
-    </motion.div>
+
+        {/* Recipes Management Shortcut */}
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between">
+            <CardTitle className="flex items-center gap-2">
+              <ChefHat className="h-5 w-5" /> Recipes
+            </CardTitle>
+            <Button variant="outline" size="sm" onClick={() => navigate('/admin/recipes')}>
+              Manage Recipes
+            </Button>
+          </CardHeader>
+          <CardContent>
+            <p className="text-sm text-muted-foreground mb-4">
+              Add, edit, or remove culinary recipes displayed on the public site.
+            </p>
+            <Button className="w-full" onClick={() => navigate('/admin/recipes')}>
+              Go to Recipes
+            </Button>
+          </CardContent>
+        </Card>
+      </div >
+    </motion.div >
   );
 };
 

@@ -196,4 +196,55 @@ export const getLatestProducts = async () => {
   }
 };
 
+// Recipes API
+export const getRecipes = async () => {
+  try {
+    const response = await api.get('/recipes');
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching recipes:', error);
+    throw error;
+  }
+};
+
+export const getRecipeById = async (id) => {
+  try {
+    const response = await api.get(`/recipes/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error(`Error fetching recipe ${id}:`, error);
+    return null;
+  }
+};
+
+export const createRecipe = async (recipeData) => {
+  try {
+    const response = await api.post('/recipes', recipeData);
+    return response.data;
+  } catch (error) {
+    console.error('Error creating recipe:', error);
+    throw error;
+  }
+};
+
+export const updateRecipe = async (id, recipeData) => {
+  try {
+    const response = await api.put(`/recipes/${id}`, recipeData);
+    return response.data;
+  } catch (error) {
+    console.error(`Error updating recipe ${id}:`, error);
+    throw error;
+  }
+};
+
+export const deleteRecipe = async (id) => {
+  try {
+    const response = await api.delete(`/recipes/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error(`Error deleting recipe ${id}:`, error);
+    throw error;
+  }
+};
+
 export default api;

@@ -9,6 +9,7 @@ import orderRoutes from './routes/orders.js';
 import categoryRoutes from './routes/categories.js';
 import sliderRoutes from './routes/sliders.js';
 import userRoutes from './routes/users.js';
+import recipeRoutes from './routes/recipes.js';
 
 // Configure environment variables
 dotenv.config();
@@ -38,6 +39,7 @@ app.use('/api/orders', orderRoutes);
 app.use('/api/categories', categoryRoutes);
 app.use('/api/sliders', sliderRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/recipes', recipeRoutes);
 
 // Handle any requests that don't match the API routes
 app.get('*', (req, res) => {

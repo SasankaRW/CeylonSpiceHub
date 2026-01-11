@@ -1,14 +1,54 @@
-import React from 'react';
-import { useParams, Link, Navigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useParams, Link, Navigate, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Clock, Users, ChefHat, Utensils, Zap, Leaf } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { recipes } from '@/data/recipes';
+import { getRecipeById } from '@/api';
+import { useToast } from '@/components/ui/use-toast';
 
 const RecipeDetailsPage = () => {
     const { id } = useParams();
-    const recipe = recipes.find(r => r.id === id);
+    const [recipe, setRecipe] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const { toast } = useToast();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const fetchRecipe = async () => {
+            try {
+                setLoading(true);
+                const data = await getRecipeById(id);
+                if (!data) {
+                    toast({
+                        title: "Recipe Not Found",
+                        description: "The recipe could not be found.",
+                        variant: "destructive"
+                    });
+                    navigate('/recipes');
+                }
+                setRecipe(data);
+            } catch (error) {
+                console.error("Error fetching recipe:", error);
+                navigate('/recipes');
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchRecipe();
+    }, [id, navigate, toast]);
+
+    if (loading) {
+        return (
+            <div className="min-h-screen bg-background flex items-center justify-center">
+                <div className="text-center">
+                    <div className="inline-block animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary mb-4"></div>
+                    <p className="text-muted-foreground">Loading recipe...</p>
+                </div>
+            </div>
+        );
+    }
 
     if (!recipe) {
         return <Navigate to="/recipes" replace />;

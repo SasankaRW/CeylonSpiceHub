@@ -12,6 +12,7 @@ import CheckoutPage from '@/pages/CheckoutPage';
 import OrderConfirmation from '@/pages/OrderConfirmation';
 import AdminDashboard from '@/pages/admin/AdminDashboard';
 import AdminProducts from '@/pages/admin/AdminProducts';
+import AdminRecipes from '@/pages/admin/AdminRecipes';
 import AdminOrders from '@/pages/admin/AdminOrders';
 import LoginPage from '@/pages/admin/LoginPage';
 import AccomplishmentsPage from '@/pages/AccomplishmentsPage';
@@ -48,6 +49,11 @@ function App() {
             <Route path="/admin/products" element={
               <ProtectedRoute>
                 <AdminProducts />
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/recipes" element={
+              <ProtectedRoute>
+                <AdminRecipes />
               </ProtectedRoute>
             } />
             <Route path="/admin/orders" element={
