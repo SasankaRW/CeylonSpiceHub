@@ -14,7 +14,9 @@ import productRoutes from '../server/routes/products.js';
 import orderRoutes from '../server/routes/orders.js';
 import sliderRoutes from '../server/routes/sliders.js';
 import categoryRoutes from '../server/routes/categories.js';
+
 import userRoutes from '../server/routes/users.js';
+import recipeRoutes from '../server/routes/recipes.js';
 
 // Configure environment variables
 dotenv.config();
@@ -111,7 +113,11 @@ app.use('/api/categories', categoryRoutes);
 app.use('/categories', categoryRoutes);
 
 app.use('/api/users', userRoutes);
+
 app.use('/users', userRoutes);
+
+app.use('/api/recipes', recipeRoutes);
+app.use('/recipes', recipeRoutes);
 
 // MongoDB connection - optimized for serverless
 let cachedDb = null;
