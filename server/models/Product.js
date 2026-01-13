@@ -39,15 +39,11 @@ const productSchema = new mongoose.Schema({
   // Legacy fields for backward compatibility / API ease
   price: {
     type: Number,
-    required: function () {
-      return !this.variants || this.variants.length === 0;
-    }
+    // Made optional to support variant-only products
   },
   weight: {
     type: String,
-    required: function () {
-      return !this.variants || this.variants.length === 0;
-    }
+    // Made optional to support variant-only products
   },
   stock_available: {
     type: Boolean,

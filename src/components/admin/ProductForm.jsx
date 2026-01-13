@@ -118,12 +118,24 @@ const ProductForm = ({ initialData, onSubmit, onCancel }) => {
           };
         });
       } else {
-        // Single product mode
+        // Single product mode - Convert to single variant
         if (!formData.price) throw new Error("Price is required.");
-        submitData.price = parseFloat(formData.price);
-        submitData.weight = formData.weight;
-        submitData.stock_available = formData.stock_available;
-        submitData.variants = []; // Ensure no variants sent
+
+        submitData.variants = [{
+          type: 'glass-bottle', // Default type for simple mode
+          weight: formData.weight,
+          price: parseFloat(formData.price),
+          stock_available: formData.stock_available !== false
+        }];
+
+        // Clear top-level legacy fields just in case
+        submitData.price = undefined;
+        submitData.weight = undefined;
+        submitData.stock_available = formData.stock_available; // keep top level stock for quick check? Or relies on variant? 
+        // Actually, schema `stock_available` at top level is fine to keep as a summary, 
+        // but `ProductCard` logic checks `variants.every(...)`.
+        // Let's keep top level stock_available loosely synced or just rely on variants. 
+        // My ProductCard update relies on variants first.
       }
 
       await onSubmit(submitData);

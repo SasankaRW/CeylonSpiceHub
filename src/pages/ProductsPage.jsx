@@ -12,6 +12,18 @@ import { Search, Filter, X } from 'lucide-react';
 import { getProducts } from '@/api/index';
 import { useToast } from '@/components/ui/use-toast';
 
+
+
+// Helper to get effective price for filtering/sorting
+const getEffectivePrice = (product) => {
+  if (product.price) return product.price;
+  if (product.variants && product.variants.length > 0) {
+    const prices = product.variants.map(v => v.price).filter(p => !isNaN(p));
+    return prices.length > 0 ? Math.min(...prices) : 0;
+  }
+  return 0;
+};
+
 const ProductsPage = () => {
   const [products, setProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -22,6 +34,52 @@ const ProductsPage = () => {
   const [loading, setLoading] = useState(true);
   const [showMobileFilters, setShowMobileFilters] = useState(false);
   const { toast } = useToast();
+
+  // Initialize state from session storage
+  useEffect(() => {
+    const savedState = sessionStorage.getItem('shop_state');
+    if (savedState) {
+      try {
+        const { searchTerm, selectedCategory, selectedSubCategories, priceRange } = JSON.parse(savedState);
+        if (searchTerm) setSearchTerm(searchTerm);
+        if (selectedCategory) setSelectedCategory(selectedCategory);
+        if (selectedSubCategories) setSelectedSubCategories(selectedSubCategories);
+        if (priceRange) setPriceRange(priceRange);
+      } catch (e) {
+        console.error("Failed to restore shop state", e);
+      }
+    }
+  }, []);
+
+  // Save state to session storage on change
+  useEffect(() => {
+    const state = {
+      searchTerm,
+      selectedCategory,
+      selectedSubCategories,
+      priceRange
+    };
+    sessionStorage.setItem('shop_state', JSON.stringify(state));
+  }, [searchTerm, selectedCategory, selectedSubCategories, priceRange]);
+
+  // Save/Restore Scroll Position
+  useEffect(() => {
+    // Restore scroll after products load
+    if (!loading && products.length > 0) {
+      const savedScroll = sessionStorage.getItem('shop_scroll_pos');
+      if (savedScroll) {
+        // slight delay to allow layout to settle
+        setTimeout(() => {
+          window.scrollTo(0, parseInt(savedScroll));
+        }, 100);
+      }
+    }
+
+    // Save scroll on unmount (or before unload)
+    return () => {
+      sessionStorage.setItem('shop_scroll_pos', window.scrollY.toString());
+    };
+  }, [loading, products.length]);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -35,7 +93,7 @@ const ProductsPage = () => {
 
           // Calculate max price from cache
           if (parsedData.length > 0) {
-            const max = Math.max(...parsedData.map(p => p.price || 0));
+            const max = Math.max(...parsedData.map(p => getEffectivePrice(p)));
             setMaxPrice(Math.ceil(max / 100) * 100);
             setPriceRange([0, Math.ceil(max / 100) * 100]);
           }
@@ -54,7 +112,7 @@ const ProductsPage = () => {
 
         // Calculate max price from fresh data
         if (productArray.length > 0) {
-          const max = Math.max(...productArray.map(p => p.price || 0));
+          const max = Math.max(...productArray.map(p => getEffectivePrice(p)));
           setMaxPrice(Math.ceil(max / 100) * 100);
           setPriceRange([0, Math.ceil(max / 100) * 100]);
         }
@@ -121,7 +179,9 @@ const ProductsPage = () => {
 
     const matchesCategory = selectedCategory === 'all' || product.category === selectedCategory;
     const matchesSubCategory = selectedSubCategories.length === 0 || selectedSubCategories.includes(product.subCategory);
-    const matchesPrice = (product.price || 0) >= priceRange[0] && (product.price || 0) <= priceRange[1];
+
+    const productPrice = getEffectivePrice(product);
+    const matchesPrice = productPrice >= priceRange[0] && productPrice <= priceRange[1];
 
     return matchesSearch && matchesCategory && matchesSubCategory && matchesPrice;
   });

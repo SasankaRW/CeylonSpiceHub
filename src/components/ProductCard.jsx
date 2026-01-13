@@ -81,7 +81,16 @@ const ProductCard = ({ product }) => {
             {product.name}
           </CardTitle>
           <CardDescription className="text-sm text-muted-foreground">
-            {product.weight || product.category}
+            {(() => {
+              if (product.variants && product.variants.length > 0) {
+                // Sort variants by price (ascending) to typically put smallest weights first
+                const sortedVariants = [...product.variants].sort((a, b) => (a.price || 0) - (b.price || 0));
+
+                const weights = [...new Set(sortedVariants.map(v => v.weight).filter(w => w))];
+                return weights.length > 0 ? weights.join(', ') : (product.category || "");
+              }
+              return product.category || "";
+            })()}
           </CardDescription>
         </CardHeader>
 
@@ -89,19 +98,21 @@ const ProductCard = ({ product }) => {
           <div className="flex items-baseline gap-2">
             <p className="text-2xl font-bold text-primary">
               {(() => {
-                if (product.price) {
-                  return `LKR ${product.price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-                } else if (product.variants && product.variants.length > 0) {
-                  const prices = product.variants.map(v => v.price).filter(p => !isNaN(p));
-                  if (prices.length > 0) {
-                    const minPrice = Math.min(...prices);
-                    const maxPrice = Math.max(...prices);
-                    if (minPrice === maxPrice) {
-                      return `LKR ${minPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-                    }
-                    return `LKR ${minPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} - ${maxPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+                if (product.variants && product.variants.length > 0) {
+                  // Use same sorted logic to get lowest price
+                  const sortedVariants = [...product.variants].sort((a, b) => (a.price || 0) - (b.price || 0));
+                  const firstPrice = sortedVariants[0].price;
+
+                  if (firstPrice && !isNaN(firstPrice)) {
+                    return `LKR ${firstPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
                   }
                 }
+
+                // Fallback for legacy (though theoretically removed/hidden)
+                if (product.price) {
+                  return `LKR ${product.price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+                }
+
                 return 'LKR N/A';
               })()}
             </p>

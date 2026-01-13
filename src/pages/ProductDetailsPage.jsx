@@ -23,10 +23,16 @@ const ProductDetailsPage = () => {
   const [loading, setLoading] = useState(!location.state?.product); // Only load if no state
 
   useEffect(() => {
+    const sortVariants = (variants) => {
+      return [...variants].sort((a, b) => (a.price || 0) - (b.price || 0));
+    };
+
     // If we have product data from navigation state, initialize variants and skip fetch
     if (location.state?.product) {
       const initialProduct = location.state.product;
+      // Sort variants ensures smallest price/weight is first
       if (initialProduct.variants && initialProduct.variants.length > 0) {
+        initialProduct.variants = sortVariants(initialProduct.variants);
         const firstVariant = initialProduct.variants[0];
         setSelectedType(firstVariant.type);
         setSelectedWeight(firstVariant.weight);
@@ -48,6 +54,12 @@ const ProductDetailsPage = () => {
           navigate('/products');
           return;
         }
+
+        // Sort variants before setting state
+        if (foundProduct.variants && foundProduct.variants.length > 0) {
+          foundProduct.variants = sortVariants(foundProduct.variants);
+        }
+
         setProduct(foundProduct);
 
         // If product has variants, set default selections
