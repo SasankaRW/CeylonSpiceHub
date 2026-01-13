@@ -51,7 +51,7 @@ const Layout = ({ children }) => {
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-4">
+          <div className="hidden xl:flex items-center space-x-4">
             <NavigationMenu>
               <NavigationMenuList>
                 {isAdmin ? (
@@ -127,7 +127,7 @@ const Layout = ({ children }) => {
           </div>
 
           {/* Mobile Menu Button */}
-          <div className="md:hidden flex items-center space-x-2">
+          <div className="xl:hidden flex items-center space-x-2">
             <ThemeToggle />
             {!isAdmin && <CartIcon />}
             <Button variant="ghost" size="icon" onClick={toggleMobileMenu} className="ml-2">
@@ -143,7 +143,7 @@ const Layout = ({ children }) => {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
-              className="md:hidden border-t bg-background"
+              className="xl:hidden border-t bg-background"
             >
               <nav className="container py-4">
                 {isAdmin ? (
