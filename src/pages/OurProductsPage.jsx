@@ -11,13 +11,15 @@ import { Skeleton } from '@/components/ui/skeleton';
 
 import { getCachedData, setCachedData } from '@/utils/cache';
 
+import { useNavigate } from 'react-router-dom';
+import { Button } from '@/components/ui/button';
+
 const OurProductsPage = () => {
   const [products, setProducts] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(true);
-  const [expandedCategories, setExpandedCategories] = useState({});
   const { toast } = useToast();
   const [catalogRef, catalogInView] = useInView({ threshold: 0.1, triggerOnce: true });
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -29,7 +31,6 @@ const OurProductsPage = () => {
 
         if (cachedProducts) {
           setProducts(cachedProducts);
-          initializeCategories(cachedProducts);
           setLoading(false);
           return;
         }
@@ -41,7 +42,6 @@ const OurProductsPage = () => {
 
         setProducts(productArray);
         setCachedData(productArray);
-        initializeCategories(productArray);
 
       } catch (error) {
         console.error('Error fetching products:', error);
@@ -55,16 +55,6 @@ const OurProductsPage = () => {
         setLoading(false);
       }
     };
-
-    // Helper to auto-expand categories logic
-    const initializeCategories = (data) => {
-      const categories = getCategories(data);
-      const expanded = {};
-      categories.forEach(cat => {
-        expanded[cat] = true;
-      });
-      setExpandedCategories(expanded);
-    }
 
     fetchProducts();
   }, [toast]);
@@ -91,20 +81,6 @@ const OurProductsPage = () => {
     return subCats.sort();
   };
 
-  const getProductsBySubCategory = (category, subCategory, productList) => {
-    return productList.filter(p =>
-      p.category === category &&
-      (p.subCategory || 'Other') === subCategory
-    );
-  };
-
-  const toggleCategory = (category) => {
-    setExpandedCategories(prev => ({
-      ...prev,
-      [category]: !prev[category]
-    }));
-  };
-
   // Category images mapping
   const categoryImages = {
     'Sauces': 'https://images.unsplash.com/photo-1472476443507-c7a5948772fc?w=400&q=80',
@@ -118,11 +94,20 @@ const OurProductsPage = () => {
     return categoryImages[category] || 'https://images.unsplash.com/photo-1596040033229-a0b3b46fe6f1';
   };
 
-  const filteredProducts = products.filter(product =>
-    (product.name?.toLowerCase() || '').includes(searchTerm.toLowerCase())
-  );
+  // Category taglines for image overlay
+  const categoryTaglines = {
+    'Sauces': { subtitle: 'Bold & Flavorful', title: 'Signature Sauces' },
+    'Chutney': { subtitle: 'Traditional Recipe', title: 'Artisan Chutneys' },
+    'Jam': { subtitle: 'Sweet & Natural', title: 'Handcrafted Jams' },
+    'Wines': { subtitle: 'Premium Selection', title: 'Ceylon Wines' },
+    'Spices': { subtitle: 'Pure & Aromatic', title: 'Ceylon Spices' }
+  };
 
-  const categories = getCategories(filteredProducts);
+  const getCategoryTagline = (category) => {
+    return categoryTaglines[category] || { subtitle: 'Premium Ceylon', title: 'Authentic Flavors' };
+  };
+
+  const categories = getCategories(products);
 
   return (
     <div className="space-y-8">
@@ -139,21 +124,9 @@ const OurProductsPage = () => {
         />
         <h1 className="text-4xl md:text-5xl font-bold text-primary mb-4 font-serif">Product Catalog</h1>
         <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-          Browse our complete collection organized by categories and subcategories.
+          Browse our complete collection by category. Visit our shop to purchase.
         </p>
       </motion.div>
-
-      <div className="sticky top-20 z-40 bg-background/95 p-4 rounded-lg shadow-soft backdrop-blur border border-border/50">
-        <div className="relative max-w-md mx-auto">
-          <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-          <Input
-            placeholder="Search products..."
-            className="pl-10"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-        </div>
-      </div>
 
       {loading ? (
         <div className="space-y-4">
@@ -161,9 +134,8 @@ const OurProductsPage = () => {
             <Card key={i} className="p-6">
               <Skeleton className="h-8 w-48 mb-4" />
               <div className="space-y-2 ml-4">
-                <Skeleton className="h-6 w-64" />
-                <Skeleton className="h-6 w-56" />
-                <Skeleton className="h-6 w-60" />
+                <Skeleton className="h-48 w-full" />
+                <Skeleton className="h-6 w-56 mt-4" />
               </div>
             </Card>
           ))}
@@ -174,11 +146,11 @@ const OurProductsPage = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={catalogInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.5 }}
-          className="space-y-6"
+          className="space-y-10"
         >
           {categories.map((category, categoryIndex) => {
-            const subCategories = getSubCategories(category, filteredProducts);
-            const isExpanded = expandedCategories[category];
+            const subCategories = getSubCategories(category, products);
+            const productCount = products.filter(p => p.category === category).length;
 
             return (
               <motion.div
@@ -187,96 +159,61 @@ const OurProductsPage = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: categoryIndex * 0.1 }}
               >
-                <Card className="overflow-hidden shadow-soft hover:shadow-glow transition-all duration-300 border border-border/50">
-                  {/* Category Banner Image */}
-                  <div className="relative h-48 overflow-hidden">
-                    <motion.img
-                      src={getCategoryImage(category)}
-                      alt={category}
-                      className="w-full h-full object-cover"
-                      whileHover={{ scale: 1.05 }}
-                      transition={{ duration: 0.5 }}
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                  </div>
+                <Card className="overflow-hidden shadow-default hover:shadow-lg transition-all duration-300 border-2 border-primary/20 bg-card/50 backdrop-blur-sm">
+                  <div className={`flex flex-col ${categoryIndex % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'}`}>
+                    {/* Image Section */}
+                    <div className="md:w-1/2 relative h-64 md:h-auto min-h-[300px] overflow-hidden group">
+                      <motion.img
+                        src={getCategoryImage(category)}
+                        alt={category}
+                        className="w-full h-full object-cover"
+                        whileHover={{ scale: 1.05 }}
+                        transition={{ duration: 0.5 }}
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
 
-                  <motion.button
-                    onClick={() => toggleCategory(category)}
-                    className="w-full p-6 text-left flex items-center justify-between hover:bg-muted/50 transition-colors"
-                    whileHover={{ x: 4 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <div className="flex items-center gap-4 flex-1">
-                      <motion.div
-                        animate={{ rotate: isExpanded ? 90 : 0 }}
-                        transition={{ duration: 0.3 }}
-                      >
-                        <ChevronRight className="h-6 w-6 text-primary" />
-                      </motion.div>
-
-                      <div className="flex flex-col">
-                        <h2 className="text-2xl font-bold text-primary font-serif">{category}</h2>
-                        <span className="text-sm text-muted-foreground">
-                          {filteredProducts.filter(p => p.category === category).length} products
-                        </span>
+                      <div className="absolute bottom-6 left-6 right-6 md:left-8 md:bottom-8 text-white z-10">
+                        <p className="text-sm md:text-base font-medium text-white/80 mb-1 uppercase tracking-wider drop-shadow-md">{getCategoryTagline(category).subtitle}</p>
+                        <h2 className="text-3xl md:text-4xl font-bold font-serif text-white drop-shadow-lg">{getCategoryTagline(category).title}</h2>
                       </div>
                     </div>
-                  </motion.button>
 
-                  <motion.div
-                    initial={false}
-                    animate={{
-                      height: isExpanded ? "auto" : 0,
-                      opacity: isExpanded ? 1 : 0
-                    }}
-                    transition={{ duration: 0.3, ease: "easeInOut" }}
-                    className="overflow-hidden"
-                  >
-                    <div className="px-6 pb-6 space-y-6">
-                      {subCategories.map((subCategory, subIndex) => {
-                        const subCategoryProducts = getProductsBySubCategory(category, subCategory, filteredProducts);
+                    {/* Content Section */}
+                    <div className="md:w-1/2 p-8 md:p-10 flex flex-col justify-center">
+                      <div className="space-y-6">
+                        <div>
+                          <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-3 font-serif">
+                            {category}
+                          </h2>
+                          <p className="text-lg text-muted-foreground mb-4">
+                            {productCount} Premium Products Available
+                          </p>
+                        </div>
 
-                        return (
-                          <motion.div
-                            key={subCategory}
-                            initial={{ opacity: 0, x: -20 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ delay: subIndex * 0.05 }}
-                            className="ml-4 border-l-2 border-primary/20 pl-6"
+                        <p className="text-muted-foreground text-base leading-relaxed">
+                          Explore our premium selection of {category.toLowerCase()}. Hand-picked from the finest sources in Ceylon to bring authentic flavor to your kitchen.
+                        </p>
+
+                        <div className="pt-2">
+                          <p className="text-sm text-muted-foreground/80 mb-2 flex items-center gap-2">
+                            <Package className="h-4 w-4" />
+                            Varieties: {subCategories.join(', ')}
+                          </p>
+                        </div>
+
+                        <div className="pt-4">
+                          <Button
+                            size="lg"
+                            className="w-full md:w-auto shadow-xl font-bold group text-lg px-10 py-6"
+                            onClick={() => navigate(`/products?category=${encodeURIComponent(category)}`)}
                           >
-                            <div className="flex items-center gap-2 mb-3">
-                              <Package className="h-5 w-5 text-secondary" />
-                              <h3 className="text-xl font-semibold text-secondary">
-                                {subCategory}
-                              </h3>
-                              <span className="text-xs text-muted-foreground">
-                                ({subCategoryProducts.length})
-                              </span>
-                            </div>
-                            <ul className={`space-y-2 ml-7 ${subCategoryProducts.length > 6 ? 'grid grid-cols-1 md:grid-cols-2 gap-x-8' : ''}`}>
-                              {subCategoryProducts.map((product, prodIndex) => (
-                                <motion.li
-                                  key={product._id || product.id}
-                                  initial={{ opacity: 0, x: -10 }}
-                                  animate={{ opacity: 1, x: 0 }}
-                                  transition={{ delay: prodIndex * 0.02 }}
-                                  className="flex items-center gap-2 group"
-                                >
-                                  <motion.div
-                                    className="w-1.5 h-1.5 rounded-full bg-accent group-hover:bg-primary transition-colors"
-                                    whileHover={{ scale: 1.5 }}
-                                  />
-                                  <span className="text-foreground group-hover:text-primary transition-colors">
-                                    {product.name}
-                                  </span>
-                                </motion.li>
-                              ))}
-                            </ul>
-                          </motion.div>
-                        );
-                      })}
+                            Shop {category}
+                            <ChevronRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                          </Button>
+                        </div>
+                      </div>
                     </div>
-                  </motion.div>
+                  </div>
                 </Card>
               </motion.div>
             );
@@ -284,13 +221,13 @@ const OurProductsPage = () => {
         </motion.div>
       )}
 
-      {!loading && filteredProducts.length === 0 && (
+      {!loading && products.length === 0 && (
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           className="text-center py-12"
         >
-          <p className="text-lg text-muted-foreground">No products found matching your search.</p>
+          <p className="text-lg text-muted-foreground">No products found.</p>
         </motion.div>
       )}
     </div>

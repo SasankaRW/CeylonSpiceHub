@@ -14,6 +14,8 @@ import { useToast } from '@/components/ui/use-toast';
 
 
 
+import { useSearchParams } from 'react-router-dom';
+
 // Helper to get effective price for filtering/sorting
 const getEffectivePrice = (product) => {
   if (product.price) return product.price;
@@ -34,22 +36,34 @@ const ProductsPage = () => {
   const [loading, setLoading] = useState(true);
   const [showMobileFilters, setShowMobileFilters] = useState(false);
   const { toast } = useToast();
+  const [searchParams] = useSearchParams();
 
-  // Initialize state from session storage
+  // Initialize state from session storage or URL params
   useEffect(() => {
-    const savedState = sessionStorage.getItem('shop_state');
-    if (savedState) {
-      try {
-        const { searchTerm, selectedCategory, selectedSubCategories, priceRange } = JSON.parse(savedState);
-        if (searchTerm) setSearchTerm(searchTerm);
-        if (selectedCategory) setSelectedCategory(selectedCategory);
-        if (selectedSubCategories) setSelectedSubCategories(selectedSubCategories);
-        if (priceRange) setPriceRange(priceRange);
-      } catch (e) {
-        console.error("Failed to restore shop state", e);
+    // Check URL params first
+    const categoryParam = searchParams.get('category');
+
+    if (categoryParam) {
+      setSelectedCategory(categoryParam);
+      // Clear other state if coming from a direct link, or keep defaults
+      setSearchTerm('');
+      setSelectedSubCategories([]);
+    } else {
+      // Fallback to session storage if no URL param
+      const savedState = sessionStorage.getItem('shop_state');
+      if (savedState) {
+        try {
+          const { searchTerm, selectedCategory, selectedSubCategories, priceRange } = JSON.parse(savedState);
+          if (searchTerm) setSearchTerm(searchTerm);
+          if (selectedCategory) setSelectedCategory(selectedCategory);
+          if (selectedSubCategories) setSelectedSubCategories(selectedSubCategories);
+          if (priceRange) setPriceRange(priceRange);
+        } catch (e) {
+          console.error("Failed to restore shop state", e);
+        }
       }
     }
-  }, []);
+  }, [searchParams]);
 
   // Save state to session storage on change
   useEffect(() => {
