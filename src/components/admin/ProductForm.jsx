@@ -392,6 +392,9 @@ const ProductForm = ({ initialData, onSubmit, onCancel }) => {
 
                         // 3. Upload to Cloudinary
                         console.log("Uploading to Cloudinary...");
+                        // Capture old image url to delete later if upload succeeds
+                        const oldImageUrl = formData.imageUrl;
+
                         const response = await fetch(
                           `https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}/image/upload`,
                           {
@@ -411,6 +414,25 @@ const ProductForm = ({ initialData, onSubmit, onCancel }) => {
 
                         // Check if secure_url is present
                         if (data.secure_url) {
+                          // If there was an old image, try to delete it
+                          if (oldImageUrl && oldImageUrl.includes('cloudinary.com')) {
+                            try {
+                              // Extract public_id from URL
+                              // URL format: .../upload/v123456789/folder/image.jpg
+                              // content after /upload/ (and optional version) and before extension
+                              const regex = /\/upload\/(?:v\d+\/)?(.+)\.[^.]+$/;
+                              const match = oldImageUrl.match(regex);
+                              if (match && match[1]) {
+                                const publicId = match[1];
+                                console.log("Deleting old image:", publicId);
+                                // We don't await this to keep UI responsive
+                                api.post('/cloudinary/delete', { public_id: publicId });
+                              }
+                            } catch (err) {
+                              console.error("Failed to delete old image", err);
+                            }
+                          }
+
                           setFormData(prev => ({ ...prev, imageUrl: data.secure_url }));
                           toast({
                             title: "Success",

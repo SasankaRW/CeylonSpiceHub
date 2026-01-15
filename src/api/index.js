@@ -247,4 +247,16 @@ export const deleteRecipe = async (id) => {
   }
 };
 
+// Cloudinary API
+export const deleteImage = async (publicId) => {
+  try {
+    const response = await api.post('/cloudinary/delete', { public_id: publicId });
+    return response.data;
+  } catch (error) {
+    console.error(`Error deleting image ${publicId}:`, error);
+    // Don't throw, just log. Deletion failure shouldn't block other actions.
+    return null;
+  }
+};
+
 export default api;

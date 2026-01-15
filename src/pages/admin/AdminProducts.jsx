@@ -87,6 +87,22 @@ const AdminProducts = () => {
     if (!productToDelete) return;
 
     try {
+      // 1. Delete image from Cloudinary if exists
+      if (productToDelete.imageUrl && productToDelete.imageUrl.includes('cloudinary.com')) {
+        try {
+          const regex = /\/upload\/(?:v\d+\/)?(.+)\.[^.]+$/;
+          const match = productToDelete.imageUrl.match(regex);
+          if (match && match[1]) {
+            const publicId = match[1];
+            console.log("Deleting product image:", publicId);
+            await api.post('/cloudinary/delete', { public_id: publicId });
+          }
+        } catch (err) {
+          console.error("Failed to delete product image from cloud", err);
+        }
+      }
+
+      // 2. Delete product from database
       await api.delete(`/products/${productToDelete._id}`);
       fetchProducts();
       toast({

@@ -39,6 +39,20 @@ You need to set the following environment variables in your Vercel project:
    - Set to `true` to seed the database with initial data on first deployment
    - Default: `false`
 
+6. **CLOUDINARY_CLOUD_NAME**
+   - Your Cloudinary Cloud Name
+   - Example: `dwuxumj4x`
+
+7. **CLOUDINARY_API_KEY**
+   - Your Cloudinary API Key
+
+8. **CLOUDINARY_API_SECRET**
+   - Your Cloudinary API Secret
+
+9. **CLOUDINARY_UPLOAD_PRESET**
+    - Your Cloudinary Upload Preset
+    - Example: `spicehub_image_upload`
+
 ## Deployment Steps
 
 ### Option 1: Deploy via Vercel Dashboard
