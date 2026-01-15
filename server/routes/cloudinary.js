@@ -14,10 +14,11 @@ router.post('/sign', (req, res) => {
         }
 
         const timestamp = Math.round((new Date()).getTime() / 1000);
+        const folder = 'SpiceHub/Products';
 
         // Signature is created by hashing the parameters + exact timestamp + api_secret
-        // For a simple upload, we only need timestamp (and any eager/transformation params if used)
-        const paramsToSign = `timestamp=${timestamp}`;
+        // Alphabetical order of parameters is mandatory for signature generation
+        const paramsToSign = `folder=${folder}&timestamp=${timestamp}`;
 
         const signature = crypto
             .createHash('sha1')
@@ -27,10 +28,10 @@ router.post('/sign', (req, res) => {
         res.json({
             signature,
             timestamp,
+            folder,
             apiKey: process.env.CLOUDINARY_API_KEY
         });
     } catch (error) {
-        console.error('Error generating signature:', error);
         res.status(500).json({ message: 'Failed to generate signature' });
     }
 });
@@ -79,14 +80,12 @@ router.post('/delete', async (req, res) => {
         const data = await cloudinaryRes.json();
 
         if (data.result !== 'ok' && data.result !== 'not found') {
-            console.error('Cloudinary delete error:', data);
             return res.status(500).json({ message: 'Failed to delete image from Cloudinary', error: data });
         }
 
         res.json({ message: 'Image deleted successfully', result: data });
 
     } catch (error) {
-        console.error('Error deleting image:', error);
         res.status(500).json({ message: 'Failed to delete image' });
     }
 });

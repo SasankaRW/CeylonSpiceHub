@@ -370,36 +370,58 @@ const ProductForm = ({ initialData, onSubmit, onCancel }) => {
                       setIsUploading(true);
 
                       try {
-                        console.log("Starting upload process...");
                         const loadingToast = toast({
                           title: "Uploading...",
                           description: "Signing and uploading image...",
                         });
 
                         // 1. Get Signature from Backend
-                        console.log("Fetching signature from backend...");
                         const signResponse = await api.post('/cloudinary/sign');
-                        const { signature, timestamp, apiKey } = signResponse.data;
-                        console.log("Signature received.");
+                        const { signature, timestamp, apiKey, folder } = signResponse.data;
 
                         // 2. Prepare Upload Data
-                        const formData = new FormData();
-                        formData.append('file', file);
-                        formData.append('api_key', apiKey);
-                        formData.append('timestamp', timestamp);
-                        formData.append('signature', signature);
+                        const uploadData = new FormData();
+                        uploadData.append('file', file);
+                        uploadData.append('api_key', apiKey);
+                        uploadData.append('timestamp', timestamp);
+                        uploadData.append('signature', signature);
+                        uploadData.append('folder', folder); // Must include folder in upload request
                         // Note: upload_preset is NOT sent for signed uploads unless using a signed preset
 
-                        // 3. Upload to Cloudinary
-                        console.log("Uploading to Cloudinary...");
-                        // Capture old image url to delete later if upload succeeds
+                        // 3. DELETE OLD IMAGE FIRST (Requested by user)
+                        // Capture old image url to delete
+                        // Note: We use component state 'formData.imageUrl' (which is the old image at this point)
                         const oldImageUrl = formData.imageUrl;
+
+                        if (oldImageUrl && oldImageUrl.includes('cloudinary.com')) {
+                          try {
+                            // Extract public_id from URL
+                            const regex = /\/upload\/(?:v\d+\/)?(.+)\.[^.]+$/;
+                            const match = oldImageUrl.match(regex);
+                            if (match && match[1]) {
+                              const publicId = match[1];
+
+                              // Await deletion before upload
+                              await api.post('/cloudinary/delete', { public_id: publicId });
+                            }
+                          } catch (err) {
+                            console.error("Failed to delete old image", err);
+                            // We proceed with upload even if delete fails, otherwise user is stuck
+                            toast({
+                              title: "Warning",
+                              description: "Could not delete old image, continuing with upload.",
+                              variant: "warning"
+                            });
+                          }
+                        }
+
+                        // 4. Upload to Cloudinary
 
                         const response = await fetch(
                           `https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}/image/upload`,
                           {
                             method: 'POST',
-                            body: formData,
+                            body: uploadData,
                           }
                         );
 
@@ -410,29 +432,9 @@ const ProductForm = ({ initialData, onSubmit, onCancel }) => {
                         }
 
                         const data = await response.json();
-                        console.log("Upload successful:", data);
 
                         // Check if secure_url is present
                         if (data.secure_url) {
-                          // If there was an old image, try to delete it
-                          if (oldImageUrl && oldImageUrl.includes('cloudinary.com')) {
-                            try {
-                              // Extract public_id from URL
-                              // URL format: .../upload/v123456789/folder/image.jpg
-                              // content after /upload/ (and optional version) and before extension
-                              const regex = /\/upload\/(?:v\d+\/)?(.+)\.[^.]+$/;
-                              const match = oldImageUrl.match(regex);
-                              if (match && match[1]) {
-                                const publicId = match[1];
-                                console.log("Deleting old image:", publicId);
-                                // We don't await this to keep UI responsive
-                                api.post('/cloudinary/delete', { public_id: publicId });
-                              }
-                            } catch (err) {
-                              console.error("Failed to delete old image", err);
-                            }
-                          }
-
                           setFormData(prev => ({ ...prev, imageUrl: data.secure_url }));
                           toast({
                             title: "Success",

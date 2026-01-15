@@ -94,7 +94,6 @@ const AdminProducts = () => {
           const match = productToDelete.imageUrl.match(regex);
           if (match && match[1]) {
             const publicId = match[1];
-            console.log("Deleting product image:", publicId);
             await api.post('/cloudinary/delete', { public_id: publicId });
           }
         } catch (err) {
