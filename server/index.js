@@ -10,6 +10,7 @@ import categoryRoutes from './routes/categories.js';
 import sliderRoutes from './routes/sliders.js';
 import userRoutes from './routes/users.js';
 import recipeRoutes from './routes/recipes.js';
+import cloudinaryRoutes from './routes/cloudinary.js';
 
 // Configure environment variables
 dotenv.config();
@@ -40,6 +41,7 @@ app.use('/api/categories', categoryRoutes);
 app.use('/api/sliders', sliderRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/recipes', recipeRoutes);
+app.use('/api/cloudinary', cloudinaryRoutes);
 
 // Handle any requests that don't match the API routes
 app.get('*', (req, res) => {

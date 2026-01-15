@@ -17,6 +17,7 @@ import sliderRoutes from './server/routes/sliders.js';
 import categoryRoutes from './server/routes/categories.js';
 import userRoutes from './server/routes/users.js';
 import recipeRoutes from './server/routes/recipes.js';
+import cloudinaryRoutes from './server/routes/cloudinary.js';
 import { seedDatabase } from './server/seed/initialData.js';
 
 // Configure environment variables
@@ -40,6 +41,7 @@ app.use('/api/categories', categoryRoutes);
 
 app.use('/api/users', userRoutes);
 app.use('/api/recipes', recipeRoutes);
+app.use('/api/cloudinary', cloudinaryRoutes);
 
 // Define MongoDB connection string
 const MONGODB_URI = process.env.MONGODB_URI ||

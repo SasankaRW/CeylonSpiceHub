@@ -17,6 +17,7 @@ import categoryRoutes from '../server/routes/categories.js';
 
 import userRoutes from '../server/routes/users.js';
 import recipeRoutes from '../server/routes/recipes.js';
+import cloudinaryRoutes from '../server/routes/cloudinary.js';
 
 // Configure environment variables
 dotenv.config();
@@ -118,6 +119,9 @@ app.use('/users', userRoutes);
 
 app.use('/api/recipes', recipeRoutes);
 app.use('/recipes', recipeRoutes);
+
+app.use('/api/cloudinary', cloudinaryRoutes);
+app.use('/cloudinary', cloudinaryRoutes);
 
 // MongoDB connection - optimized for serverless
 let cachedDb = null;

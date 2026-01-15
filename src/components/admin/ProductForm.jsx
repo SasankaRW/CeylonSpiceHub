@@ -14,6 +14,7 @@ import {
 } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
 import { Plus, Trash2, X, Image as ImageIcon, Package, DollarSign } from 'lucide-react';
+import api from '@/api';
 
 const CATEGORY_STRUCTURE = {
   'Sauces': ['Hot Sauces', 'Classic Sauces'],
@@ -26,26 +27,28 @@ const CATEGORY_STRUCTURE = {
 const ProductForm = ({ initialData, onSubmit, onCancel }) => {
   const { toast } = useToast();
 
-  const [formData, setFormData] = React.useState(initialData || {
-    name: '',
-    category: '',
-    subCategory: '',
-    description: '',
-    featured: false,
-    imageUrl: '',
-    alt: '',
+  const [formData, setFormData] = React.useState({
+    name: initialData?.name || '',
+    category: initialData?.category || '',
+    subCategory: initialData?.subCategory || '',
+    description: initialData?.description || '',
+    featured: initialData?.featured || false,
+    imageUrl: initialData?.imageUrl || '',
+    alt: initialData?.alt || '',
     // Legacy single product fields
-    price: '',
-    weight: '',
-    stock_available: true,
+    price: initialData?.price || '',
+    weight: initialData?.weight || '',
+    stock_available: initialData?.stock_available !== undefined ? initialData.stock_available : true,
     // Variants
-    variants: []
+    variants: initialData?.variants || []
   });
 
   // Simplified mode toggle: Does this product have multiple options?
   const [hasVariants, setHasVariants] = React.useState(
     initialData ? (initialData.variants && initialData.variants.length > 0) : false
   );
+
+  const [isUploading, setIsUploading] = React.useState(false);
 
   // Initialize form state
   const handleChange = (e) => {
@@ -354,6 +357,100 @@ const ProductForm = ({ initialData, onSubmit, onCancel }) => {
           <CardContent className="grid md:grid-cols-2 gap-6">
             <div className="space-y-4">
               <div>
+                <Label>Upload Image</Label>
+                <div className="flex gap-2 items-center mt-1">
+                  <Input
+                    type="file"
+                    accept="image/*"
+                    disabled={isUploading}
+                    onChange={async (e) => {
+                      const file = e.target.files[0];
+                      if (!file) return;
+
+                      setIsUploading(true);
+
+                      try {
+                        console.log("Starting upload process...");
+                        const loadingToast = toast({
+                          title: "Uploading...",
+                          description: "Signing and uploading image...",
+                        });
+
+                        // 1. Get Signature from Backend
+                        console.log("Fetching signature from backend...");
+                        const signResponse = await api.post('/cloudinary/sign');
+                        const { signature, timestamp, apiKey } = signResponse.data;
+                        console.log("Signature received.");
+
+                        // 2. Prepare Upload Data
+                        const formData = new FormData();
+                        formData.append('file', file);
+                        formData.append('api_key', apiKey);
+                        formData.append('timestamp', timestamp);
+                        formData.append('signature', signature);
+                        // Note: upload_preset is NOT sent for signed uploads unless using a signed preset
+
+                        // 3. Upload to Cloudinary
+                        console.log("Uploading to Cloudinary...");
+                        const response = await fetch(
+                          `https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}/image/upload`,
+                          {
+                            method: 'POST',
+                            body: formData,
+                          }
+                        );
+
+                        if (!response.ok) {
+                          const errData = await response.json();
+                          console.error("Cloudinary error response:", errData);
+                          throw new Error(errData.error?.message || 'Upload failed');
+                        }
+
+                        const data = await response.json();
+                        console.log("Upload successful:", data);
+
+                        // Check if secure_url is present
+                        if (data.secure_url) {
+                          setFormData(prev => ({ ...prev, imageUrl: data.secure_url }));
+                          toast({
+                            title: "Success",
+                            description: "Image uploaded successfully",
+                          });
+                        } else {
+                          console.warn("No secure_url in response:", data);
+                          toast({
+                            title: "Warning",
+                            description: "Upload succeeded but no URL returned.",
+                            variant: "warning"
+                          });
+                        }
+                      } catch (error) {
+                        console.error("Upload Error:", error);
+                        toast({
+                          title: "Error",
+                          description: `Failed to upload image: ${error.message}`,
+                          variant: "destructive"
+                        });
+                      } finally {
+                        setIsUploading(false);
+                      }
+                    }}
+                    className="cursor-pointer"
+                  />
+                </div>
+                <p className="text-xs text-muted-foreground mt-1">Select an image to auto-upload to Cloudinary.</p>
+              </div>
+
+              <div className="relative">
+                <div className="absolute inset-0 flex items-center">
+                  <span className="w-full border-t" />
+                </div>
+                <div className="relative flex justify-center text-xs uppercase">
+                  <span className="bg-background px-2 text-muted-foreground">Or Use URL</span>
+                </div>
+              </div>
+
+              <div>
                 <Label>Image URL (Direct Link)</Label>
                 <div className="flex gap-2">
                   <Input
@@ -361,9 +458,9 @@ const ProductForm = ({ initialData, onSubmit, onCancel }) => {
                     value={formData.imageUrl}
                     onChange={handleChange}
                     placeholder="https://..."
+                    disabled={isUploading}
                   />
                 </div>
-                <p className="text-xs text-muted-foreground mt-1">Paste a link from your image host.</p>
               </div>
               <div>
                 <Label>Alt Text (for SEO)</Label>
@@ -398,11 +495,11 @@ const ProductForm = ({ initialData, onSubmit, onCancel }) => {
 
         {/* ACTIONS */}
         <div className="flex justify-end gap-3 sticky bottom-0 bg-background/80 backdrop-blur-sm p-4 border-t">
-          <Button type="button" variant="secondary" onClick={onCancel} className="px-6">
+          <Button type="button" variant="secondary" onClick={onCancel} className="px-6" disabled={isUploading}>
             Cancel
           </Button>
-          <Button type="submit" size="lg" className="px-8 font-semibold">
-            {initialData ? 'Save Changes' : 'Create Product'}
+          <Button type="submit" size="lg" className="px-8 font-semibold" disabled={isUploading}>
+            {isUploading ? 'Uploading...' : (initialData ? 'Save Changes' : 'Create Product')}
           </Button>
         </div>
       </form>
