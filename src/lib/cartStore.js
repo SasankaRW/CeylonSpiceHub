@@ -4,7 +4,21 @@
 const normalizeCartFromStorage = () => {
   try {
     const storedCart = JSON.parse(localStorage.getItem('cart')) || [];
-    return storedCart.map(item => {
+    // Filter out invalid items and normalize IDs
+    return storedCart.filter(item => {
+      // Basic validation: must have an ID
+      const hasId = item._id || item.id;
+      // Relaxed price check: allow strings that can be parsed
+      const price = parseFloat(item.price);
+      const hasPrice = !isNaN(price);
+
+      // Update the item price to be a number if it's a valid string
+      if (hasPrice) {
+        item.price = price;
+      }
+
+      return hasId && hasPrice;
+    }).map(item => {
       // Ensure all items have a consistent 'id' field
       if (item._id && !item.id) {
         return { ...item, id: item._id };
@@ -58,6 +72,16 @@ export const addToCart = (product, quantity = 1) => {
     return;
   }
 
+  // Validate and normalize product price
+  let price = parseFloat(product.price);
+  if (isNaN(price)) {
+    console.error('Cannot add to cart: product has invalid price', product);
+    return;
+  }
+
+  // Create a safe copy of the product with normalized price
+  const safeProduct = { ...product, price };
+
   const productId = normalizeProductId(product);
   if (!productId) {
     console.error('Cannot add to cart: product has no valid ID', product);
@@ -65,13 +89,13 @@ export const addToCart = (product, quantity = 1) => {
   }
 
   const cartItemId = getCartItemId(product);
-  
+
   // Find existing item by cart item ID (includes variant info)
   const existingItem = cart.find(item => {
     const itemCartId = item.cartItemId || getCartItemId(item);
     return itemCartId === cartItemId;
   });
-  
+
   if (existingItem) {
     cart = cart.map(item => {
       const itemCartId = item.cartItemId || getCartItemId(item);
@@ -81,10 +105,11 @@ export const addToCart = (product, quantity = 1) => {
       return item;
     });
   } else {
-    const normalizedItem = normalizeCartItem(product, quantity);
+    // Use safeProduct instead of product
+    const normalizedItem = normalizeCartItem(safeProduct, quantity);
     cart = [...cart, normalizedItem];
   }
-  
+
   localStorage.setItem('cart', JSON.stringify(cart));
   notifyListeners();
 };
@@ -110,7 +135,7 @@ export const updateQuantity = (productId, quantity) => {
     }
     return item;
   });
-  
+
   cart = cart.filter(item => item.quantity > 0);
   localStorage.setItem('cart', JSON.stringify(cart));
   notifyListeners();
