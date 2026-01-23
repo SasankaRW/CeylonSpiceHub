@@ -97,7 +97,7 @@ const CartPage = () => {
                     {variantInfo && (
                       <p className="text-sm text-muted-foreground">{variantInfo}</p>
                     )}
-                    <p className="text-primary font-bold">LKR {item.price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
+                    <p className="text-primary font-bold">LKR {(item.price || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
                   </div>
                   <div className="flex items-center gap-2">
                     <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
