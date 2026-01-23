@@ -32,7 +32,6 @@ const CheckoutPage = () => {
     phone: '',
     address: '',
     city: '',
-    country: '',
     postalCode: '',
   });
 
@@ -209,16 +208,7 @@ const CheckoutPage = () => {
                 </div>
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="country">Country</Label>
-                <Input
-                  id="country"
-                  name="country"
-                  required
-                  value={formData.country}
-                  onChange={handleInputChange}
-                />
-              </div>
+
 
               <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
                 <Button type="submit" className="w-full" size="lg">
@@ -242,14 +232,14 @@ const CheckoutPage = () => {
                     </p>
                   </div>
                   <p className="font-medium">
-                    ${(item.price * item.quantity).toFixed(2)}
+                    LKR {(item.price * item.quantity).toFixed(2)}
                   </p>
                 </div>
               ))}
               <div className="border-t pt-4 mt-4">
                 <div className="flex justify-between text-lg font-bold">
                   <span>Total:</span>
-                  <span>${total.toFixed(2)}</span>
+                  <span>LKR {total.toFixed(2)}</span>
                 </div>
               </div>
             </div>
