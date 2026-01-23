@@ -11,13 +11,36 @@ const ProductCard = ({ product }) => {
   const { toast } = useToast();
 
   const handleAddToCart = () => {
+    let productToAdd = product;
+    let description = `${product.name} has been added to your cart.`;
+
+    // If product has variants, select the first one (lowest price)
+    if (product.variants && product.variants.length > 0) {
+      // Sort variants by price to ensure we get the lowest one
+      const sortedVariants = [...product.variants].sort((a, b) => (a.price || 0) - (b.price || 0));
+      const selectedVariant = sortedVariants[0];
+
+      // Create a product object with variant info
+      productToAdd = {
+        ...product,
+        price: selectedVariant.price || product.price || 0,
+        stock: selectedVariant.stock,
+        weight: selectedVariant.weight,
+        variantType: selectedVariant.type,
+        variantWeight: selectedVariant.weight,
+        variantId: `${selectedVariant.type}-${selectedVariant.weight}`
+      };
+
+      description = `${product.name} (${selectedVariant.weight}) has been added to your cart.`;
+    }
+
     // Add the product to cart with quantity 1
-    addToCart(product, 1);
+    addToCart(productToAdd, 1);
 
     // Show a toast notification
     toast({
       title: "Added to Cart",
-      description: `${product.name} has been added to your cart.`,
+      description: description,
     });
   };
 
