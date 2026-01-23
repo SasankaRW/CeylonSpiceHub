@@ -162,7 +162,7 @@ const ProductDetailsPage = () => {
       // Create a product object with variant info
       const productWithVariant = {
         ...product,
-        price: selectedVariant.price,
+        price: selectedVariant.price || product.price || 0,
         stock: selectedVariant.stock,
         weight: selectedVariant.weight,
         variantType: selectedVariant.type,
