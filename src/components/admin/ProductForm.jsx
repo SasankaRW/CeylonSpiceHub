@@ -547,50 +547,68 @@ const ProductForm = ({ initialData, onSubmit, onCancel }) => {
                         <img src={variant.image} alt="Variant" className="w-full h-full object-cover" />
                       </div>
                     ) : (
-                      <div className="aspect-square bg-muted/50 rounded flex flex-col items-center justify-center p-4 border-2 border-dashed hover:bg-muted/80 transition-colors">
-                        <label className="cursor-pointer flex flex-col items-center gap-2 text-center w-full">
-                          <ImageIcon className="h-8 w-8 text-muted-foreground/50" />
-                          <span className="text-xs text-muted-foreground">Upload Image</span>
-                          <input
-                            type="file"
-                            className="hidden"
-                            accept="image/*"
-                            onChange={async (e) => {
-                              const file = e.target.files[0];
-                              if (!file) return;
+                      <div className="space-y-3">
+                        <div className="aspect-square bg-muted/50 rounded flex flex-col items-center justify-center p-4 border-2 border-dashed hover:bg-muted/80 transition-colors">
+                          <label className="cursor-pointer flex flex-col items-center gap-2 text-center w-full">
+                            <ImageIcon className="h-8 w-8 text-muted-foreground/50" />
+                            <span className="text-xs text-muted-foreground">Upload Image</span>
+                            <input
+                              type="file"
+                              className="hidden"
+                              accept="image/*"
+                              onChange={async (e) => {
+                                const file = e.target.files[0];
+                                if (!file) return;
 
-                              try {
-                                toast({ title: "Uploading...", description: `Uploading image for ${variant.type} ${variant.weight}...` });
-                                // 1. Sign
-                                const signResponse = await api.post('/cloudinary/sign');
-                                const { signature, timestamp, apiKey, folder } = signResponse.data;
+                                try {
+                                  toast({ title: "Uploading...", description: `Uploading image for ${variant.type} ${variant.weight}...` });
+                                  // 1. Sign
+                                  const signResponse = await api.post('/cloudinary/sign');
+                                  const { signature, timestamp, apiKey, folder } = signResponse.data;
 
-                                // 2. Upload
-                                const uploadData = new FormData();
-                                uploadData.append('file', file);
-                                uploadData.append('api_key', apiKey);
-                                uploadData.append('timestamp', timestamp);
-                                uploadData.append('signature', signature);
-                                uploadData.append('folder', folder);
+                                  // 2. Upload
+                                  const uploadData = new FormData();
+                                  uploadData.append('file', file);
+                                  uploadData.append('api_key', apiKey);
+                                  uploadData.append('timestamp', timestamp);
+                                  uploadData.append('signature', signature);
+                                  uploadData.append('folder', folder);
 
-                                const response = await fetch(
-                                  `https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}/image/upload`,
-                                  { method: 'POST', body: uploadData }
-                                );
+                                  const response = await fetch(
+                                    `https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}/image/upload`,
+                                    { method: 'POST', body: uploadData }
+                                  );
 
-                                if (!response.ok) throw new Error('Upload failed');
-                                const data = await response.json();
+                                  if (!response.ok) throw new Error('Upload failed');
+                                  const data = await response.json();
 
-                                // 3. Update State
-                                handleVariantChange(index, 'image', data.secure_url);
-                                toast({ title: "Success", description: "Image uploaded" });
-                              } catch (error) {
-                                console.error(error);
-                                toast({ title: "Error", description: "Upload failed", variant: "destructive" });
-                              }
-                            }}
-                          />
-                        </label>
+                                  // 3. Update State
+                                  handleVariantChange(index, 'image', data.secure_url);
+                                  toast({ title: "Success", description: "Image uploaded" });
+                                } catch (error) {
+                                  console.error(error);
+                                  toast({ title: "Error", description: "Upload failed", variant: "destructive" });
+                                }
+                              }}
+                            />
+                          </label>
+                        </div>
+
+                        <div className="relative">
+                          <div className="absolute inset-0 flex items-center">
+                            <span className="w-full border-t" />
+                          </div>
+                          <div className="relative flex justify-center text-xs uppercase">
+                            <span className="bg-card px-2 text-muted-foreground">Or</span>
+                          </div>
+                        </div>
+
+                        <Input
+                          placeholder="Paste Image URL"
+                          className="text-xs h-8"
+                          value={variant.image || ''}
+                          onChange={(e) => handleVariantChange(index, 'image', e.target.value)}
+                        />
                       </div>
                     )}
                   </div>

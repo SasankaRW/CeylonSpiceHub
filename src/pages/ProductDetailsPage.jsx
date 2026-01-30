@@ -38,12 +38,12 @@ const ProductDetailsPage = () => {
         setSelectedWeight(firstVariant.weight);
         setSelectedVariant(firstVariant);
       }
-      return;
+      // Note: We don't return here anymore, so we fetch fresh data in the background
     }
 
     const fetchProduct = async () => {
       try {
-        setLoading(true);
+        if (!product) setLoading(true);
         const foundProduct = await getProductById(id);
         if (!foundProduct) {
           toast({
