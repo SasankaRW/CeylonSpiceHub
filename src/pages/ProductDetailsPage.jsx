@@ -236,13 +236,16 @@ const ProductDetailsPage = () => {
             <motion.div
               whileHover={{ scale: 1.02 }}
               transition={{ duration: 0.3 }}
-              className="relative aspect-square bg-muted/30"
+              className="relative aspect-square bg-white flex items-center justify-center"
             >
               <img
-                src={(selectedVariant?.image) || product.imageUrl || product.image || "https://images.unsplash.com/photo-1694388001616-1176f534d72f"}
+                src={(selectedVariant?.image) || product.imageUrl || product.image || "/images/milestones/Image_not_available.png"}
                 alt={product.alt || product.name}
                 loading="lazy"
-                className="w-full h-full object-cover"
+                className={((selectedVariant?.image) || product.imageUrl || product.image)
+                  ? "w-full h-full object-contain"
+                  : "w-full h-auto object-contain max-h-full"
+                }
               />
               {isProductOutOfStock() && (
                 <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
