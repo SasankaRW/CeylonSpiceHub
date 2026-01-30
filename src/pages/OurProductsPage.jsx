@@ -83,11 +83,11 @@ const OurProductsPage = () => {
 
   // Category images mapping
   const categoryImages = {
-    'Sauces': 'https://images.unsplash.com/photo-1472476443507-c7a5948772fc?w=400&q=80',
-    'Chutney': 'https://images.unsplash.com/photo-1596040033229-a0b3b46fe6f1?w=400&q=80',
-    'Jam': 'https://images.unsplash.com/photo-1599490659213-e2b9527bd087?w=400&q=80',
-    'Wines': 'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=400&q=80',
-    'Spices': 'https://images.unsplash.com/photo-1596040033229-a0b3b46fe6f1?w=400&q=80'
+    'Sauces': 'https://res.cloudinary.com/dwuxumj4x/image/upload/v1769808477/sauces_opy0tt.jpg',
+    'Chutney': 'https://res.cloudinary.com/dwuxumj4x/image/upload/v1769808281/CHUTNEY_2_p6g3a7.jpg',
+    'Jam': 'https://res.cloudinary.com/dwuxumj4x/image/upload/v1769808438/JAM1_ip8qqy.jpg',
+    'Wines': 'https://res.cloudinary.com/dwuxumj4x/image/upload/v1769808522/wine_-1_hjidbg.jpg',
+    'Spices': 'https://res.cloudinary.com/dwuxumj4x/image/upload/v1769808522/wine_-1_hjidbg.jpg'
   };
 
   const getCategoryImage = (category) => {
