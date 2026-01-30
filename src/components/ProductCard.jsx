@@ -64,10 +64,11 @@ const ProductCard = ({ product }) => {
         {/* Image Container */}
         <div className="relative aspect-square overflow-hidden bg-muted/30">
           <img
-            className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+            className={`w-full h-full transition-transform duration-700 ease-out group-hover:scale-110 ${(product.imageUrl || product.image) ? 'object-cover' : 'object-contain p-4'
+              }`}
             alt={product.alt || product.name}
             loading="lazy"
-            src={product.imageUrl || product.image || "https://images.unsplash.com/photo-1694388001616-1176f534d72f"}
+            src={product.imageUrl || product.image || "/images/milestones/Image_not_available.png"}
           />
 
           {/* Overlay gradient on hover */}
