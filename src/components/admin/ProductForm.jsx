@@ -255,8 +255,7 @@ const ProductForm = ({ initialData, onSubmit, onCancel }) => {
                   <div className="grid grid-cols-12 gap-4 p-4 bg-muted/50 font-medium text-sm">
                     <div className="col-span-3">Type (Container)</div>
                     <div className="col-span-2">Size/Weight</div>
-                    <div className="col-span-2">Price (LKR)</div>
-                    <div className="col-span-2">Image</div>
+                    <div className="col-span-3">Price (LKR)</div>
                     <div className="col-span-2 text-center">In Stock?</div>
                     <div className="col-span-1"></div>
                   </div>
@@ -273,7 +272,7 @@ const ProductForm = ({ initialData, onSubmit, onCancel }) => {
                           </SelectContent>
                         </Select>
                       </div>
-                      <div className="col-span-2">
+                      <div className="col-span-3">
                         <Input
                           placeholder="e.g. 350g"
                           value={variant.weight}
@@ -291,58 +290,7 @@ const ProductForm = ({ initialData, onSubmit, onCancel }) => {
                           className="pl-12 h-9 font-mono"
                         />
                       </div>
-                      <div className="col-span-2">
-                        <div className="flex items-center gap-2">
-                          {variant.image ? (
-                            <div className="relative w-9 h-9 group">
-                              <img src={variant.image} alt="Variant" className="w-full h-full object-cover rounded" />
-                              <button
-                                type="button"
-                                onClick={() => handleVariantChange(index, 'image', '')}
-                                className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 flex items-center justify-center text-white rounded transition-opacity"
-                              >
-                                <X className="h-4 w-4" />
-                              </button>
-                            </div>
-                          ) : (
-                            <Input
-                              type="file"
-                              accept="image/*"
-                              className="h-9 text-xs"
-                              onChange={async (e) => {
-                                const file = e.target.files[0];
-                                if (!file) return;
 
-                                try {
-                                  toast({ title: "Uploading...", description: "Uploading variant image..." });
-                                  const signResponse = await api.post('/cloudinary/sign');
-                                  const { signature, timestamp, apiKey, folder } = signResponse.data;
-
-                                  const uploadData = new FormData();
-                                  uploadData.append('file', file);
-                                  uploadData.append('api_key', apiKey);
-                                  uploadData.append('timestamp', timestamp);
-                                  uploadData.append('signature', signature);
-                                  uploadData.append('folder', folder);
-
-                                  const response = await fetch(
-                                    `https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}/image/upload`,
-                                    { method: 'POST', body: uploadData }
-                                  );
-
-                                  if (!response.ok) throw new Error('Upload failed');
-                                  const data = await response.json();
-                                  handleVariantChange(index, 'image', data.secure_url);
-                                  toast({ title: "Success", description: "Variant image uploaded" });
-                                } catch (error) {
-                                  console.error(error);
-                                  toast({ title: "Error", description: "Upload failed", variant: "destructive" });
-                                }
-                              }}
-                            />
-                          )}
-                        </div>
-                      </div>
                       <div className="col-span-2 flex justify-center">
                         <Switch
                           checked={variant.stock_available !== false}
@@ -569,6 +517,87 @@ const ProductForm = ({ initialData, onSubmit, onCancel }) => {
               )}
             </div>
           </CardContent>
+
+          {hasVariants && formData.variants && formData.variants.length > 0 && (
+            <div className="border-t p-6">
+              <h4 className="font-semibold mb-4 text-base">Variant Specific Images</h4>
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                {formData.variants.map((variant, index) => (
+                  <div key={index} className="border rounded-lg p-3 bg-card space-y-3">
+                    <div className="flex justify-between items-start">
+                      <div>
+                        <p className="font-medium text-sm">{variant.type}</p>
+                        <p className="text-xs text-muted-foreground">{variant.weight} - LKR {variant.price}</p>
+                      </div>
+                      {variant.image && (
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="icon"
+                          className="h-6 w-6 text-destructive"
+                          onClick={() => handleVariantChange(index, 'image', '')}
+                        >
+                          <Trash2 className="h-3 w-3" />
+                        </Button>
+                      )}
+                    </div>
+
+                    {variant.image ? (
+                      <div className="aspect-square relative bg-muted rounded overflow-hidden">
+                        <img src={variant.image} alt="Variant" className="w-full h-full object-cover" />
+                      </div>
+                    ) : (
+                      <div className="aspect-square bg-muted/50 rounded flex flex-col items-center justify-center p-4 border-2 border-dashed hover:bg-muted/80 transition-colors">
+                        <label className="cursor-pointer flex flex-col items-center gap-2 text-center w-full">
+                          <ImageIcon className="h-8 w-8 text-muted-foreground/50" />
+                          <span className="text-xs text-muted-foreground">Upload Image</span>
+                          <input
+                            type="file"
+                            className="hidden"
+                            accept="image/*"
+                            onChange={async (e) => {
+                              const file = e.target.files[0];
+                              if (!file) return;
+
+                              try {
+                                toast({ title: "Uploading...", description: `Uploading image for ${variant.type} ${variant.weight}...` });
+                                // 1. Sign
+                                const signResponse = await api.post('/cloudinary/sign');
+                                const { signature, timestamp, apiKey, folder } = signResponse.data;
+
+                                // 2. Upload
+                                const uploadData = new FormData();
+                                uploadData.append('file', file);
+                                uploadData.append('api_key', apiKey);
+                                uploadData.append('timestamp', timestamp);
+                                uploadData.append('signature', signature);
+                                uploadData.append('folder', folder);
+
+                                const response = await fetch(
+                                  `https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}/image/upload`,
+                                  { method: 'POST', body: uploadData }
+                                );
+
+                                if (!response.ok) throw new Error('Upload failed');
+                                const data = await response.json();
+
+                                // 3. Update State
+                                handleVariantChange(index, 'image', data.secure_url);
+                                toast({ title: "Success", description: "Image uploaded" });
+                              } catch (error) {
+                                console.error(error);
+                                toast({ title: "Error", description: "Upload failed", variant: "destructive" });
+                              }
+                            }}
+                          />
+                        </label>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </Card>
 
         {/* ACTIONS */}
