@@ -239,7 +239,7 @@ const ProductDetailsPage = () => {
               className="relative aspect-square bg-muted/30"
             >
               <img
-                src={product.imageUrl || product.image || "https://images.unsplash.com/photo-1694388001616-1176f534d72f"}
+                src={(selectedVariant?.image) || product.imageUrl || product.image || "https://images.unsplash.com/photo-1694388001616-1176f534d72f"}
                 alt={product.alt || product.name}
                 loading="lazy"
                 className="w-full h-full object-cover"

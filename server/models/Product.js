@@ -19,6 +19,10 @@ const variantSchema = new mongoose.Schema({
   stock_available: {
     type: Boolean,
     default: true
+  },
+  image: {
+    type: String,
+    required: false
   }
 }, { _id: false });
 
