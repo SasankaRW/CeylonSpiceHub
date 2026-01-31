@@ -261,24 +261,25 @@ const Layout = ({ children }) => {
               </div>
             </div>
           </div>
-          <div className="mt-12 pt-8 border-t border-primary-foreground/20 text-center">
-            <p className="text-sm opacity-70 font-light mb-4">
+          <div className="mt-12 pt-8 border-t border-primary-foreground/20 flex flex-col md:flex-row justify-between items-center gap-6">
+            <p className="text-sm opacity-70 font-light order-2 md:order-1">
               &copy; {new Date().getFullYear()} Ceylon Spice Hub (Pvt) Ltd. All Rights Reserved.
             </p>
-            <div className="flex flex-col items-center justify-center gap-2 opacity-60 hover:opacity-100 transition-opacity duration-300">
-              <span className="text-xs uppercase tracking-widest">Created By</span>
+
+            <div className="flex items-center gap-3 order-1 md:order-2">
+              <span className="text-[10px] uppercase tracking-widest opacity-60">Created By</span>
               <a
                 href="#"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 group"
+                className="flex items-center gap-2 group bg-background/10 hover:bg-background/20 px-3 py-1.5 rounded-full transition-all duration-300 border border-transparent hover:border-primary-foreground/10"
               >
                 <img
                   src="/images/milestones/tsl_logo.svg"
                   alt="Turing Solutions Ltd"
-                  className="h-6 w-auto grayscale group-hover:grayscale-0 transition-all duration-300"
+                  className="h-5 w-auto"
                 />
-                <span className="font-semibold text-sm">Turing Solutions Ltd</span>
+                <span className="font-medium text-xs tracking-wide group-hover:text-white transition-colors">Turing Solutions</span>
               </a>
             </div>
           </div>
