@@ -49,9 +49,9 @@ const featuredCategories = [
     link: "/products?category=Spices"
   },
   {
-    title: "Katagasma Range",
-    description: "Traditional chutneys, sauces, and jams made from family recipes.",
-    image: "https://res.cloudinary.com/dwuxumj4x/image/upload/v1769839922/Sinhala_Achcharu_1_tyby4m.jpg",
+    title: "Sauce Range",
+    description: "Traditional sauces made from family recipes.",
+    image: "https://res.cloudinary.com/dwuxumj4x/image/upload/v1769841368/sauces1_gd7rug.jpg",
     link: "/products?category=Sauces"
   },
   {
