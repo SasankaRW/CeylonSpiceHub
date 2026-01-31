@@ -262,9 +262,25 @@ const Layout = ({ children }) => {
             </div>
           </div>
           <div className="mt-12 pt-8 border-t border-primary-foreground/20 text-center">
-            <p className="text-sm opacity-70 font-light">
+            <p className="text-sm opacity-70 font-light mb-4">
               &copy; {new Date().getFullYear()} Ceylon Spice Hub (Pvt) Ltd. All Rights Reserved.
             </p>
+            <div className="flex flex-col items-center justify-center gap-2 opacity-60 hover:opacity-100 transition-opacity duration-300">
+              <span className="text-xs uppercase tracking-widest">Created By</span>
+              <a
+                href="#"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 group"
+              >
+                <img
+                  src="/images/milestones/tsl_logo.svg"
+                  alt="Turing Solutions Ltd"
+                  className="h-6 w-auto grayscale group-hover:grayscale-0 transition-all duration-300"
+                />
+                <span className="font-semibold text-sm">Turing Solutions Ltd</span>
+              </a>
+            </div>
           </div>
         </div>
       </footer>
