@@ -12,40 +12,32 @@ import { getLatestProducts } from '@/api/index';
 
 const slideshowData = [
   {
-    title: "Ethically Sourced",
+    title: "The Spirit of Ceylon",
     tagline: "Grown with Love, Preserving Mother Nature's Best",
     imageDescription: "Every product tells a story—from the hands of rural Ceylon farmers to your kitchen.",
-    alt: "Ethical spice farming"
+    alt: "Ethical spice farming",
+    image: "https://res.cloudinary.com/dwuxumj4x/image/upload/v1769839104/slide1_ja8pwy.png"
   },
   {
     title: "Farm to You, Pure and True",
-    tagline: "From Our Family Farm to Your Table—100% Natural & Preservative-Free",
+    tagline: "From Our Family Farm to Your Table 100% Natural & Preservative-Free",
     imageDescription: "Handcrafted with care, grown with love—experience the untouched purity of Pasgoda's finest.",
-    alt: "Farm to table spices"
+    alt: "Farm to table spices",
+    image: "https://res.cloudinary.com/dwuxumj4x/image/upload/v1769839104/slide2_nicg3b.png"
   },
   {
     title: "Quality You Can Taste",
     tagline: "Taste So Tantalizing, Quality So Unmatched",
     imageDescription: "Hygienically packed and carefully processed—crafted with your satisfaction in mind.",
-    alt: "Quality spices"
+    alt: "Quality spices",
+    image: "https://res.cloudinary.com/dwuxumj4x/image/upload/v1769839485/slide_2_u14yty.png"
   },
   {
     title: "Pure & Natural",
     tagline: "100% Natural, 0% Compromise",
     imageDescription: "Free from preservatives, full of nature's goodness—just the way it's meant to be.",
-    alt: "Pure spices"
-  },
-  {
-    title: "Nature's Goodness, Bottled",
-    tagline: "No Preservatives. No Additives. Just Pure Ceylon Flavor.",
-    imageDescription: "Rooted in tradition, crafted sustainably—taste the wellness in every bite.",
-    alt: "Natural products"
-  },
-  {
-    title: "Clean Ingredients",
-    tagline: "Nothing Added, Everything Real",
-    imageDescription: "No preservatives. No additives. Just pure, natural ingredients you can trust.",
-    alt: "Clean ingredients"
+    alt: "Pure spices",
+    image: "https://res.cloudinary.com/dwuxumj4x/image/upload/v1769839105/slide4_af4px8.png"
   }
 ];
 
@@ -53,19 +45,19 @@ const featuredCategories = [
   {
     title: "Ceylon Spices",
     description: "The purest form of Ceylon's legendary spices, from fragrant cinnamon to fiery peppercorns.",
-    image: "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=800&q=80",
+    image: "https://res.cloudinary.com/dwuxumj4x/image/upload/v1769839858/SPICES_1_seeh3o.jpg",
     link: "/products?category=Spices"
   },
   {
-    title: "Katugasma Range",
+    title: "Katagasma Range",
     description: "Traditional chutneys, sauces, and jams made from family recipes.",
-    image: "https://images.unsplash.com/photo-1622035345717-380d603e8712?auto=format&fit=crop&w=800&q=80",
+    image: "https://res.cloudinary.com/dwuxumj4x/image/upload/v1769839922/Sinhala_Achcharu_1_tyby4m.jpg",
     link: "/products?category=Sauces"
   },
   {
     title: "Fruitopia Range",
     description: "Unique fruit wines and beverages, fermented to perfection.",
-    image: "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=800&q=80",
+    image: "https://res.cloudinary.com/dwuxumj4x/image/upload/v1769839983/WINE_5_vgjktj.jpg",
     link: "/products?category=Wines"
   }
 ];
@@ -130,13 +122,12 @@ const HomePage = () => {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="relative"
           >
-            <div className="relative rounded-2xl overflow-hidden shadow-2xl aspect-[4/3] group">
+            <div className="relative z-10 group">
               <img
-                src="https://images.unsplash.com/photo-1564419320461-6870880221ad?q=80&w=1000&auto=format&fit=crop"
-                alt="Ceylon Spice Hub Farm"
-                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                src="https://res.cloudinary.com/dwuxumj4x/image/upload/v1769840185/RANGE_a5xpht.png"
+                alt="Ceylon Spice Hub Product Range"
+                className="w-full h-auto object-contain drop-shadow-2xl transition-all duration-500 group-hover:scale-105 group-hover:-rotate-2 group-hover:drop-shadow-[0_25px_25px_rgba(0,0,0,0.25)]"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
             </div>
             {/* Decorative element */}
             <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-primary/10 rounded-full blur-3xl -z-10"></div>

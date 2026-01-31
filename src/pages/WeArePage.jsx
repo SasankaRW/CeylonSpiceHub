@@ -30,7 +30,7 @@ const WeArePage = () => {
           className="relative h-[400px] rounded-2xl overflow-hidden shadow-xl"
         >
           <img
-            src="https://images.unsplash.com/photo-1596560548464-f010549b84d7?q=80&w=1000&auto=format&fit=crop"
+            src="https://res.cloudinary.com/dwuxumj4x/image/upload/v1769840183/PAGE_4_s7p5ko.jpg"
             alt="Pasgoda Farm"
             className="w-full h-full object-cover"
           />

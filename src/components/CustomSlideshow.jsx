@@ -53,7 +53,9 @@ const CustomSlideshow = ({ slides }) => {
     if (slides && slides.length > 0) {
       const nextIndex = (currentIndex + 1) % slides.length;
       const img = new Image();
-      img.src = "https://images.unsplash.com/photo-1675023112817-52b789fd2ef0?auto=format&fit=crop&w=1920&q=80";
+      if (slides[nextIndex]?.image) {
+        img.src = slides[nextIndex].image;
+      }
     }
   }, [currentIndex, slides]);
 
@@ -76,7 +78,7 @@ const CustomSlideshow = ({ slides }) => {
           <img
             className="w-full h-full object-cover"
             alt={slides[currentIndex].alt}
-            src="https://images.unsplash.com/photo-1675023112817-52b789fd2ef0?auto=format&fit=crop&w=1920&q=80"
+            src={slides[currentIndex].image}
             loading="eager"
             fetchpriority="high" />
           <div className="absolute inset-0 bg-black/50 flex flex-col items-center justify-center text-center p-8">

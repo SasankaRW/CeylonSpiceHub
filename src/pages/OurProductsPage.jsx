@@ -86,7 +86,7 @@ const OurProductsPage = () => {
     'Sauces': 'https://res.cloudinary.com/dwuxumj4x/image/upload/v1769808477/sauces_opy0tt.jpg',
     'Chutney': 'https://res.cloudinary.com/dwuxumj4x/image/upload/v1769808281/CHUTNEY_2_p6g3a7.jpg',
     'Jam': 'https://res.cloudinary.com/dwuxumj4x/image/upload/v1769808438/JAM1_ip8qqy.jpg',
-    'Wines': 'https://res.cloudinary.com/dwuxumj4x/image/upload/v1769808522/wine_-1_hjidbg.jpg',
+    'Wines': 'https://res.cloudinary.com/dwuxumj4x/image/upload/v1769834443/fruitopia_mgwklg.jpg',
     'Spices': 'https://res.cloudinary.com/dwuxumj4x/image/upload/v1769808573/spices_r8wkkx.jpg'
   };
 
