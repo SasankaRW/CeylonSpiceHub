@@ -23,7 +23,7 @@ const slideshowData = [
     tagline: "From Our Family Farm to Your Table 100% Natural & Preservative-Free",
     imageDescription: "Handcrafted with care, grown with love—experience the untouched purity of Pasgoda's finest.",
     alt: "Farm to table spices",
-    image: "https://res.cloudinary.com/dwuxumj4x/image/upload/v1769841177/slide2_ax47am.png"
+    image: "https://res.cloudinary.com/dwuxumj4x/image/upload/v1769842327/slide2_x1sbcu.png"
   },
   {
     title: "Quality You Can Taste",
