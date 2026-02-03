@@ -226,12 +226,12 @@ const HomePage = () => {
             {
               title: "Ethically Sourced",
               desc: "Supporting local farmers and sustainable practices for a better tomorrow.",
-              img: "https://images.unsplash.com/photo-1532666661413-871a4227e256"
+              img: "https://res.cloudinary.com/dwuxumj4x/image/upload/v1770149702/Pineapple_jam_4_ttxaje.jpg"
             },
             {
               title: "Freshness Guaranteed",
               desc: "Packed with care to lock in freshness, from our home to yours.",
-              img: "https://images.unsplash.com/photo-1647462906359-a22489637a21"
+              img: "https://res.cloudinary.com/dwuxumj4x/image/upload/v1770149677/Pepper_c44hmg.jpg"
             }
           ].map((item, i) => (
             <motion.div
