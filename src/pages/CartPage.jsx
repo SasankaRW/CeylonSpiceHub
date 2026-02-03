@@ -70,7 +70,7 @@ const CartPage = () => {
       <AnimatePresence mode="popLayout">
         {cart.map((item) => {
           const itemId = item.cartItemId || item._id || item.id;
-          const itemImage = item.imageUrl || item.image || "https://images.unsplash.com/photo-1694388001616-1176f534d72f";
+          const itemImage = item.imageUrl || item.image || "/images/milestones/Image_not_available.png";
           const variantInfo = item.variantType && item.variantWeight
             ? `${item.variantType === 'pouch' ? 'Pouch' : 'Glass Bottle'} - ${item.variantWeight}`
             : '';

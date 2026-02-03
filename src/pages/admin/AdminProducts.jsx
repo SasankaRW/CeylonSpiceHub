@@ -208,7 +208,7 @@ const AdminProducts = () => {
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div className="flex items-center space-x-4">
                 <img
-                  src={product.imageUrl || "https://images.unsplash.com/photo-1694388001616-1176f534d72f"}
+                  src={product.imageUrl || "/images/milestones/Image_not_available.png"}
                   alt={product.name}
                   className="w-16 h-16 object-cover rounded"
                 />
