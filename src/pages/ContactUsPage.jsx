@@ -146,15 +146,7 @@ const ContactUsPage = () => {
             whileHover={{ scale: 1.01 }}
             transition={{ duration: 0.3 }}
           >
-            <iframe
-              width="100%"
-              height="100%"
-              style={{ border: 0 }}
-              loading="lazy"
-              allowFullScreen
-              referrerPolicy="no-referrer-when-downgrade"
-              src="https://www.openstreetmap.org/export/embed.html?bbox=79.8488%2C6.9000%2C79.8700%2C6.9200&layer=mapnik&marker=6.9100%2C79.8594">
-            </iframe>
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2801.0959339261744!2d79.89462086943047!3d6.848838279386835!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae25b5e99174ecd%3A0x82aebad613ad495f!2sThe%20Ceylon%20Spice%20Hub!5e0!3m2!1sen!2slk!4v1770149161944!5m2!1sen!2slk" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
           </motion.div>
 
         </motion.div>

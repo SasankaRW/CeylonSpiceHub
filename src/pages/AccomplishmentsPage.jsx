@@ -17,11 +17,11 @@ const milestones = [
   {
     year: "2025",
     events: [
-      { month: "December", title: "Made In Sri Lanka", desc: "Made In Sri Lanka Logo was awarded for 12 products.", icon: Award },
+      { month: "December", title: "Made In Sri Lanka", desc: "Made In Sri Lanka Logo was awarded for 12 products.", icon: Award, img: "https://res.cloudinary.com/dwuxumj4x/image/upload/v1770148558/MISL_LOGO_AWARD_CEREMONY_yp5jcl.jpg" },
       { month: "December", title: "Wine Tasting Demo", desc: "Wine Tasting Demo Day at The Saturday Good Market Event.", icon: Globe },
       { month: "December", title: "Chutney Pallet", desc: "Chutney Pallet increased to 12.", icon: Utensils },
       { month: "December", title: "Cookery Demo", desc: "Cookery demo with Thisara TV.", icon: Zap },
-      { month: "November", title: "Entrepreneur Award", desc: "Western Province Entrepreneur Award 2024 – Runners Up Micro Category.", icon: Award },
+      { month: "November", title: "Entrepreneur Award", desc: "Western Province Entrepreneur Award 2024 – Runners Up Micro Category.", icon: Award, img: "https://res.cloudinary.com/dwuxumj4x/image/upload/v1770148575/WESTERN_PROVINCE_ENTERPRENUER_AWARDS_sifzvb.jpg" },
       { month: "November", title: "INFOTEL 2024", desc: "Participated in the SME Pavilion at the INFOTEL 2024.", icon: ShoppingBag },
       { month: "November", title: "Cinnamon Sugar", desc: "Cinnamon Sugar was introduced to the Market.", icon: Utensils },
       { month: "July", title: "Sauce Pallet", desc: "Sauce Pallet increased to 16.", icon: Utensils },
@@ -33,15 +33,15 @@ const milestones = [
     events: [
       { month: "December", title: "First Supermarket", desc: "KANDARA Supermarket – Our first supermarket entry.", icon: ShoppingBag },
       { month: "August", title: "Fruitopia Wine", desc: "Fruitopia fermented wine was introduced.", icon: Globe },
-      { month: "August", title: "ESG Silver Award", desc: "MSME ESG Silver Award awarded by MBA Alumni Association of University of Colombo.", icon: Award },
+      { month: "August", title: "ESG Silver Award", desc: "MSME ESG Silver Award awarded by MBA Alumni Association of University of Colombo.", icon: Award, img: "https://res.cloudinary.com/dwuxumj4x/image/upload/v1770148668/ESG_3_u6kb5r.jpg" },
     ]
   },
   {
     year: "2023",
     events: [
-      { month: "October", title: "Good Market Approved", desc: "GOOD MARKET approved vendor.", icon: Award },
+      { month: "October", title: "Good Market Approved", desc: "GOOD MARKET approved vendor.", icon: Award, img: "https://res.cloudinary.com/dwuxumj4x/image/upload/v1770148694/Untitled-1-certificate_tm6pfr.jpg" },
       { month: "August", title: "Mini Outlet Opening", desc: "Soft Opening of mini outlet at Divulpitiya & Online Sales.", icon: ShoppingBag },
-      { month: "July", title: "KATAGASMA Range", desc: "Launched KATAGASMA range.", icon: Utensils },
+      { month: "July", title: "KATAGASMA Range", desc: "Launched KATAGASMA range.", icon: Utensils, img: "https://res.cloudinary.com/dwuxumj4x/image/upload/v1770148986/KATAGASMA_RANGE_en4bdy.jpg" },
       { month: "April", title: "KADAMALLA Gift Pack", desc: "New Year Gift Pack – KADAMALLA.", icon: Gift },
     ]
   },
@@ -60,7 +60,7 @@ const AccomplishmentsPage = () => {
       {/* HERO SECTION */}
       <section className="relative h-[300px] rounded-b-[2rem] overflow-hidden shadow-2xl mx-0 lg:mx-0 group">
         <img
-          src="https://images.unsplash.com/photo-1596560548464-f010549b84d7?q=80&w=1920&auto=format&fit=crop"
+          src="https://res.cloudinary.com/dwuxumj4x/image/upload/v1770148805/FULL_RANGE_STALL_DISPLAY_o94tgk.jpg"
           alt="Ceylon Spice Hub Journey"
           className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
         />
@@ -199,6 +199,53 @@ const AccomplishmentsPage = () => {
           </div>
         </div>
       </div>
+
+      {/* AWARDS GALLERY */}
+      <section className="container mx-auto px-4 max-w-6xl">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-8"
+        >
+          <h2 className="text-2xl font-bold text-foreground inline-flex items-center gap-3">
+            <Award className="h-6 w-6 text-primary" />
+            Awards & Certifications
+          </h2>
+          <div className="w-12 h-1 bg-primary mx-auto mt-2 rounded-full opacity-80"></div>
+        </motion.div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {[
+            { src: "https://res.cloudinary.com/dwuxumj4x/image/upload/v1770148834/AWARDS_d6nzb8.jpg", alt: "Awards" },
+            { src: "https://res.cloudinary.com/dwuxumj4x/image/upload/v1770148558/MISL_LOGO_AWARD_CEREMONY_yp5jcl.jpg", alt: "MISL Logo Award Ceremony" },
+            { src: "https://res.cloudinary.com/dwuxumj4x/image/upload/v1770148575/WESTERN_PROVINCE_ENTERPRENUER_AWARDS_sifzvb.jpg", alt: "Western Province Entrepreneur Awards" },
+            { src: "https://res.cloudinary.com/dwuxumj4x/image/upload/v1770148694/Untitled-1-certificate_tm6pfr.jpg", alt: "Good Market Certificate" },
+            { src: "https://res.cloudinary.com/dwuxumj4x/image/upload/v1770148668/ESG_3_u6kb5r.jpg", alt: "ESG Silver Award" },
+          ].map((award, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+              className="group"
+            >
+              <Card className="overflow-hidden hover:shadow-2xl transition-all duration-300 border-border/50">
+                <div className="aspect-[4/3] overflow-hidden bg-muted/30">
+                  <img
+                    src={award.src}
+                    alt={award.alt}
+                    className="w-full h-full object-contain bg-white transition-transform duration-700 group-hover:scale-105"
+                    loading="lazy"
+                  />
+                </div>
+              </Card>
+            </motion.div>
+          ))}
+        </div>
+      </section>
 
       {/* FOOTER */}
       <div className="container mx-auto px-4">
