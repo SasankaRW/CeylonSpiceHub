@@ -141,13 +141,29 @@ const ContactUsPage = () => {
           </Card>
 
 
-          <motion.div
-            className="rounded-lg overflow-hidden shadow-soft hover:shadow-glow h-72 transition-all duration-300"
+          <motion.a
+            href="https://maps.app.goo.gl/KsvTSb8cPqfqXSJWA"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="block rounded-lg overflow-hidden shadow-soft hover:shadow-glow h-72 transition-all duration-300 relative group"
             whileHover={{ scale: 1.01 }}
             transition={{ duration: 0.3 }}
           >
-            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2801.0959339261744!2d79.89462086943047!3d6.848838279386835!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae25b5e99174ecd%3A0x82aebad613ad495f!2sThe%20Ceylon%20Spice%20Hub!5e0!3m2!1sen!2slk!4v1770149161944!5m2!1sen!2slk" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-          </motion.div>
+            <iframe 
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2801.0959339261744!2d79.89462086943047!3d6.848838279386835!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae25b5e99174ecd%3A0x82aebad613ad495f!2sThe%20Ceylon%20Spice%20Hub!5e0!3m2!1sen!2slk!4v1770149161944!5m2!1sen!2slk" 
+              width="100%" 
+              height="100%" 
+              style={{ border: 0, pointerEvents: 'none' }} 
+              allowFullScreen 
+              loading="lazy" 
+              referrerPolicy="no-referrer-when-downgrade"
+            />
+            <div className="absolute inset-0 flex items-center justify-center bg-transparent group-hover:bg-black/5 transition-colors">
+              <div className="opacity-0 group-hover:opacity-100 transition-opacity bg-primary/90 text-primary-foreground px-4 py-2 rounded-lg font-semibold shadow-lg">
+                Click to open in Google Maps
+              </div>
+            </div>
+          </motion.a>
 
         </motion.div>
       </div>
