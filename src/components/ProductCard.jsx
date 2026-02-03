@@ -62,10 +62,9 @@ const ProductCard = ({ product }) => {
     >
       <Card className="group h-full flex flex-col overflow-hidden shadow-soft hover:shadow-glow transition-all duration-300 bg-card border-border/50 hover:border-primary/30">
         {/* Image Container */}
-        <div className="relative aspect-square overflow-hidden bg-muted/30">
+        <div className="relative aspect-square overflow-hidden bg-white flex items-center justify-center">
           <img
-            className={`w-full h-full transition-transform duration-700 ease-out group-hover:scale-110 ${(product.imageUrl || product.image) ? 'object-cover' : 'object-contain p-4'
-              }`}
+            className="w-full h-full transition-transform duration-700 ease-out group-hover:scale-110 object-contain"
             alt={product.alt || product.name}
             loading="lazy"
             src={product.imageUrl || product.image || "/images/milestones/Image_not_available.png"}
