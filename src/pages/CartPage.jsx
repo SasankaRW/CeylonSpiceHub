@@ -83,23 +83,24 @@ const CartPage = () => {
               exit={{ opacity: 0, x: 20, transition: { duration: 0.2 } }}
               transition={{ duration: 0.3 }}
             >
-              <Card className="p-4 shadow-soft hover:shadow-glow transition-all duration-300 border border-border/50">
+              <Card className="p-4 sm:p-5 shadow-soft hover:shadow-glow transition-all duration-300 border border-border/50">
                 <div className="flex flex-col sm:flex-row sm:items-center gap-4">
                   <img
                     src={itemImage}
                     alt={item.name}
                     loading="lazy"
-                    className="w-24 h-24 sm:w-24 sm:h-24 object-cover rounded self-start"
+                    className="w-20 h-20 sm:w-24 sm:h-24 object-cover rounded self-start"
                   />
                   <div className="flex-grow min-w-0">
                     <h3 className="font-semibold text-base sm:text-lg break-words">{item.name}</h3>
-                    <p className="text-muted-foreground">{item.weight || item.variantWeight}</p>
+                    <p className="text-sm sm:text-base text-muted-foreground">{item.weight || item.variantWeight}</p>
                     {variantInfo && (
-                      <p className="text-sm text-muted-foreground">{variantInfo}</p>
+                      <p className="text-xs sm:text-sm text-muted-foreground">{variantInfo}</p>
                     )}
                     <p className="text-primary font-bold">LKR {(item.price || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
                   </div>
-                  <div className="flex items-center gap-2 self-start sm:self-auto">
+                  <div className="flex w-full sm:w-auto items-center justify-between sm:justify-start gap-2 pt-1 sm:pt-0 self-start sm:self-auto">
+                    <div className="flex items-center gap-2">
                     <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                       <Button
                         variant="outline"
@@ -110,7 +111,7 @@ const CartPage = () => {
                         <Minus className="h-4 w-4" />
                       </Button>
                     </motion.div>
-                    <span className="w-8 text-center">{item.quantity}</span>
+                    <span className="w-8 text-center text-sm sm:text-base">{item.quantity}</span>
                     <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                       <Button
                         variant="outline"
@@ -121,6 +122,7 @@ const CartPage = () => {
                         <Plus className="h-4 w-4" />
                       </Button>
                     </motion.div>
+                    </div>
                     <motion.div whileHover={{ scale: 1.1, rotate: 5 }} whileTap={{ scale: 0.9 }}>
                       <Button
                         variant="ghost"

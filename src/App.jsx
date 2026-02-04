@@ -26,7 +26,7 @@ import { AnimatePresence } from 'framer-motion';
 function App() {
   const location = useLocation();
   return (
-    <ThemeProvider defaultTheme="dark" storageKey="ceylon-spice-theme">
+    <ThemeProvider>
       <Layout>
         <ScrollToTop />
         <AnimatePresence mode="wait">

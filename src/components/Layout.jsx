@@ -14,7 +14,6 @@ import { cn } from '@/lib/utils';
 import CartIcon from '@/components/CartIcon';
 import { Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import ThemeToggle from '@/components/ThemeToggle';
 
 const navLinks = [
   { to: '/', label: 'Home' },
@@ -120,7 +119,6 @@ const Layout = ({ children }) => {
             </NavigationMenu>
             {!isAdmin && (
               <div className="flex items-center space-x-2">
-                <ThemeToggle />
                 <CartIcon />
               </div>
             )}
@@ -128,7 +126,6 @@ const Layout = ({ children }) => {
 
           {/* Mobile Menu Button */}
           <div className="xl:hidden flex items-center space-x-2">
-            <ThemeToggle />
             {!isAdmin && <CartIcon />}
             <Button variant="ghost" size="icon" onClick={toggleMobileMenu} className="ml-2">
               {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
