@@ -67,79 +67,120 @@ const CartPage = () => {
     >
       <h1 className="text-2xl sm:text-3xl font-bold text-primary mb-6 sm:mb-8 font-serif">Shopping Cart</h1>
 
-      <AnimatePresence mode="popLayout">
-        {cart.map((item) => {
-          const itemId = item.cartItemId || item._id || item.id;
-          const itemImage = item.imageUrl || item.image || "/images/milestones/Image_not_available.png";
-          const variantInfo = item.variantType && item.variantWeight
-            ? `${item.variantType === 'pouch' ? 'Pouch' : 'Glass Bottle'} - ${item.variantWeight}`
-            : '';
-          return (
-            <motion.div
-              key={`cart-item-${itemId}`}
-              layout
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: 20, transition: { duration: 0.2 } }}
-              transition={{ duration: 0.3 }}
-            >
-              <Card className="p-4 sm:p-5 shadow-soft hover:shadow-glow transition-all duration-300 border border-border/50">
-                <div className="flex flex-col sm:flex-row sm:items-center gap-4">
-                  <img
-                    src={itemImage}
-                    alt={item.name}
-                    loading="lazy"
-                    className="w-20 h-20 sm:w-24 sm:h-24 object-cover rounded self-start"
-                  />
-                  <div className="flex-grow min-w-0">
-                    <h3 className="font-semibold text-base sm:text-lg break-words">{item.name}</h3>
-                    <p className="text-sm sm:text-base text-muted-foreground">{item.weight || item.variantWeight}</p>
-                    {variantInfo && (
-                      <p className="text-xs sm:text-sm text-muted-foreground">{variantInfo}</p>
-                    )}
-                    <p className="text-primary font-bold">LKR {(item.price || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
-                  </div>
-                  <div className="flex w-full sm:w-auto items-center justify-between sm:justify-start gap-2 pt-1 sm:pt-0 self-start sm:self-auto">
-                    <div className="flex items-center gap-2">
-                    <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                      <Button
-                        variant="outline"
-                        size="icon"
-                        onClick={() => handleQuantityChange(itemId, item.quantity - 1)}
-                        disabled={item.quantity <= 1}
-                      >
-                        <Minus className="h-4 w-4" />
-                      </Button>
-                    </motion.div>
-                    <span className="w-8 text-center text-sm sm:text-base">{item.quantity}</span>
-                    <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                      <Button
-                        variant="outline"
-                        size="icon"
-                        onClick={() => handleQuantityChange(itemId, item.quantity + 1)}
-                        disabled={item.quantity >= (item.stock || 999)}
-                      >
-                        <Plus className="h-4 w-4" />
-                      </Button>
-                    </motion.div>
+      <div className="space-y-4">
+        <AnimatePresence mode="popLayout">
+          {cart.map((item) => {
+            const itemId = item.cartItemId || item._id || item.id;
+            const itemImage = item.imageUrl || item.image || "/images/milestones/Image_not_available.png";
+            const variantInfo = item.variantType && item.variantWeight
+              ? `${item.variantType === 'pouch' ? 'Pouch' : 'Glass Bottle'} - ${item.variantWeight}`
+              : '';
+            return (
+              <motion.div
+                key={`cart-item-${itemId}`}
+                layout
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 20, transition: { duration: 0.2 } }}
+                transition={{ duration: 0.3 }}
+              >
+                <Card className="p-3 sm:p-5 shadow-soft hover:shadow-glow transition-all duration-300 border border-border/50">
+                  <div className="flex flex-row items-start sm:items-center gap-3 sm:gap-4">
+                    <img
+                      src={itemImage}
+                      alt={item.name}
+                      loading="lazy"
+                      className="w-16 h-16 sm:w-20 sm:h-20 object-cover rounded flex-shrink-0"
+                    />
+                    <div className="flex-grow min-w-0 flex flex-col justify-between">
+                      <div className="space-y-1">
+                        <h3 className="font-semibold text-sm sm:text-lg break-words leading-tight">{item.name}</h3>
+                        <p className="text-xs sm:text-sm text-muted-foreground">{item.weight || item.variantWeight}</p>
+                        {variantInfo && (
+                          <p className="text-xs text-muted-foreground">{variantInfo}</p>
+                        )}
+                        <p className="text-primary font-bold text-sm sm:text-base">LKR {(item.price || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
+                      </div>
+                      <div className="flex items-center justify-between mt-3 sm:mt-0 sm:hidden">
+                        <div className="flex items-center gap-1">
+                          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                            <Button
+                              variant="outline"
+                              size="icon"
+                              className="h-7 w-7"
+                              onClick={() => handleQuantityChange(itemId, item.quantity - 1)}
+                              disabled={item.quantity <= 1}
+                            >
+                              <Minus className="h-3 w-3" />
+                            </Button>
+                          </motion.div>
+                          <span className="w-8 text-center text-sm">{item.quantity}</span>
+                          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                            <Button
+                              variant="outline"
+                              size="icon"
+                              className="h-7 w-7"
+                              onClick={() => handleQuantityChange(itemId, item.quantity + 1)}
+                              disabled={item.quantity >= (item.stock || 999)}
+                            >
+                              <Plus className="h-3 w-3" />
+                            </Button>
+                          </motion.div>
+                        </div>
+                        <motion.div whileHover={{ scale: 1.1, rotate: 5 }} whileTap={{ scale: 0.9 }}>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-7 w-7 text-destructive hover:text-destructive/90 hover:bg-destructive/10"
+                            onClick={() => handleRemoveItem(itemId)}
+                          >
+                            <Trash2 className="h-3 w-3" />
+                          </Button>
+                        </motion.div>
+                      </div>
                     </div>
-                    <motion.div whileHover={{ scale: 1.1, rotate: 5 }} whileTap={{ scale: 0.9 }}>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        className="text-destructive hover:text-destructive/90 hover:bg-destructive/10"
-                        onClick={() => handleRemoveItem(itemId)}
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    </motion.div>
+                    <div className="hidden sm:flex items-center gap-2">
+                      <div className="flex items-center gap-2">
+                        <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                          <Button
+                            variant="outline"
+                            size="icon"
+                            onClick={() => handleQuantityChange(itemId, item.quantity - 1)}
+                            disabled={item.quantity <= 1}
+                          >
+                            <Minus className="h-4 w-4" />
+                          </Button>
+                        </motion.div>
+                        <span className="w-8 text-center text-base">{item.quantity}</span>
+                        <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                          <Button
+                            variant="outline"
+                            size="icon"
+                            onClick={() => handleQuantityChange(itemId, item.quantity + 1)}
+                            disabled={item.quantity >= (item.stock || 999)}
+                          >
+                            <Plus className="h-4 w-4" />
+                          </Button>
+                        </motion.div>
+                      </div>
+                      <motion.div whileHover={{ scale: 1.1, rotate: 5 }} whileTap={{ scale: 0.9 }}>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="text-destructive hover:text-destructive/90 hover:bg-destructive/10"
+                          onClick={() => handleRemoveItem(itemId)}
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </motion.div>
+                    </div>
                   </div>
-                </div>
-              </Card>
-            </motion.div>
-          );
-        })}
-      </AnimatePresence>
+                </Card>
+              </motion.div>
+            );
+          })}
+        </AnimatePresence>
+      </div>
 
       <div className="mt-8 space-y-4">
         <Card className="p-6 shadow-soft hover:shadow-glow transition-all duration-300 border border-border/50">
