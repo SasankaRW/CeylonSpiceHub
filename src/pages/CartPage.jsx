@@ -63,9 +63,9 @@ const CartPage = () => {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="max-w-4xl mx-auto"
+      className="max-w-4xl mx-auto px-4 sm:px-0"
     >
-      <h1 className="text-3xl font-bold text-primary mb-8 font-serif">Shopping Cart</h1>
+      <h1 className="text-2xl sm:text-3xl font-bold text-primary mb-6 sm:mb-8 font-serif">Shopping Cart</h1>
 
       <AnimatePresence mode="popLayout">
         {cart.map((item) => {
@@ -84,22 +84,22 @@ const CartPage = () => {
               transition={{ duration: 0.3 }}
             >
               <Card className="p-4 shadow-soft hover:shadow-glow transition-all duration-300 border border-border/50">
-                <div className="flex items-center gap-4">
+                <div className="flex flex-col sm:flex-row sm:items-center gap-4">
                   <img
                     src={itemImage}
                     alt={item.name}
                     loading="lazy"
-                    className="w-24 h-24 object-cover rounded"
+                    className="w-24 h-24 sm:w-24 sm:h-24 object-cover rounded self-start"
                   />
-                  <div className="flex-grow">
-                    <h3 className="font-semibold text-lg">{item.name}</h3>
+                  <div className="flex-grow min-w-0">
+                    <h3 className="font-semibold text-base sm:text-lg break-words">{item.name}</h3>
                     <p className="text-muted-foreground">{item.weight || item.variantWeight}</p>
                     {variantInfo && (
                       <p className="text-sm text-muted-foreground">{variantInfo}</p>
                     )}
                     <p className="text-primary font-bold">LKR {(item.price || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
                   </div>
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 self-start sm:self-auto">
                     <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                       <Button
                         variant="outline"
@@ -141,9 +141,9 @@ const CartPage = () => {
 
       <div className="mt-8 space-y-4">
         <Card className="p-6 shadow-soft hover:shadow-glow transition-all duration-300 border border-border/50">
-          <div className="flex justify-between items-center text-lg font-semibold mb-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-lg font-semibold mb-4">
             <span>Subtotal:</span>
-            <span>LKR {total.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+            <span className="break-words">LKR {total.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
           </div>
           <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
             <Button

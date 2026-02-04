@@ -90,7 +90,7 @@ const HomePage = () => {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="space-y-6"
+            className="space-y-6 text-center md:text-left"
           >
             <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6 text-balance">Ayu-Bo-Wewa! May You Live Long.</h2>
             <div className="text-lg text-muted-foreground max-w-4xl mx-auto mb-8 space-y-4 leading-relaxed">
@@ -108,7 +108,7 @@ const HomePage = () => {
                 We create not just taste, we craft experiences, empower farmers, and protect our planet.
               </p>
             </div>
-            <div className="pt-4">
+            <div className="pt-4 flex justify-center md:justify-start">
               <Button asChild size="lg" className="px-8 shadow-lg hover:shadow-xl transition-all">
                 <Link to="/we-are">Discover Our Story →</Link>
               </Button>
@@ -196,12 +196,12 @@ const HomePage = () => {
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent transition-opacity duration-300 group-hover:from-black/90"></div>
 
                     {/* Content */}
-                    <div className="absolute bottom-0 left-0 p-8 w-full text-white">
+                    <div className="absolute bottom-0 left-0 p-8 w-full text-white text-center md:text-left">
                       <h3 className="text-2xl font-bold mb-2 translate-y-2 transition-transform duration-300 group-hover:translate-y-0">{category.title}</h3>
                       <p className="text-gray-200 text-sm opacity-0 translate-y-4 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0 leading-relaxed">
                         {category.description}
                       </p>
-                      <div className="mt-4 opacity-0 transition-opacity duration-300 group-hover:opacity-100 text-primary-foreground font-semibold flex items-center gap-2">
+                      <div className="mt-4 opacity-0 transition-opacity duration-300 group-hover:opacity-100 text-primary-foreground font-semibold flex items-center justify-center md:justify-start gap-2">
                         Explore <span className="translate-x-0 transition-transform group-hover:translate-x-1">→</span>
                       </div>
                     </div>
