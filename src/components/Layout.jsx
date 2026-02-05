@@ -46,7 +46,7 @@ const Layout = ({ children }) => {
               whileHover={{ rotate: [0, -5, 5, 0] }}
               transition={{ duration: 0.5 }}
             />
-            <span className="text-xl md:text-2xl font-bold text-primary tracking-tight group-hover:text-primary/80 transition-colors">Ceylon Spice Hub</span>
+            <span className="text-xl md:text-2xl font-bold text-primary tracking-tight group-hover:text-primary/80 transition-colors">The Ceylon Spice Hub</span>
           </Link>
 
           {/* Desktop Navigation */}
@@ -229,7 +229,7 @@ const Layout = ({ children }) => {
                 alt="Ceylon Spice Hub Logo"
                 className="h-20 w-20 mb-4 opacity-90"
               />
-              <h3 className="text-2xl font-bold mb-2">Ceylon Spice Hub</h3>
+              <h3 className="text-2xl font-bold mb-2">The Ceylon Spice Hub</h3>
               <p className="text-sm opacity-80 font-light">Authentic Taste of Nature</p>
             </div>
             <div>

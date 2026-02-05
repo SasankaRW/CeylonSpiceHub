@@ -215,7 +215,7 @@ const HomePage = () => {
 
       {/* BENEFITS SECTION */}
       <section className="container mx-auto px-6">
-        <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">Why Choose Ceylon Spice Hub?</h2>
+        <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">Why Choose The Ceylon Spice Hub?</h2>
         <div className="grid md:grid-cols-3 gap-8">
           {[
             {
