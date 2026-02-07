@@ -81,32 +81,44 @@ const CustomSlideshow = ({ slides }) => {
             src={slides[currentIndex].image}
             loading="eager"
             fetchpriority="high" />
-          <div className="absolute inset-0 bg-black/50 flex flex-col items-center justify-center text-center p-8">
-            <motion.h2
-              className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3, duration: 0.5 }}
-            >
-              {slides[currentIndex].title}
-            </motion.h2>
-            <motion.p
-              className="text-lg md:text-xl text-gray-200 max-w-2xl mb-8"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5, duration: 0.5 }}
-            >
-              {slides[currentIndex].tagline}
-            </motion.p>
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.7, duration: 0.5 }}
-            >
-              <Button asChild size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-lg px-8 py-6 shadow-xl hover:shadow-2xl transition-all duration-300">
-                <Link to="/products">Shop Now</Link>
-              </Button>
-            </motion.div>
+          <div className="absolute inset-0 flex items-center justify-center p-4">
+            <div className="bg-black/30 backdrop-blur-md border border-white/10 p-8 md:p-12 rounded-2xl max-w-4xl w-full text-center shadow-2xl">
+              <motion.h2
+                className="text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-4 drop-shadow-md"
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3, duration: 0.5 }}
+              >
+                {slides[currentIndex].title}
+              </motion.h2>
+              <motion.p
+                className="text-xl md:text-2xl text-yellow-400 font-medium mb-4 drop-shadow-sm"
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.5, duration: 0.5 }}
+              >
+                {slides[currentIndex].tagline}
+              </motion.p>
+              {slides[currentIndex].imageDescription && (
+                <motion.p
+                  className="text-base md:text-lg text-gray-200 mb-8 max-w-2xl mx-auto leading-relaxed"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.7, duration: 0.5 }}
+                >
+                  {slides[currentIndex].imageDescription}
+                </motion.p>
+              )}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.9, duration: 0.5 }}
+              >
+                <Button asChild size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-lg px-8 py-6 shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300">
+                  <Link to="/products">Shop Now</Link>
+                </Button>
+              </motion.div>
+            </div>
           </div>
         </motion.div>
       </AnimatePresence>

@@ -12,18 +12,18 @@ import { getLatestProducts } from '@/api/index';
 
 const slideshowData = [
   {
-    title: "The Spirit of Ceylon",
-    tagline: "Grown with Love, Preserving Mother Nature's Best",
-    imageDescription: "Every product tells a story—from the hands of rural Ceylon farmers to your kitchen.",
-    alt: "Ethical spice farming",
-    image: "https://res.cloudinary.com/dwuxumj4x/image/upload/v1769839104/slide1_ja8pwy.png"
+    title: "Ethically Sourced",
+    tagline: "Grown with Love, Preserving Mother Nature’s Best",
+    imageDescription: "Every product tells a story from the hands of rural Ceylon farmers to your kitchen.",
+    alt: "Ethically Sourced Spices",
+    image: "https://res.cloudinary.com/dwuxumj4x/image/upload/v1770492351/wslide_1_jgehwm.png"
   },
   {
     title: "Farm to You, Pure and True",
-    tagline: "From Our Family Farm to Your Table 100% Natural & Preservative-Free",
+    tagline: "From Our Family Farm to Your Table",
     imageDescription: "Handcrafted with care, grown with love—experience the untouched purity of Pasgoda's finest.",
     alt: "Farm to table spices",
-    image: "https://res.cloudinary.com/dwuxumj4x/image/upload/v1769842327/slide2_x1sbcu.png"
+    image: "https://res.cloudinary.com/dwuxumj4x/image/upload/v1770493804/e6689702-61f6-42e7-bd36-f371fc99bdd3_c5co8b.png"
   },
   {
     title: "Quality You Can Taste",
@@ -37,7 +37,7 @@ const slideshowData = [
     tagline: "100% Natural, 0% Compromise",
     imageDescription: "Free from preservatives, full of nature's goodness—just the way it's meant to be.",
     alt: "Pure spices",
-    image: "https://res.cloudinary.com/dwuxumj4x/image/upload/v1769839105/slide4_af4px8.png"
+    image: "https://res.cloudinary.com/dwuxumj4x/image/upload/v1770493967/231b5bbd-5fb8-46bc-9f6c-fe294692597d.png"
   }
 ];
 
