@@ -48,16 +48,17 @@ const CustomSlideshow = ({ slides }) => {
     return () => clearTimeout(timer);
   }, [currentIndex, slides.length]);
 
-  // Preload next image
+  // Preload all slider images on initial mount
   useEffect(() => {
     if (slides && slides.length > 0) {
-      const nextIndex = (currentIndex + 1) % slides.length;
-      const img = new Image();
-      if (slides[nextIndex]?.image) {
-        img.src = slides[nextIndex].image;
-      }
+      slides.forEach((slide) => {
+        if (slide?.image) {
+          const img = new Image();
+          img.src = slide.image;
+        }
+      });
     }
-  }, [currentIndex, slides]);
+  }, [slides]);
 
   if (!slides || slides.length === 0) {
     return <div>No slides to display.</div>;
@@ -81,57 +82,76 @@ const CustomSlideshow = ({ slides }) => {
             src={slides[currentIndex].image}
             loading="eager"
             fetchpriority="high" />
-          {/* Subtle gradient overlay for text readability */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/30 to-black/20"></div>
-          <div className="absolute inset-0 flex items-center justify-center p-4">
-            <div className="p-8 md:p-12 max-w-4xl w-full text-center">
+          {/* Text Content - Top Left for First Slide */}
+          <div className={cn(
+            "absolute p-8 md:p-12",
+            currentIndex === 0
+              ? "top-0 left-0 pt-20 md:pt-28 pl-16 md:pl-24"
+              : currentIndex === 1
+                ? "inset-0 flex items-center justify-center"
+                : "inset-0 flex items-start justify-center pt-16 md:pt-20"
+          )}>
+            <div className={cn(
+              "flex flex-col",
+              currentIndex === 0 ? "items-start text-left max-w-2xl gap-6" : "p-8 md:p-12 max-w-4xl w-full text-center items-center gap-4"
+            )}>
               <motion.h2
-                className="text-3xl md:text-5xl lg:text-6xl font-extrabold text-white mb-4 drop-shadow-[0_4px_12px_rgba(0,0,0,0.9)]"
-                style={{
-                  textShadow: '2px 2px 4px rgba(0,0,0,0.9), -1px -1px 2px rgba(0,0,0,0.5)',
-                  WebkitTextStroke: '1px rgba(0,0,0,0.3)'
-                }}
+                className="text-3xl md:text-5xl lg:text-6xl font-extrabold text-white mb-0"
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3, duration: 0.5 }}
+                transition={{ duration: 0.5 }}
               >
-                {slides[currentIndex].title}
+                <span
+                  className="inline-block px-4 py-2 rounded-lg"
+                  style={{
+                    // backdropFilter: 'blur(8px)',
+                    WebkitBackdropFilter: 'blur(8px)',
+                    backgroundColor: 'rgba(0, 0, 0, 0.6)',
+                    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.5)'
+                  }}
+                >
+                  {slides[currentIndex].title}
+                </span>
               </motion.h2>
               <motion.p
-                className="text-xl md:text-2xl text-yellow-400 font-bold mb-4 drop-shadow-[0_4px_8px_rgba(0,0,0,0.95)]"
-                style={{
-                  textShadow: '2px 2px 4px rgba(0,0,0,0.95), -1px -1px 2px rgba(0,0,0,0.6)',
-                  WebkitTextStroke: '0.5px rgba(0,0,0,0.4)'
-                }}
+                className="text-xl md:text-2xl text-yellow-400 font-bold mb-0"
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.5, duration: 0.5 }}
+                style={{
+                  textShadow: '2px 2px 6px rgba(0,0,0,0.7)'
+                }}
               >
                 {slides[currentIndex].tagline}
               </motion.p>
               {slides[currentIndex].imageDescription && (
                 <motion.p
-                  className="text-base md:text-lg text-white font-medium mb-8 max-w-2xl mx-auto leading-relaxed drop-shadow-[0_3px_6px_rgba(0,0,0,0.95)]"
-                  style={{
-                    textShadow: '1px 1px 3px rgba(0,0,0,0.95), -1px -1px 2px rgba(0,0,0,0.5)'
-                  }}
+                  className="text-base md:text-lg text-white font-medium mb-4 leading-relaxed"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.7, duration: 0.5 }}
+                  style={{
+                    textShadow: '1px 1px 4px rgba(0,0,0,0.7)'
+                  }}
                 >
                   {slides[currentIndex].imageDescription}
                 </motion.p>
               )}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.9, duration: 0.5 }}
-              >
-                <Button asChild size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-lg px-8 py-6 shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300">
-                  <Link to="/products">Shop Now</Link>
-                </Button>
-              </motion.div>
             </div>
+          </div>
+
+          {/* Button - Lower Position */}
+          <div className="absolute inset-0 flex items-end justify-center pb-16 pointer-events-none">
+            <motion.div
+              className="pointer-events-auto"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.9, duration: 0.5 }}
+            >
+              <Button asChild size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-lg px-8 py-6 shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300">
+                <Link to="/products">Shop Now</Link>
+              </Button>
+            </motion.div>
           </div>
         </motion.div>
       </AnimatePresence>

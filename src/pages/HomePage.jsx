@@ -16,28 +16,35 @@ const slideshowData = [
     tagline: "Grown with Love, Preserving Mother Nature’s Best",
     imageDescription: "Every product tells a story from the hands of rural Ceylon farmers to your kitchen.",
     alt: "Ethically Sourced Spices",
-    image: "https://res.cloudinary.com/dwuxumj4x/image/upload/v1770492351/wslide_1_jgehwm.png"
+    image: "https://res.cloudinary.com/dwuxumj4x/image/upload/w_1920,q_auto,f_auto/v1770492351/wslide_1_jgehwm.png"
   },
   {
     title: "Farm to You, Pure and True",
     tagline: "From Our Family Farm to Your Table",
-    imageDescription: "Handcrafted with care, grown with love—experience the untouched purity of Pasgoda's finest.",
+    imageDescription: "Handcrafted with care, grown with love, experience the untouched purity of Pasgoda's finest.",
     alt: "Farm to table spices",
-    image: "https://res.cloudinary.com/dwuxumj4x/image/upload/v1770493804/e6689702-61f6-42e7-bd36-f371fc99bdd3_c5co8b.png"
+    image: "https://res.cloudinary.com/dwuxumj4x/image/upload/w_1920,q_auto,f_auto/v1770493804/e6689702-61f6-42e7-bd36-f371fc99bdd3_c5co8b.png"
   },
   {
     title: "Quality You Can Taste",
     tagline: "Taste So Tantalizing, Quality So Unmatched",
-    imageDescription: "Hygienically packed and carefully processed—crafted with your satisfaction in mind.",
+    imageDescription: "Hygienically packed and carefully processed",
     alt: "Quality spices",
-    image: "https://res.cloudinary.com/dwuxumj4x/image/upload/v1769839485/slide_2_u14yty.png"
+    image: "https://res.cloudinary.com/dwuxumj4x/image/upload/w_1920,q_auto,f_auto/v1770581096/wslide_5_n1pdfe.png"
   },
   {
     title: "Pure & Natural",
     tagline: "100% Natural, 0% Compromise",
-    imageDescription: "Free from preservatives, full of nature's goodness—just the way it's meant to be.",
+    imageDescription: "Free from preservatives, full of nature's goodness, just the way it's meant to be.",
     alt: "Pure spices",
-    image: "https://res.cloudinary.com/dwuxumj4x/image/upload/v1770493967/231b5bbd-5fb8-46bc-9f6c-fe294692597d.png"
+    image: "https://res.cloudinary.com/dwuxumj4x/image/upload/w_1920,q_auto,f_auto/v1770493967/231b5bbd-5fb8-46bc-9f6c-fe294692597d.png"
+  },
+  {
+    title: "Clean Ingredients",
+    tagline: "Nothing Added, Everything Real",
+    imageDescription: "Pure ingredients you can trust, free from artificial additives and preservatives.",
+    alt: "Clean ingredients",
+    image: "https://res.cloudinary.com/dwuxumj4x/image/upload/w_1920,q_auto,f_auto/v1770581089/wslide_4_oaqjwu.png"
   }
 ];
 
