@@ -88,7 +88,7 @@ const CustomSlideshow = ({ slides }) => {
             currentIndex === 0
               ? "top-0 left-0 pt-8 md:pt-20 lg:pt-28 pl-4 md:pl-16 lg:pl-24 pr-4 md:pr-12"
               : currentIndex === 1
-                ? "inset-0 flex items-center justify-center p-4 md:p-8 lg:p-12"
+                ? "inset-0 flex items-start md:items-center justify-center pt-12 md:pt-0 p-4 md:p-8 lg:p-12"
                 : "inset-0 flex items-start justify-center pt-12 md:pt-16 lg:pt-20 p-4 md:p-8 lg:p-12"
           )}>
             <div className={cn(

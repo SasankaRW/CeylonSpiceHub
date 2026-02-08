@@ -99,9 +99,9 @@ const HomePage = () => {
             transition={{ duration: 0.6 }}
             className="space-y-6 text-center md:text-left"
           >
-            <h2 className="text-6xl md:text-6xl font-extrabold text-foreground mb-2 text-balance">ආයුබෝවේවා!</h2>
+            <h2 className="text-4xl md:text-8xl font-extrabold text-foreground mb-2 text-balance leading-tight">ආයුබෝවේවා!</h2>
             <h2 className="text-2xl md:text-3xl font-extrabold text-foreground mb-10 text-balance">May You Live Long.</h2>
-            <div className="text-lg text-muted-foreground max-w-4xl mx-auto mb-8 space-y-4 leading-relaxed text-justify">
+            <div className="text-lg text-muted-foreground max-w-4xl mx-auto mb-8 space-y-4 leading-relaxed md:text-justify text-center md:text-left">
               <p>
                 We're delighted to welcome you to The Ceylon Spice Hub, where every product is a reflection of tradition,
                 sustainability, and the vibrant essence of rural Sri Lanka.
