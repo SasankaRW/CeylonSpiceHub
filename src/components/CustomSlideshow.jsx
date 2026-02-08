@@ -84,25 +84,25 @@ const CustomSlideshow = ({ slides }) => {
             fetchpriority="high" />
           {/* Text Content - Top Left for First Slide */}
           <div className={cn(
-            "absolute p-8 md:p-12",
+            "absolute",
             currentIndex === 0
-              ? "top-0 left-0 pt-20 md:pt-28 pl-16 md:pl-24"
+              ? "top-0 left-0 pt-8 md:pt-20 lg:pt-28 pl-4 md:pl-16 lg:pl-24 pr-4 md:pr-12"
               : currentIndex === 1
-                ? "inset-0 flex items-center justify-center"
-                : "inset-0 flex items-start justify-center pt-16 md:pt-20"
+                ? "inset-0 flex items-center justify-center p-4 md:p-8 lg:p-12"
+                : "inset-0 flex items-start justify-center pt-12 md:pt-16 lg:pt-20 p-4 md:p-8 lg:p-12"
           )}>
             <div className={cn(
               "flex flex-col",
-              currentIndex === 0 ? "items-start text-left max-w-2xl gap-6" : "p-8 md:p-12 max-w-4xl w-full text-center items-center gap-4"
+              currentIndex === 0 ? "items-start text-left max-w-full md:max-w-2xl gap-3 md:gap-6" : "max-w-4xl w-full text-center items-center gap-3 md:gap-4"
             )}>
               <motion.h2
-                className="text-3xl md:text-5xl lg:text-6xl font-extrabold text-white mb-0"
+                className="text-2xl md:text-4xl lg:text-5xl xl:text-6xl font-extrabold text-white mb-0 leading-tight"
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
               >
                 <span
-                  className="inline-block px-4 py-2 rounded-lg"
+                  className="inline-block px-3 py-1.5 md:px-4 md:py-2 rounded-lg"
                   style={{
                     // backdropFilter: 'blur(8px)',
                     WebkitBackdropFilter: 'blur(8px)',
@@ -114,7 +114,7 @@ const CustomSlideshow = ({ slides }) => {
                 </span>
               </motion.h2>
               <motion.p
-                className="text-xl md:text-2xl text-yellow-400 font-bold mb-0"
+                className="text-lg md:text-xl lg:text-2xl text-yellow-400 font-bold mb-0 leading-tight"
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.5, duration: 0.5 }}
@@ -126,7 +126,7 @@ const CustomSlideshow = ({ slides }) => {
               </motion.p>
               {slides[currentIndex].imageDescription && (
                 <motion.p
-                  className="text-base md:text-lg text-white font-medium mb-4 leading-relaxed"
+                  className="text-sm md:text-base lg:text-lg text-white font-medium mb-2 md:mb-4 leading-relaxed"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.7, duration: 0.5 }}
@@ -141,14 +141,14 @@ const CustomSlideshow = ({ slides }) => {
           </div>
 
           {/* Button - Lower Position */}
-          <div className="absolute inset-0 flex items-end justify-center pb-16 pointer-events-none">
+          <div className="absolute inset-0 flex items-end justify-center pb-8 md:pb-12 lg:pb-16 pointer-events-none">
             <motion.div
               className="pointer-events-auto"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.9, duration: 0.5 }}
             >
-              <Button asChild size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-lg px-8 py-6 shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300">
+              <Button asChild size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-base md:text-lg px-6 py-4 md:px-8 md:py-6 shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300">
                 <Link to="/products">Shop Now</Link>
               </Button>
             </motion.div>
