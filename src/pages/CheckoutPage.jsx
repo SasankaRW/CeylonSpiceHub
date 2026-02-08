@@ -74,7 +74,10 @@ const CheckoutPage = () => {
       // Prepare order data with proper format
       const orderData = {
         items: formattedItems,
-        customerInfo: formData,
+        customerInfo: {
+          ...formData,
+          country: 'Sri Lanka' // Default country as required by backend
+        },
         total: total,
         status: 'pending',
         createdAt: new Date().toISOString()
