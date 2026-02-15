@@ -83,10 +83,10 @@ const OurProductsPage = () => {
 
   // Category images mapping
   const categoryImages = {
-    'Sauces': 'https://res.cloudinary.com/dwuxumj4x/image/upload/v1769808477/sauces_opy0tt.jpg',
-    'Chutney': 'https://res.cloudinary.com/dwuxumj4x/image/upload/v1769808281/CHUTNEY_2_p6g3a7.jpg',
+    'Sauces': 'https://res.cloudinary.com/dwuxumj4x/image/upload/v1771013809/WhatsApp_Image_2026-02-07_at_9.03.47_AM_1_r2nddh.jpg',
+    'Chutney': 'https://res.cloudinary.com/dwuxumj4x/image/upload/v1771013796/WhatsApp_Image_2026-02-07_at_9.03.46_AM_u7l9hn.jpg',
     'Jam': 'https://res.cloudinary.com/dwuxumj4x/image/upload/v1769808438/JAM1_ip8qqy.jpg',
-    'Wines': 'https://res.cloudinary.com/dwuxumj4x/image/upload/v1769834443/fruitopia_mgwklg.jpg',
+    'Wines': 'https://res.cloudinary.com/dwuxumj4x/image/upload/v1770493967/231b5bbd-5fb8-46bc-9f6c-fe294692597d.png',
     'Spices': 'https://res.cloudinary.com/dwuxumj4x/image/upload/v1769808573/spices_r8wkkx.jpg'
   };
 
@@ -122,7 +122,6 @@ const OurProductsPage = () => {
           alt="Ceylon Spice Hub Logo"
           className="h-24 w-24 mx-auto mb-6"
         />
-        <h1 className="text-4xl md:text-5xl font-bold text-primary mb-4 font-serif">Product Catalog</h1>
         <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
           Browse our complete collection by category. Visit our shop to purchase.
         </p>
@@ -162,7 +161,7 @@ const OurProductsPage = () => {
                 <Card className="overflow-hidden shadow-default hover:shadow-lg transition-all duration-300 border-2 border-primary/20 bg-card/50 backdrop-blur-sm">
                   <div className={`flex flex-col ${categoryIndex % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'}`}>
                     {/* Image Section */}
-                    <div className="md:w-1/2 relative h-64 md:h-auto min-h-[300px] overflow-hidden group">
+                    <div className="md:w-1/2 relative h-[400px] overflow-hidden group">
                       <motion.img
                         src={getCategoryImage(category)}
                         alt={category}

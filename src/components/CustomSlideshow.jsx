@@ -84,58 +84,67 @@ const CustomSlideshow = ({ slides }) => {
             fetchpriority="high" />
           {/* Text Content - Top Left for First Slide */}
           <div className={cn(
-            "absolute",
-            currentIndex === 0
-              ? "top-0 left-0 pt-8 md:pt-20 lg:pt-28 pl-4 md:pl-16 lg:pl-24 pr-4 md:pr-12"
-              : currentIndex === 1
-                ? "inset-0 flex items-start md:items-center justify-center pt-12 md:pt-0 p-4 md:p-8 lg:p-12"
-                : "inset-0 flex items-start justify-center pt-12 md:pt-16 lg:pt-20 p-4 md:p-8 lg:p-12"
+            "absolute top-0 left-0 pt-8 md:pt-20 lg:pt-28 pl-4 md:pl-16 lg:pl-24 pr-4 md:pr-12"
           )}>
             <div className={cn(
-              "flex flex-col",
-              currentIndex === 0 ? "items-start text-left max-w-full md:max-w-2xl gap-3 md:gap-6" : "max-w-4xl w-full text-center items-center gap-3 md:gap-4"
+              "flex flex-col items-start text-left max-w-full md:max-w-2xl gap-3 md:gap-6"
             )}>
-              <motion.h2
-                className="text-2xl md:text-4xl lg:text-5xl xl:text-6xl font-extrabold text-white mb-0 leading-tight"
+              <motion.div
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
+                className="relative"
               >
-                <span
-                  className="inline-block px-3 py-1.5 md:px-4 md:py-2 rounded-lg"
+                <div className="absolute -left-2 top-0 bottom-0 w-1 bg-gradient-to-b from-yellow-400 via-orange-500 to-red-500 rounded-full"></div>
+                <h2 className="text-2xl md:text-4xl lg:text-5xl xl:text-6xl font-extrabold text-white mb-0 leading-tight pl-4">
+                  <span
+                    className="inline-block px-4 py-2 md:px-6 md:py-3 rounded-xl border border-white/20"
+                    style={{
+                      background: 'rgba(0, 0, 0, 0.85)',
+                      boxShadow: '0 8px 32px rgba(0, 0, 0, 0.8)'
+                    }}
+                  >
+                    {slides[currentIndex].title}
+                  </span>
+                </h2>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.3, duration: 0.5 }}
+                className="relative pl-4"
+              >
+                <p
+                  className="text-lg md:text-xl lg:text-2xl text-yellow-300 font-bold mb-0 leading-tight inline-block px-4 py-2 md:px-5 md:py-2.5 rounded-lg border border-yellow-400/30"
                   style={{
-                    // backdropFilter: 'blur(8px)',
-                    WebkitBackdropFilter: 'blur(8px)',
-                    backgroundColor: 'rgba(0, 0, 0, 0.6)',
-                    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.5)'
+                    background: 'rgba(0, 0, 0, 0.5)',
+                    boxShadow: '0 4px 24px rgba(234, 179, 8, 0.5)',
+                    textShadow: '0 2px 10px rgba(0,0,0,0.8), 0 0 20px rgba(234, 179, 8, 0.3)'
                   }}
                 >
-                  {slides[currentIndex].title}
-                </span>
-              </motion.h2>
-              <motion.p
-                className="text-lg md:text-xl lg:text-2xl text-yellow-400 font-bold mb-0 leading-tight"
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.5, duration: 0.5 }}
-                style={{
-                  textShadow: '2px 2px 6px rgba(0,0,0,0.7)'
-                }}
-              >
-                {slides[currentIndex].tagline}
-              </motion.p>
+                  {slides[currentIndex].tagline}
+                </p>
+              </motion.div>
+
               {slides[currentIndex].imageDescription && (
-                <motion.p
-                  className="text-sm md:text-base lg:text-lg text-white font-medium mb-2 md:mb-4 leading-relaxed"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.7, duration: 0.5 }}
-                  style={{
-                    textShadow: '1px 1px 4px rgba(0,0,0,0.7)'
-                  }}
+                <motion.div
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.5, duration: 0.5 }}
+                  className="relative pl-4"
                 >
-                  {slides[currentIndex].imageDescription}
-                </motion.p>
+                  <p
+                    className="text-sm md:text-base lg:text-lg text-white font-medium mb-2 md:mb-4 leading-relaxed inline-block px-4 py-2.5 md:px-5 md:py-3 rounded-lg border border-white/20"
+                    style={{
+                      background: 'rgba(0, 0, 0, 0.5)',
+                      boxShadow: '0 4px 24px rgba(0, 0, 0, 0.6)',
+                      textShadow: '0 2px 8px rgba(0,0,0,0.9)'
+                    }}
+                  >
+                    {slides[currentIndex].imageDescription}
+                  </p>
+                </motion.div>
               )}
             </div>
           </div>

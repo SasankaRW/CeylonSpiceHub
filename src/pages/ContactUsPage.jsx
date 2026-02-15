@@ -118,7 +118,7 @@ const ContactUsPage = () => {
                 <MapPin className="h-8 w-8 text-secondary mt-1 flex-shrink-0" />
                 <div>
                   <h3 className="text-lg font-semibold text-foreground">Our Address</h3>
-                  <p className="text-muted-foreground">Ceylon Spice Hub (Pvt) Ltd,<br />123 Spice Route, Colombo 00700,<br />Sri Lanka.</p>
+                  <p className="text-muted-foreground">The Ceylon Spice Hub (Pvt) Ltd.<br />233, Colombo Road, Divulapitiya,<br />Boralasgamuwa, Sri Lanka</p>
                 </div>
               </div>
               <div className="flex items-start space-x-4">
@@ -149,13 +149,13 @@ const ContactUsPage = () => {
             whileHover={{ scale: 1.01 }}
             transition={{ duration: 0.3 }}
           >
-            <iframe 
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2801.0959339261744!2d79.89462086943047!3d6.848838279386835!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae25b5e99174ecd%3A0x82aebad613ad495f!2sThe%20Ceylon%20Spice%20Hub!5e0!3m2!1sen!2slk!4v1770149161944!5m2!1sen!2slk" 
-              width="100%" 
-              height="100%" 
-              style={{ border: 0, pointerEvents: 'none' }} 
-              allowFullScreen 
-              loading="lazy" 
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2801.0959339261744!2d79.89462086943047!3d6.848838279386835!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae25b5e99174ecd%3A0x82aebad613ad495f!2sThe%20Ceylon%20Spice%20Hub!5e0!3m2!1sen!2slk!4v1770149161944!5m2!1sen!2slk"
+              width="100%"
+              height="100%"
+              style={{ border: 0, pointerEvents: 'none' }}
+              allowFullScreen
+              loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
             />
             <div className="absolute inset-0 flex items-center justify-center bg-transparent group-hover:bg-black/5 transition-colors">

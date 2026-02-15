@@ -2,7 +2,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Card, CardContent } from '@/components/ui/card';
-import { Calendar, Award, Gift, ShoppingBag, Globe, Zap, Utensils, Star, Flag, ArrowRight } from 'lucide-react';
+import { Calendar, Award, Gift, ShoppingBag, Globe, Zap, Utensils, Star, Flag, ArrowRight, Sparkles } from 'lucide-react';
 
 const milestones = [
   {
@@ -19,20 +19,20 @@ const milestones = [
     events: [
       { month: "December", title: "Made In Sri Lanka", desc: "Made In Sri Lanka Logo was awarded for 12 products.", icon: Award, img: "https://res.cloudinary.com/dwuxumj4x/image/upload/v1770148558/MISL_LOGO_AWARD_CEREMONY_yp5jcl.jpg" },
       { month: "December", title: "Wine Tasting Demo", desc: "Wine Tasting Demo Day at The Saturday Good Market Event.", icon: Globe },
-      { month: "December", title: "Chutney Pallet", desc: "Chutney Pallet increased to 12.", icon: Utensils },
+      { month: "December", title: "Chutney Pallet", desc: "Chutney Pallet increased to 12.", icon: Utensils, img: "https://res.cloudinary.com/dwuxumj4x/image/upload/v1770145670/CHUTNEYS_TOGETHER_zkr4cl.jpg" },
       { month: "December", title: "Cookery Demo", desc: "Cookery demo with Thisara TV.", icon: Zap },
       { month: "November", title: "Entrepreneur Award", desc: "Western Province Entrepreneur Award 2024 – Runners Up Micro Category.", icon: Award, img: "https://res.cloudinary.com/dwuxumj4x/image/upload/v1770148575/WESTERN_PROVINCE_ENTERPRENUER_AWARDS_sifzvb.jpg" },
       { month: "November", title: "INFOTEL 2024", desc: "Participated in the SME Pavilion at the INFOTEL 2024.", icon: ShoppingBag },
       { month: "November", title: "Cinnamon Sugar", desc: "Cinnamon Sugar was introduced to the Market.", icon: Utensils },
-      { month: "July", title: "Sauce Pallet", desc: "Sauce Pallet increased to 16.", icon: Utensils },
-      { month: "February", title: "Jam Pallet", desc: "Jam Pallet increased to 8.", icon: Utensils },
+      { month: "July", title: "Sauce Pallet", desc: "Sauce Pallet increased to 16.", icon: Utensils, img: "https://res.cloudinary.com/dwuxumj4x/image/upload/v1769841368/sauces1_gd7rug.jpg" },
+      { month: "February", title: "Jam Pallet", desc: "Jam Pallet increased to 8.", icon: Utensils, img: "https://res.cloudinary.com/dwuxumj4x/image/upload/v1770147214/JAM1_iqvugg.jpg" },
     ]
   },
   {
     year: "2024",
     events: [
       { month: "December", title: "First Supermarket", desc: "KANDARA Supermarket – Our first supermarket entry.", icon: ShoppingBag },
-      { month: "August", title: "Fruitopia Wine", desc: "Fruitopia fermented wine was introduced.", icon: Globe },
+      { month: "August", title: "Fruitopia Wine", desc: "Fruitopia fermented wine was introduced.", icon: Globe, img: "https://res.cloudinary.com/dwuxumj4x/image/upload/v1770493967/231b5bbd-5fb8-46bc-9f6c-fe294692597d.png" },
       { month: "August", title: "ESG Silver Award", desc: "MSME ESG Silver Award awarded by MBA Alumni Association of University of Colombo.", icon: Award, img: "https://res.cloudinary.com/dwuxumj4x/image/upload/v1770148668/ESG_3_u6kb5r.jpg" },
     ]
   },
@@ -48,7 +48,7 @@ const milestones = [
   {
     year: "2022",
     events: [
-      { month: "November", title: "Spice Mixtures", desc: "Added 5 more spice mixtures.", icon: Utensils },
+      { month: "November", title: "Spice Mixtures", desc: "Added 5 more spice mixtures.", icon: Utensils, img: "https://res.cloudinary.com/dwuxumj4x/image/upload/v1771014420/WhatsApp_Image_2026-02-07_at_9.03.46_AM_1_nlaqky.jpg" },
       { month: "September", title: "Grand Launch", desc: "Launched with 5 spices & blends.", icon: Flag },
     ]
   }
@@ -56,7 +56,7 @@ const milestones = [
 
 const AccomplishmentsPage = () => {
   return (
-    <div className="space-y-12 pb-12 bg-background/50">
+    <div className="space-y-12 pb-12">
       {/* HERO SECTION */}
       <section className="relative h-[300px] rounded-b-[2rem] overflow-hidden shadow-2xl mx-0 lg:mx-0 group">
         <img
@@ -106,11 +106,18 @@ const AccomplishmentsPage = () => {
       </section>
 
       {/* TIMELINE SECTION */}
-      <div className="container mx-auto px-4 max-w-5xl">
-        <div className="text-center mb-6">
+      <div className="container mx-auto px-4 max-w-5xl relative">
+        {/* Decorative background blobs */}
+        <div className="absolute -left-20 top-1/4 w-72 h-72 bg-primary/5 rounded-full blur-3xl pointer-events-none"></div>
+        <div className="absolute -right-20 top-2/3 w-64 h-64 bg-yellow-500/5 rounded-full blur-3xl pointer-events-none"></div>
+        <div className="absolute -left-10 bottom-1/4 w-48 h-48 bg-orange-500/5 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div className="text-center mb-6 relative z-10">
           <h2 className="text-2xl font-bold text-foreground inline-flex items-center gap-3">
+            <Sparkles className="h-5 w-5 text-primary" />
             Timeline of Success
           </h2>
+          <p className="text-sm text-muted-foreground mt-2">Celebrating {milestones.reduce((acc, y) => acc + y.events.length, 0)}+ milestones since 2022</p>
           <div className="w-12 h-1 bg-primary mx-auto mt-2 rounded-full opacity-80"></div>
         </div>
 
@@ -169,6 +176,7 @@ const AccomplishmentsPage = () => {
                         {/* Center Dot & Connector */}
                         <div className="absolute left-[13px] md:static md:w-16 md:flex md:justify-center flex-none">
                           <div className="w-3.5 h-3.5 rounded-full bg-primary border-4 border-background shadow-md z-10 relative">
+                            <div className="absolute inset-0 rounded-full bg-primary/40 animate-ping"></div>
                             <div className="absolute top-1/2 left-full w-8 h-[2px] bg-primary md:hidden"></div> {/* Mobile Connector */}
                           </div>
                         </div>
@@ -200,6 +208,27 @@ const AccomplishmentsPage = () => {
         </div>
       </div>
 
+      {/* INSPIRATIONAL QUOTE STRIP */}
+      <section className="container mx-auto px-4">
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="flex items-center gap-6 p-6 rounded-2xl bg-gradient-to-r from-primary/5 via-transparent to-primary/5 border border-primary/10"
+        >
+          <div className="hidden md:flex p-3 rounded-full bg-primary/10 flex-none">
+            <Star className="h-8 w-8 text-primary" />
+          </div>
+          <div>
+            <p className="text-lg md:text-xl font-serif italic text-foreground/80 leading-relaxed">
+              "Every milestone is a testament to our passion for purity, sustainability, and the vibrant flavors of Ceylon."
+            </p>
+            <p className="text-sm text-muted-foreground mt-2 font-medium">— The Ceylon Spice Hub Team</p>
+          </div>
+        </motion.div>
+      </section>
+
       {/* AWARDS GALLERY */}
       <section className="container mx-auto px-4 max-w-6xl">
         <motion.div
@@ -218,11 +247,11 @@ const AccomplishmentsPage = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {[
-            { src: "https://res.cloudinary.com/dwuxumj4x/image/upload/v1770148834/AWARDS_d6nzb8.jpg", alt: "Awards" },
-            { src: "https://res.cloudinary.com/dwuxumj4x/image/upload/v1770148558/MISL_LOGO_AWARD_CEREMONY_yp5jcl.jpg", alt: "MISL Logo Award Ceremony" },
-            { src: "https://res.cloudinary.com/dwuxumj4x/image/upload/v1770148575/WESTERN_PROVINCE_ENTERPRENUER_AWARDS_sifzvb.jpg", alt: "Western Province Entrepreneur Awards" },
-            { src: "https://res.cloudinary.com/dwuxumj4x/image/upload/v1770148694/Untitled-1-certificate_tm6pfr.jpg", alt: "Good Market Certificate" },
-            { src: "https://res.cloudinary.com/dwuxumj4x/image/upload/v1770148668/ESG_3_u6kb5r.jpg", alt: "ESG Silver Award" },
+            { src: "https://res.cloudinary.com/dwuxumj4x/image/upload/v1770148834/AWARDS_d6nzb8.jpg", alt: "Awards", caption: "Recognition of Excellence" },
+            { src: "https://res.cloudinary.com/dwuxumj4x/image/upload/v1770148558/MISL_LOGO_AWARD_CEREMONY_yp5jcl.jpg", alt: "MISL Logo Award Ceremony", caption: "Made In Sri Lanka – 12 Products Certified" },
+            { src: "https://res.cloudinary.com/dwuxumj4x/image/upload/v1770148575/WESTERN_PROVINCE_ENTERPRENUER_AWARDS_sifzvb.jpg", alt: "Western Province Entrepreneur Awards", caption: "Western Province Entrepreneur Award 2024" },
+            { src: "https://res.cloudinary.com/dwuxumj4x/image/upload/v1770148694/Untitled-1-certificate_tm6pfr.jpg", alt: "Good Market Certificate", caption: "Good Market Approved Vendor" },
+            { src: "https://res.cloudinary.com/dwuxumj4x/image/upload/v1770148668/ESG_3_u6kb5r.jpg", alt: "ESG Silver Award", caption: "MSME ESG Silver Award" },
           ].map((award, index) => (
             <motion.div
               key={index}
@@ -240,6 +269,9 @@ const AccomplishmentsPage = () => {
                     className="w-full h-full object-contain bg-white transition-transform duration-700 group-hover:scale-105"
                     loading="lazy"
                   />
+                </div>
+                <div className="p-3 text-center border-t border-border/30">
+                  <p className="text-sm font-medium text-foreground/80 group-hover:text-primary transition-colors">{award.caption}</p>
                 </div>
               </Card>
             </motion.div>

@@ -79,100 +79,147 @@ const WeArePage = () => {
         </Card>
       </section>
 
-      {/* CORE VALUES */}
+      {/* CORE VALUES - SPICEHUB ACRONYM */}
       <section className="space-y-8">
-        <h2 className="text-3xl font-bold text-center">Core Values – WE ARE SPICE HUB</h2>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {[
-            { text: "Socially and environmentally sustainable", icon: Globe },
-            { text: "Passionate about healthy, nutritious products", icon: Heart },
-            { text: "Integrity in all we do", icon: ShieldCheck },
-            { text: "Customer-centric and taste-driven", icon: Users },
-            { text: "Empowering rural women", icon: Award },
-            { text: "Home-garden-based supply chains", icon: Leaf },
-            { text: "Unique generational methods", icon: Leaf },
-            { text: "Bountiful wellness in every bite", icon: Heart },
-          ].map((item, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
-              className="p-4 rounded-xl border bg-card hover:shadow-md transition-shadow flex flex-col items-center text-center gap-3"
-            >
-              <item.icon className="h-8 w-8 text-primary/70" />
-              <p className="font-medium">{item.text}</p>
-            </motion.div>
-          ))}
-        </div>
-      </section>
-
-      {/* STRATEGIC FOCUS */}
-      <section className="bg-muted/30 p-8 md:p-12 rounded-2xl md:text-center space-y-8">
-        <h2 className="text-3xl font-bold">Strategic Focus Areas</h2>
-        <div className="flex flex-wrap justify-center gap-4">
-          {["Production", "Product Development", "Export Marketing", "Sales & Marketing"].map((area) => (
-            <div key={area} className="bg-card px-6 py-3 rounded-full shadow-sm border font-semibold text-lg text-primary">
-              {area}
-            </div>
-          ))}
-        </div>
-        <p className="text-xl font-serif italic text-muted-foreground mt-6">
-          "Handcrafted stories in every bottle. Scaling sustainably. Growing meaningfully."
-        </p>
-      </section>
-
-      {/* INNOVATION & COMPANY INFO */}
-      <section className="grid md:grid-cols-2 gap-12">
-        <div className="space-y-6">
-          <h2 className="text-2xl font-bold flex items-center gap-2">
-            <Leaf className="h-6 w-6 text-primary" /> Innovation & Heritage
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-center space-y-2"
+        >
+          <h2 className="text-3xl font-bold">
+            Core Values – <span className="text-primary">WE ARE SPICEHUB</span>
           </h2>
-          <div className="bg-card p-6 rounded-xl border shadow-sm">
-            <h3 className="font-semibold text-lg mb-2">Where tradition meets innovation.</h3>
-            <p className="text-muted-foreground">
-              We proudly work with rare local fruits, including <span className="font-medium text-foreground">Lovi – Rose Tart</span>, blending age-old methods with modern craftsmanship to deliver truly unique products.
-            </p>
+          <p className="text-muted-foreground max-w-2xl mx-auto">
+            Each letter of our name represents a fundamental value that drives everything we do
+          </p>
+        </motion.div>
+
+        <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-8">
+          {/* SPICE Column */}
+          <div className="space-y-3">
+            {[
+              {
+                letter: "S",
+                title: "Socially and environmentally sustainable",
+                icon: Globe
+              },
+              {
+                letter: "P",
+                title: "Passionate about healthy, nutritious products",
+                icon: Heart
+              },
+              {
+                letter: "I",
+                title: "Integrity in all we do",
+                icon: ShieldCheck
+              },
+              {
+                letter: "C",
+                title: "Customer-centric and taste-driven",
+                icon: Users
+              },
+              {
+                letter: "E",
+                title: "Empowering rural women",
+                icon: Award
+              },
+            ].map((item, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.05 }}
+                className="group relative"
+              >
+                <div className="flex items-center gap-4 p-4 rounded-lg border bg-card hover:border-primary/50 hover:shadow-sm transition-all duration-300">
+                  {/* Letter Badge */}
+                  <div className="flex-shrink-0">
+                    <div className="w-12 h-12 rounded-full border-2 border-primary/20 bg-primary/5 flex items-center justify-center group-hover:border-primary/40 group-hover:bg-primary/10 transition-all duration-300">
+                      <span className="text-2xl font-bold text-primary">
+                        {item.letter}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Content */}
+                  <div className="flex-1 flex items-center gap-3">
+                    <item.icon className="h-4 w-4 text-primary/60 flex-shrink-0" />
+                    <p className="text-sm font-medium text-foreground">
+                      {item.title}
+                    </p>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* HUB Column */}
+          <div className="space-y-3">
+            {[
+              {
+                letter: "H",
+                title: "Home-garden-based supply chains",
+                icon: Leaf
+              },
+              {
+                letter: "U",
+                title: "Unique generational methods",
+                icon: Leaf
+              },
+              {
+                letter: "B",
+                title: "Bountiful wellness in every bite",
+                icon: Heart
+              },
+            ].map((item, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, x: 20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.05 }}
+                className="group relative"
+              >
+                <div className="flex items-center gap-4 p-4 rounded-lg border bg-card hover:border-primary/50 hover:shadow-sm transition-all duration-300">
+                  {/* Letter Badge */}
+                  <div className="flex-shrink-0">
+                    <div className="w-12 h-12 rounded-full border-2 border-primary/20 bg-primary/5 flex items-center justify-center group-hover:border-primary/40 group-hover:bg-primary/10 transition-all duration-300">
+                      <span className="text-2xl font-bold text-primary">
+                        {item.letter}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Content */}
+                  <div className="flex-1 flex items-center gap-3">
+                    <item.icon className="h-4 w-4 text-primary/60 flex-shrink-0" />
+                    <p className="text-sm font-medium text-foreground">
+                      {item.title}
+                    </p>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
           </div>
         </div>
 
-        <div className="space-y-6">
-          <h2 className="text-2xl font-bold flex items-center gap-2">
-            <Building className="h-6 w-6 text-primary" /> Company Information
-          </h2>
-          <div className="bg-card p-6 rounded-xl border shadow-sm text-sm space-y-3">
-            <div className="grid grid-cols-[140px_1fr]">
-              <span className="text-muted-foreground">Company Name:</span>
-              <span className="font-medium">The Ceylon Spice Hub (Pvt) Ltd</span>
-            </div>
-            <div className="grid grid-cols-[140px_1fr]">
-              <span className="text-muted-foreground">Registration No:</span>
-              <span className="font-medium">PV 00264115</span>
-            </div>
-            <div className="grid grid-cols-[140px_1fr]">
-              <span className="text-muted-foreground">Incorporated:</span>
-              <span className="font-medium">30th September 2022</span>
-            </div>
-            <div className="grid grid-cols-[140px_1fr]">
-              <span className="text-muted-foreground">Bankers:</span>
-              <span className="font-medium">Sampath Bank PLC</span>
-            </div>
-            <div className="grid grid-cols-[140px_1fr]">
-              <span className="text-muted-foreground">Auditors:</span>
-              <span className="font-medium">Wickramasinghe Dayananda & Co.</span>
-            </div>
-            <div className="pt-2 mt-2 border-t">
-              <span className="block text-muted-foreground mb-1">Directors:</span>
-              <ul className="list-disc pl-5 font-medium">
-                <li>Maihinda Rathnayake</li>
-                <li>Manohari Rathnayaka</li>
-                <li>Mihin Rathnayaka</li>
-              </ul>
-            </div>
-          </div>
-        </div>
+        {/* Bottom Tagline */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.4 }}
+          className="text-center pt-2"
+        >
+          <p className="text-base font-serif italic text-muted-foreground">
+            "Eight values, one mission: <span className="text-primary font-semibold">bringing authentic Sri Lankan flavors to the world</span>"
+          </p>
+        </motion.div>
       </section>
+
+
     </div>
   );
 };

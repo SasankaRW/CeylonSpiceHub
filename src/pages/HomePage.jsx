@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Input } from '@/components/ui/input';
 import { Mail } from 'lucide-react';
-import { getLatestProducts } from '@/api/index';
+import { getProducts } from '@/api/index';
 
 const slideshowData = [
   {
@@ -73,16 +73,32 @@ const HomePage = () => {
   const [newArrivals, setNewArrivals] = useState([]);
 
   useEffect(() => {
-    const fetchNewArrivals = async () => {
+    const fetchFeaturedProducts = async () => {
       try {
-        const products = await getLatestProducts();
-        setNewArrivals(products);
+        const allProducts = await getProducts();
+
+        // Define the categories we want to feature
+        const targetCategories = ['Spices', 'Sauces', 'Chutney', 'Jam', 'Wines'];
+
+        // Select one product from each category
+        const featured = [];
+
+        targetCategories.forEach(category => {
+          // Find the first product in this category
+          const product = allProducts.find(p => p.category === category);
+          if (product) {
+            featured.push(product);
+          }
+        });
+
+        // Use slice(0, 5) just to be safe, though logic guarantees at most 5 unique if products exist
+        setNewArrivals(featured.slice(0, 5));
       } catch (error) {
-        console.error('Error fetching new arrivals:', error);
+        console.error('Error fetching featured products:', error);
       }
     };
 
-    fetchNewArrivals();
+    fetchFeaturedProducts();
   }, []);
 
   return (
@@ -144,82 +160,37 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* NEW ARRIVALS SECTION */}
+      {/* FEATURED PRODUCTS SECTION */}
       <section className="container mx-auto px-6 py-10">
         <div className="flex flex-col md:flex-row justify-between items-end mb-10 gap-4">
           <div className="text-center md:text-left">
-            <h2 className="text-3xl md:text-4xl font-bold mb-2">New Arrivals</h2>
-            <p className="text-muted-foreground text-lg">Fresh from the farm, straight to your table.</p>
+            <h2 className="text-3xl md:text-4xl font-bold mb-2">Featured Products</h2>
+            <p className="text-muted-foreground text-lg">Handpicked essentials from every category.</p>
           </div>
           <Button asChild variant="outline" className="hidden md:flex">
             <Link to="/products">View All Products</Link>
           </Button>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
           {newArrivals.length > 0 ? (
             newArrivals.map((product) => (
               <ProductCard key={product._id} product={product} />
             ))
           ) : (
-            Array(4).fill(0).map((_, i) => (
+            Array(5).fill(0).map((_, i) => (
               <div key={i} className="h-[400px] bg-muted/20 animate-pulse rounded-xl"></div>
             ))
           )}
         </div>
 
-        <div className="mt-12 text-center">
+        <div className="mt-12 text-center md:hidden">
           <Button asChild size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-lg px-12 py-6 shadow-xl hover:scale-105 transition-transform">
             <Link to="/products">Shop All Products</Link>
           </Button>
         </div>
       </section>
 
-      {/* FEATURED CATEGORIES */}
-      <section className="bg-slate-50 dark:bg-slate-900/50 py-20">
-        <div className="container mx-auto px-6">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Curated Collections</h2>
-            <p className="text-muted-foreground text-lg">Explore our range of premium handcrafted products</p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            {featuredCategories.map((category, index) => (
-              <motion.div
-                key={category.title}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-              >
-                <Link to={category.link} className="block h-full">
-                  <div className="group relative h-96 rounded-2xl overflow-hidden shadow-md cursor-pointer">
-                    {/* Background Image */}
-                    <img
-                      src={category.image}
-                      alt={category.title}
-                      className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                    />
-                    {/* Overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent transition-opacity duration-300 group-hover:from-black/90"></div>
-
-                    {/* Content */}
-                    <div className="absolute bottom-0 left-0 p-8 w-full text-white text-center md:text-left">
-                      <h3 className="text-2xl font-bold mb-2 translate-y-2 transition-transform duration-300 group-hover:translate-y-0">{category.title}</h3>
-                      <p className="text-gray-200 text-sm opacity-0 translate-y-4 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0 leading-relaxed">
-                        {category.description}
-                      </p>
-                      <div className="mt-4 opacity-0 transition-opacity duration-300 group-hover:opacity-100 text-primary-foreground font-semibold flex items-center justify-center md:justify-start gap-2">
-                        Explore <span className="translate-x-0 transition-transform group-hover:translate-x-1">→</span>
-                      </div>
-                    </div>
-                  </div>
-                </Link>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* BENEFITS SECTION */}
       <section className="container mx-auto px-6">
@@ -229,7 +200,7 @@ const HomePage = () => {
             {
               title: "Uncompromising Quality",
               desc: "Sourced from the best, ensuring authentic taste and aroma in every pinch.",
-              img: "https://images.unsplash.com/photo-1610635366300-29658a5313f5"
+              img: "https://res.cloudinary.com/dwuxumj4x/image/upload/v1769841368/sauces1_gd7rug.jpg"
             },
             {
               title: "Ethically Sourced",
