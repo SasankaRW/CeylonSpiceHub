@@ -12,7 +12,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Toaster } from '@/components/ui/toaster';
 import { cn } from '@/lib/utils';
 import CartIcon from '@/components/CartIcon';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Instagram, Facebook } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const navLinks = [
@@ -255,6 +255,29 @@ const Layout = ({ children }) => {
                 <p>The Ceylon Spice Hub (Pvt) Ltd.<br />233, Colombo Road, Divulapitiya,<br />Boralasgamuwa, Sri Lanka</p>
                 <p className="hover:text-accent transition-colors cursor-pointer">info@ceylonspicehub.com</p>
                 <p>+94 11 234 5678</p>
+              </div>
+              <div className="mt-6">
+                <h4 className="text-lg font-semibold mb-4">Follow Us</h4>
+                <div className="flex gap-4 justify-center md:justify-start">
+                  <a
+                    href="https://www.instagram.com/ceylon_spice.hub/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group bg-background/10 hover:bg-background/20 p-3 rounded-full transition-all duration-300 border border-transparent hover:border-primary-foreground/20 hover:scale-110"
+                    aria-label="Visit our Instagram"
+                  >
+                    <Instagram className="h-5 w-5 group-hover:text-white transition-colors" />
+                  </a>
+                  <a
+                    href="https://web.facebook.com/tcsh.lk"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group bg-background/10 hover:bg-background/20 p-3 rounded-full transition-all duration-300 border border-transparent hover:border-primary-foreground/20 hover:scale-110"
+                    aria-label="Visit our Facebook"
+                  >
+                    <Facebook className="h-5 w-5 group-hover:text-white transition-colors" />
+                  </a>
+                </div>
               </div>
             </div>
           </div>

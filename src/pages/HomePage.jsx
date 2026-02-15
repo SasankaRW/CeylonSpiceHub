@@ -200,7 +200,7 @@ const HomePage = () => {
             {
               title: "Uncompromising Quality",
               desc: "Sourced from the best, ensuring authentic taste and aroma in every pinch.",
-              img: "https://res.cloudinary.com/dwuxumj4x/image/upload/v1769841368/sauces1_gd7rug.jpg"
+              img: "https://res.cloudinary.com/dwuxumj4x/image/upload/v1771014420/WhatsApp_Image_2026-02-07_at_9.03.46_AM_1_nlaqky.jpg"
             },
             {
               title: "Ethically Sourced",

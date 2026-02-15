@@ -181,24 +181,16 @@ const OurProductsPage = () => {
                     <div className="md:w-1/2 p-8 md:p-10 flex flex-col justify-center">
                       <div className="space-y-6">
                         <div>
-                          <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-3 font-serif">
+                          <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6 font-serif">
                             {category}
                           </h2>
-                          <p className="text-lg text-muted-foreground mb-4">
-                            {productCount} Premium Products Available
-                          </p>
                         </div>
 
                         <p className="text-muted-foreground text-base leading-relaxed">
                           Explore our premium selection of {category.toLowerCase()}. Hand-picked from the finest sources in Ceylon to bring authentic flavor to your kitchen.
                         </p>
 
-                        <div className="pt-2">
-                          <p className="text-sm text-muted-foreground/80 mb-2 flex items-center gap-2">
-                            <Package className="h-4 w-4" />
-                            Varieties: {subCategories.join(', ')}
-                          </p>
-                        </div>
+
 
                         <div className="pt-4">
                           <Button
