@@ -10,6 +10,9 @@ import { addToCart } from '@/lib/cartStore';
 const ProductCard = ({ product }) => {
   const { toast } = useToast();
 
+  const isPreOrder = product?.category === 'Katagasma Range';
+  const addQty = isPreOrder ? 2 : 1;
+
   const handleAddToCart = () => {
     let productToAdd = product;
     let description = `${product.name} has been added to your cart.`;
@@ -34,10 +37,13 @@ const ProductCard = ({ product }) => {
       description = `${product.name} (${selectedVariant.weight}) has been added to your cart.`;
     }
 
-    // Add the product to cart with quantity 1
-    addToCart(productToAdd, 1);
+    if (addQty > 1) {
+      description = `${addQty} × ${product.name}${productToAdd !== product ? ` (${productToAdd.weight})` : ''} added to your cart.`;
+    }
 
-    // Show a toast notification
+    // Pre-order (Katagasma) minimum is 2; others add 1
+    addToCart(productToAdd, addQty);
+
     toast({
       title: "Added to Cart",
       description: description,
