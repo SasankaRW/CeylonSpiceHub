@@ -297,7 +297,7 @@ const HomePage = () => {
             Why choose us
           </p>
           <h2 className="text-3xl font-bold text-foreground md:text-4xl">
-            Built on quality, care, and provenance
+          Pure ingredients. Honest flavours. A commitment to people and planet.
           </h2>
           <p className="mx-auto mt-3 max-w-3xl text-lg text-muted-foreground">
             We combine family-farm roots, responsible sourcing, and handcrafted production to create ingredients you can trust.
@@ -353,7 +353,7 @@ const HomePage = () => {
                 Ready to stock your kitchen with bold, natural flavor?
               </h2>
               <p className="mt-4 text-lg leading-8 text-muted-foreground">
-                Explore our full range of spices, sauces, jams, chutneys, and wines, or learn more about the story behind the farm.
+                Explore our full range of spices, sauces, jams, chutneys, and wines, or learn more about the story behind the U.
               </p>
             </div>
 

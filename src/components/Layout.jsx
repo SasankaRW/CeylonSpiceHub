@@ -252,9 +252,9 @@ const Layout = ({ children }) => {
             <div>
               <h4 className="text-lg font-semibold mb-4">Contact Us</h4>
               <div className="space-y-2 text-sm opacity-80">
-                <p>The Ceylon Spice Hub (Pvt) Ltd.<br />233, Colombo Road, Divulapitiya,<br />Boralasgamuwa, Sri Lanka</p>
-                <p className="hover:text-accent transition-colors cursor-pointer">info@ceylonspicehub.com</p>
-                <p>+94 11 234 5678</p>
+                <p>The Ceylon Spice Hub (Pvt) Ltd.<br />233, Colombo Road, Divulpitiya,<br />Boralasgamuwa, Sri Lanka</p>
+                <p className="hover:text-accent transition-colors cursor-pointer">info@ceylonspicehub.lk</p>
+                <p>+94 11 251 8423</p>
               </div>
               <div className="mt-6">
                 <h4 className="text-lg font-semibold mb-4">Follow Us</h4>

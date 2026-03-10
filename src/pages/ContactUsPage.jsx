@@ -118,23 +118,21 @@ const ContactUsPage = () => {
                 <MapPin className="h-8 w-8 text-secondary mt-1 flex-shrink-0" />
                 <div>
                   <h3 className="text-lg font-semibold text-foreground">Our Address</h3>
-                  <p className="text-muted-foreground">The Ceylon Spice Hub (Pvt) Ltd.<br />233, Colombo Road, Divulapitiya,<br />Boralasgamuwa, Sri Lanka</p>
+                  <p className="text-muted-foreground">The Ceylon Spice Hub (Pvt) Ltd.<br />233, Colombo Road, Divulpitiya,<br />Boralasgamuwa, Sri Lanka</p>
                 </div>
               </div>
               <div className="flex items-start space-x-4">
                 <Mail className="h-8 w-8 text-secondary mt-1 flex-shrink-0" />
                 <div>
                   <h3 className="text-lg font-semibold text-foreground">Email Us</h3>
-                  <a href="mailto:info@ceylonspicehub.com" className="text-muted-foreground hover:text-primary transition-colors">info@ceylonspicehub.com</a><br />
-                  <a href="mailto:sales@ceylonspicehub.com" className="text-muted-foreground hover:text-primary transition-colors">sales@ceylonspicehub.com</a>
-                </div>
+                  <a href="mailto:info@ceylonspicehub.lk" className="text-muted-foreground hover:text-primary transition-colors">info@ceylonspicehub.com</a><br />
+                  </div>
               </div>
               <div className="flex items-start space-x-4">
                 <Phone className="h-8 w-8 text-secondary mt-1 flex-shrink-0" />
                 <div>
                   <h3 className="text-lg font-semibold text-foreground">Call Us</h3>
-                  <p className="text-muted-foreground">General Inquiries: +94 11 234 5678</p>
-                  <p className="text-muted-foreground">Sales Department: +94 77 123 4567</p>
+                  <p className="text-muted-foreground">General Inquiries: +94 11 251 8423</p>
                 </div>
               </div>
             </CardContent>
