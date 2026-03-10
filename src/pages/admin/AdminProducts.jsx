@@ -204,7 +204,7 @@ const AdminProducts = () => {
             <SelectItem value="Sauces">Sauces</SelectItem>
             <SelectItem value="Chutney">Chutney</SelectItem>
             <SelectItem value="Jam">Jam</SelectItem>
-            <SelectItem value="Wines">Wines</SelectItem>
+            <SelectItem value="Wines">Fruitopia Collection</SelectItem>
             <SelectItem value="Spices">Spices</SelectItem>
             <SelectItem value="Katagasma Range">Katagasma Range</SelectItem>
           </SelectContent>

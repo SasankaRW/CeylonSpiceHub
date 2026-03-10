@@ -125,7 +125,7 @@ const ContactUsPage = () => {
                 <Mail className="h-8 w-8 text-secondary mt-1 flex-shrink-0" />
                 <div>
                   <h3 className="text-lg font-semibold text-foreground">Email Us</h3>
-                  <a href="mailto:info@ceylonspicehub.lk" className="text-muted-foreground hover:text-primary transition-colors">info@ceylonspicehub.com</a><br />
+                  <a href="mailto:info@ceylonspicehub.lk" className="text-muted-foreground hover:text-primary transition-colors">info@ceylonspicehub.lk</a><br />
                   </div>
               </div>
               <div className="flex items-start space-x-4">

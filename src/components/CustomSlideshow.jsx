@@ -144,9 +144,6 @@ const CustomSlideshow = ({ slides }) => {
                     <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/12 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.22em] text-white/95 sm:px-4 sm:py-2 sm:text-xs sm:tracking-[0.25em]">
                       The Ceylon Spice Hub
                     </span>
-                    <span className="hidden rounded-full border border-yellow-400/30 bg-yellow-400/10 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-yellow-200 sm:inline-flex sm:px-4 sm:py-2 sm:text-xs sm:tracking-[0.2em]">
-                      {String(currentIndex + 1).padStart(2, '0')} / {String(slides.length).padStart(2, '0')}
-                    </span>
                   </div>
 
                   <h2 className="text-[2rem] font-extrabold leading-[1.05] text-balance sm:text-4xl md:text-5xl lg:text-6xl">
@@ -225,15 +222,7 @@ const CustomSlideshow = ({ slides }) => {
       </Button>
 
       <div className="absolute inset-x-0 bottom-3 z-10 hidden px-3 sm:block sm:bottom-4 sm:px-4 md:bottom-6 md:px-6">
-        <div className="mx-auto flex max-w-6xl flex-col gap-3 rounded-[1.25rem] border border-white/10 bg-black/22 px-3 py-3 backdrop-blur-sm sm:rounded-2xl sm:px-4 md:flex-row md:items-center md:justify-between md:px-5">
-          <div className="flex items-center gap-2.5 text-white/85 sm:gap-3">
-            <span className="text-xs font-semibold sm:text-sm">
-              {String(currentIndex + 1).padStart(2, '0')}
-            </span>
-            <div className="h-px w-6 bg-white/30 sm:w-8" />
-            <p className="hidden truncate text-xs text-white/70 sm:block sm:text-sm">{currentSlide.alt}</p>
-          </div>
-
+        <div className="mx-auto flex max-w-6xl flex-col gap-3 rounded-[1.25rem] border border-white/10 bg-black/22 px-3 py-3 backdrop-blur-sm sm:rounded-2xl sm:px-4 md:flex-row md:items-center md:justify-center md:px-5">
           <div className="flex items-center gap-1.5 sm:gap-2">
             {slides.map((slide, index) => (
               <button

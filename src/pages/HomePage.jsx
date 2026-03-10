@@ -56,19 +56,19 @@ const slideshowData = [
 const featuredCategories = [
   {
     title: 'Ceylon Spices',
-    description: "The purest form of Ceylon's legendary spices, from fragrant cinnamon to fiery peppercorns.",
+    description: "Experience the pure essence of Ceylon’s legendary spices, from fragrant cinnamon to bold, fiery peppercorns.",
     image: 'https://res.cloudinary.com/dwuxumj4x/image/upload/v1769839858/SPICES_1_seeh3o.jpg',
     link: '/products?category=Spices',
   },
   {
-    title: 'Sauce Range',
-    description: 'Traditional sauces made from family recipes and layered with bold, home-style flavor.',
+    title: 'Katagasma Range',
+    description: 'Bold Ceylon flavours in condiments, sauces, chutneys, and jams, crafted to bring authentic taste to every bite.',
     image: 'https://res.cloudinary.com/dwuxumj4x/image/upload/v1769841368/sauces1_gd7rug.jpg',
     link: '/products?category=Sauces',
   },
   {
-    title: 'Fruitopia Range',
-    description: 'Unique fruit wines and beverages fermented to perfection with a distinct tropical character.',
+    title: 'Fruitopia Collection',
+    description: ' Vibrant, tropical Ceylon Fruitopia Collection crafted from exotic fruits, bringing bold flavour and natural freshness to every glass.',
     image: 'https://res.cloudinary.com/dwuxumj4x/image/upload/v1769839983/WINE_5_vgjktj.jpg',
     link: '/products?category=Wines',
   },
@@ -82,20 +82,20 @@ const brandHighlights = [
 
 const benefits = [
   {
-    title: 'Uncompromising Quality',
-    desc: 'Small-batch processing preserves the authentic taste, aroma, and freshness of every ingredient.',
+    title: 'More Than a Product - A Purpose',
+    desc: 'When you choose The Ceylon Spice Hub, you support sustainable farming, local communities, and the preservation of true Sri Lankan taste traditions.',
     img: 'https://res.cloudinary.com/dwuxumj4x/image/upload/v1771014420/WhatsApp_Image_2026-02-07_at_9.03.46_AM_1_nlaqky.jpg',
     icon: ShieldCheck,
   },
   {
-    title: 'Ethically Sourced',
-    desc: 'We support rural farmers and sustainable growing practices that respect people, land, and tradition.',
+    title: 'Farm to Bottle',
+    desc: 'Farm to Bottle Over 85% of our ingredients come directly from our farm, while the remaining are sourced from small home gardens, supporting local families and empowering rural women.',
     img: 'https://res.cloudinary.com/dwuxumj4x/image/upload/v1770149702/Pineapple_jam_4_ttxaje.jpg',
     icon: HeartHandshake,
   },
   {
-    title: 'Freshness Guaranteed',
-    desc: 'Every pack is prepared with care to deliver vibrant flavor from our home in Sri Lanka to yours.',
+    title: 'Handcrafted in Small Batches',
+    desc: 'Each product is made in small batches to maintain quality, freshness, and the artisanal touch that defines our brand.',
     img: 'https://res.cloudinary.com/dwuxumj4x/image/upload/v1770149677/Pepper_c44hmg.jpg',
     icon: Leaf,
   },
@@ -167,17 +167,6 @@ const HomePage = () => {
               ))}
             </div>
 
-            <div className="flex flex-col justify-center gap-4 sm:flex-row lg:justify-start">
-              <Button asChild size="lg" className="px-8 shadow-lg hover:shadow-xl transition-all">
-                <Link to="/products">
-                  Shop Bestsellers
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Link>
-              </Button>
-              <Button asChild size="lg" variant="outline" className="px-8">
-                <Link to="/we-are">Discover Our Story</Link>
-              </Button>
-            </div>
           </motion.div>
 
           <motion.div
@@ -234,9 +223,6 @@ const HomePage = () => {
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-transparent" />
                     <div className="absolute inset-x-0 bottom-0 p-6 text-white">
-                      <p className="mb-2 text-xs font-semibold uppercase tracking-[0.25em] text-white/70">
-                        Curated range
-                      </p>
                       <h3 className="text-2xl font-bold">{category.title}</h3>
                     </div>
                   </div>
@@ -300,7 +286,8 @@ const HomePage = () => {
           Pure ingredients. Honest flavours. A commitment to people and planet.
           </h2>
           <p className="mx-auto mt-3 max-w-3xl text-lg text-muted-foreground">
-            We combine family-farm roots, responsible sourcing, and handcrafted production to create ingredients you can trust.
+          When you choose The Ceylon Spice Hub, you choose more than a product.
+          You choose craftsmanship, sustainability, and the true taste of Sri Lanka.
           </p>
         </div>
 
@@ -350,10 +337,10 @@ const HomePage = () => {
                 Bring Ceylon home
               </p>
               <h2 className="text-3xl font-bold text-foreground md:text-4xl">
-                Ready to stock your kitchen with bold, natural flavor?
+              From our farm to your table - bold flavours, pure ingredients, and handcrafted goodness.
               </h2>
               <p className="mt-4 text-lg leading-8 text-muted-foreground">
-                Explore our full range of spices, sauces, jams, chutneys, and wines, or learn more about the story behind the U.
+              Explore Our Collection
               </p>
             </div>
 

@@ -133,11 +133,9 @@ const WeArePage = () => {
           viewport={{ once: true }}
           className="text-center space-y-3"
         >
-          <Badge variant="outline" className="px-4 py-1 text-sm">
-            Core Values
-          </Badge>
+
           <h2 className="text-3xl font-bold md:text-4xl">
-            Core Values – <span className="text-primary">WE ARE SPICEHUB</span>
+            Core Values - <span className="text-primary">WE ARE SPICEHUB</span>
           </h2>
           <p className="text-muted-foreground max-w-3xl mx-auto text-base md:text-lg">
             Each letter in our name stands for a promise we live by, from sustainability and integrity

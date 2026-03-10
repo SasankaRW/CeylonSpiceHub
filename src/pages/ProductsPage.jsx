@@ -161,6 +161,10 @@ const ProductsPage = () => {
   // Get unique categories
   const categories = ['all', ...new Set(products.map(p => p.category).filter(Boolean))];
 
+  // Display names for categories (e.g. "Wines" → "Fruitopia Collection")
+  const getCategoryDisplayName = (cat) =>
+    cat === 'all' ? 'All Products' : (cat === 'Wines' ? 'Fruitopia Collection' : cat);
+
   // Get subcategories for selected category
   const availableSubCategories = selectedCategory === 'all'
     ? []
@@ -227,7 +231,7 @@ const ProductsPage = () => {
               whileHover={{ x: 4 }}
               whileTap={{ scale: 0.98 }}
             >
-              {category === 'all' ? 'All Products' : category}
+              {getCategoryDisplayName(category)}
             </motion.button>
           ))}
         </div>

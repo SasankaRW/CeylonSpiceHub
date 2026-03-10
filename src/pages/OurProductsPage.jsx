@@ -97,16 +97,36 @@ const OurProductsPage = () => {
 
   // Category taglines for image overlay
   const categoryTaglines = {
-    'Sauces': { subtitle: 'Bold & Flavorful', title: 'Signature Sauces' },
-    'Chutney': { subtitle: 'Traditional Recipe', title: 'Artisan Chutneys' },
+    'Sauces': { subtitle: 'Bold & Flavorful', title: 'Signature Sauce' },
+    'Chutney': { subtitle: 'Traditional Recipe', title: 'Artisan Chutney' },
     'Jam': { subtitle: 'Sweet & Natural', title: 'Handcrafted Jams' },
-    'Wines': { subtitle: 'Premium Selection', title: 'Ceylon Wines' },
+    'Wines': { subtitle: 'Premium Selection', title: 'Fruitopia Collection' },
     'Spices': { subtitle: 'Pure & Aromatic', title: 'Ceylon Spices' },
     'Katagasma Range': { subtitle: 'Pre-Order Special', title: 'Katagasma Range' }
   };
 
   const getCategoryTagline = (category) => {
     return categoryTaglines[category] || { subtitle: 'Premium Ceylon', title: 'Authentic Flavors' };
+  };
+
+  // Display name for categories (e.g. "Wines" → "Fruitopia Collection")
+  const categoryDisplayNames = {
+    'Wines': 'Fruitopia Collection',
+  };
+  const getCategoryDisplayName = (category) => categoryDisplayNames[category] || category;
+
+  // Category descriptions (one per category)
+  const categoryDescriptions = {
+    'Sauces': 'bold, handcrafted, and bursting with natural flavour.',
+    'Chutney': 'Handpicked from Ceylon’s finest ingredients to bring authentic, bold flavours to your table.',
+    'Jam': 'Our premium jams, made from carefully selected Ceylon fruits, deliver bold, authentic flavour in every spoonful.',
+    'Wines': 'From Ceylon’s fruits, herbs, and flowers - a handcrafted elixir to sip, swirl, and enjoy.',
+    'Spices': 'Sprinkle a twist, add a dash of vibrant colour - unmatched quality, homemade with love',
+    'Katagasma Range': 'Handcrafted from the finest Ceylon ingredients to bring bold, authentic flavours to your plate.'
+  };
+
+  const getCategoryDescription = (category) => {
+    return categoryDescriptions[category] || `Explore our premium selection of ${category.toLowerCase()}. Hand-picked from the finest sources in Ceylon to bring authentic flavor to your kitchen.`;
   };
 
   const categories = getCategories(products);
@@ -166,7 +186,7 @@ const OurProductsPage = () => {
                     <div className="md:w-1/2 relative h-[400px] overflow-hidden group">
                       <motion.img
                         src={getCategoryImage(category)}
-                        alt={category}
+                        alt={getCategoryDisplayName(category)}
                         className="w-full h-full object-cover"
                         whileHover={{ scale: 1.05 }}
                         transition={{ duration: 0.5 }}
@@ -184,12 +204,12 @@ const OurProductsPage = () => {
                       <div className="space-y-6">
                         <div>
                           <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6 font-serif">
-                            {category}
+                            {getCategoryDisplayName(category)}
                           </h2>
                         </div>
 
                         <p className="text-muted-foreground text-base leading-relaxed">
-                          Explore our premium selection of {category.toLowerCase()}. Hand-picked from the finest sources in Ceylon to bring authentic flavor to your kitchen.
+                          {getCategoryDescription(category)}
                         </p>
 
                         {category === 'Katagasma Range' && (
@@ -212,7 +232,7 @@ const OurProductsPage = () => {
                             className="w-full md:w-auto shadow-xl font-bold group text-lg px-10 py-6"
                             onClick={() => navigate(`/products?category=${encodeURIComponent(category)}`)}
                           >
-                            Shop {category}
+                            Shop {getCategoryDisplayName(category)}
                             <ChevronRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
                           </Button>
                         </div>
